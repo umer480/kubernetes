@@ -187,6 +187,11 @@ alias k='kubectl'
 
 
 
+### Use Master as a worker node ( remove taint)
+```bash
+kubectl taint nodes <master node name> node-role.kubernetes.io/control-plane:NoSchedule-
+```
+
 ## Optional: Use containerd as Container Runtime
 
 ### Install containerd
