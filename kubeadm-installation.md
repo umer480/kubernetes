@@ -73,6 +73,25 @@ sysctl net.bridge.bridge-nf-call-iptables net.bridge.bridge-nf-call-ip6tables ne
 Follow official Docker documentation:
 https://docs.docker.com/engine/install/
 
+
+**After DOCKER installation:**
+Add Your User to the Docker Group:
+Docker runs its processes as the docker group, and adding your user to this group allows you to run Docker commands without sudo.
+
+Run the following command to add your user to the docker group:
+
+```bash
+sudo usermod -aG docker $USER
+```
+apply the group changes:
+
+```bash
+newgrp docker
+
+```
+ you're now able to interact with Docker as a non-root user. use docker commands without sudo i.e #docker ps (instead of #sudo docker ps)
+
+ 
 ### Install CRI for Docker
 Follow instructions:
 https://mirantis.github.io/cri-dockerd/usage/install/
