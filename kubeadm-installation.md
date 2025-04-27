@@ -170,7 +170,7 @@ systemctl status kubelet
 see if any pod failing i.e coredns, calico etc #kubectl get pods -A
 make sure kubelet service i sup and running before running kubeadm - check its health via endpoint http://127.0.0.1:10248/healthz
 make sure containerd,docker both services are up and running
-make sure worker node can connect to master node on port TCP/644 ( allow in NSG,OS level Firewall, - use telnet, tracetcp to check connectivity)
+make sure worker node can connect to master node on port TCP/6443 ( allow in NSG,OS level Firewall, - use telnet, tracetcp to check connectivity)
 
 ```
 
@@ -218,5 +218,21 @@ systemctl status containerd
 curl -LO https://github.com/opencontainers/runc/releases/download/v1.1.12/runc.amd64
 sudo install -m 755 runc.amd64 /usr/local/sbin/runc
 ```
+
+
+### POST Validation Steps - quickly deploy a test app and see if everything is working fine.
+
+**Create a Service and see if its reachable over the network:**
+```bash
+kubectl expose pod mytestpod --type=NodePort --port=8090 --target-port=80 --name=mytestpod-service --selector=run=mytestpod
+```
+
+
+**Test TAINT: After removing -NoSchedule from master node:**
+create a deployment and see if there is pod scheduled on master node?
+
+kubectl create deployment my-deployment --image=httpd
+kubectl scale deployment my-deployment --replicas=3
+
 
 
