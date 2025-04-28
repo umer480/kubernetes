@@ -32,6 +32,7 @@ It will create a deployment if one does not already exist. If you run it again (
 
 <span style="color:red;">error: deployment.apps "my-app" already exists</span>
 
+
 This is because the create command is meant to create new resources. <span style="color:red;">**It doesn't update or manage resources that already exist.**</span>
 
 **Declarative Approach (What Would Happen There):**
