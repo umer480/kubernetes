@@ -97,5 +97,7 @@ http://frontend.dev.svc.cluster.local
 ### Key Points : Take aways
 
 🔹 By default, all pods in a cluster can communicate, even if they are in different namespaces.
+
 🔹 Kubernetes does not create strict network isolation between namespaces unless you manually configure it using Network Policies.
+
 🔹 Services in different namespaces can be accessed using the fully qualified domain name (FQDN)
