@@ -126,9 +126,14 @@ kubectl version --client
 ```
 
 ### Initialize Master Node
-Example (for Docker runtime):
+Example (if you have one/single container runtime):
 ```bash
 sudo kubeadm init --pod-network-cidr=192.168.0.0/16 --apiserver-advertise-address=<master-ip> --node-name=kube-master
+```
+
+For Docker with cri-dockerd:
+```bash
+sudo kubeadm init --pod-network-cidr=192.168.0.0/16 --cri-socket unix:///var/run/cri-dockerd.sock
 ```
 
 For containerd runtime:
@@ -136,12 +141,9 @@ For containerd runtime:
 sudo kubeadm init --pod-network-cidr=192.168.0.0/16 --cri-socket unix:///var/run/containerd/containerd.sock
 ```
 
-For cri-dockerd:
-```bash
-sudo kubeadm init --pod-network-cidr=192.168.0.0/16 --cri-socket unix:///var/run/cri-dockerd.sock
-```
 
-**Note:** Save the `kubeadm join` command output.
+
+**Note:** Save the `kubeadm join` command output. you need token to join worker with the master / to add worker node in the cluster
 
 ### Prepare kubeconfig
 ```bash
@@ -159,6 +161,7 @@ kubectl apply -f custom-resources.yaml
 ```
 
 **Old Method**: kubectl apply -f https://raw.githubusercontent.com/projectcalico/calico/v3.29.0/manifests/calico.yaml --> **not recommended**
+you can try old method if you having issues with the Modren method (using tigera operator) installation  --> but only for non-production environment.
 
 
 ### Join Worker Nodes (Worker node only)
@@ -260,10 +263,14 @@ kubectl expose pod mytestpod --type=NodePort --port=8090 --target-port=80 --name
 
 
 **Test TAINT: After removing -NoSchedule from master node:**
-create a deployment and see if there is pod scheduled on master node?
+create a deployment ( multiple redundant pods/containers) and see if there is pod scheduled on master node?
 
+```bash
 kubectl create deployment my-deployment --image=httpd
 kubectl scale deployment my-deployment --replicas=3
+```
+
+
 
 
 
