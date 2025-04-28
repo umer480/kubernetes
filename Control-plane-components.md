@@ -6,3 +6,8 @@
 
 ![image](https://github.com/user-attachments/assets/8abee275-2cc3-45e4-9ec5-03fbd812df09)
 
+
+## Logical Components / Objects in Kubernetes:
+![image](https://github.com/user-attachments/assets/be4ffaf1-1b0f-46e4-b119-286f136dc92f)
+
+
