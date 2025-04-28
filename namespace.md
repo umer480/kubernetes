@@ -38,7 +38,7 @@ kubectl get pods -n dev
 kubectl delete namespace dev
 ```
 
-## Create a namespace using manifest file:
+## Create a namespace using manifest/yml file:
 ```bash
 {
     "apiVersion": "v1",
@@ -79,17 +79,17 @@ http://frontend.dev.svc.cluster.local
 ```
 
 ```bash
-+----------------------+            +----------------------+
-|  Namespace: test      |            |  Namespace: dev       |
-|                      |            |                      |
-|  +----------------+  |            |  +----------------+  |
-|  | Pod: test-pod   |  |  ----->    |  | Service: frontend| |
-|  +----------------+  |   (DNS)     |  +----------------+  |
-|                      |            |      ↓               |
-+----------------------+            |  +----------------+  |
-                                     |  | Pod: frontend-pod| |
-                                     |  +----------------+  |
-                                     +----------------------+
++----------------------+            +-----------------------+
+|  Namespace: test     |            |  Namespace: dev       |
+|                      |            |                       |
+|  +----------------+  |            |  +----------------+   |
+|  | Pod: test-pod   | |  ----->    |  | Service: frontend| |
+|  +----------------+  |   (DNS)    |  +----------------+   |
+|                      |            |      ↓                |
++----------------------+            |  +----------------+   |
+                                    |  | Pod: frontend-pod| |
+                                    |  +----------------+   |
+                                     +-----------------------+
 
 ```
 
