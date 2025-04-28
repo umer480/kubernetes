@@ -5,7 +5,7 @@
 
 1. Assign a unique hostname to all machines.
 2. Ensure all VMs have different UUIDs (especially if cloned).
-3. Allow required ports between master and worker nodes.
+3. Allow required ports between master and worker nodes. https://kubernetes.io/docs/reference/networking/ports-and-protocols/
 4. Ensure outbound internet access on all nodes.
 5- Make sure SSH port TCP/22 is open (only from trusted ips) to manage nodes remotely
 
