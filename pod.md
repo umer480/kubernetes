@@ -18,6 +18,7 @@ A **pod** is the smallest and simplest Kubernetes object that you create and man
 
 You usually put **one container** in a pod. But sometimes, you might put multiple containers that must work closely together.
 
+```bash
 +-------------------------------------------------+
 |                     Pod                         |
 |                                                 |
@@ -28,6 +29,7 @@ You usually put **one container** in a pod. But sometimes, you might put multipl
 |                                                 |
 |  Shared Network (IP) and Storage Volumes        |
 +-------------------------------------------------+
+```
 
 **In this diagram:**
 
