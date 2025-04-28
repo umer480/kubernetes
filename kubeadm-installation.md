@@ -175,10 +175,15 @@ kubectl get pods -A
 ```
 
 ### Quickly Deploy a POD to see its everything is working :
+```bash
 #kubectl run mytestpod --image=httpd --restart=Never
+```
+```bash
 #kubectl get pods
+```
+```bash
 #kubectl describe pod mytestpod
-
+```
 
 ### Troubleshooting
 Reset the cluster if needed:
