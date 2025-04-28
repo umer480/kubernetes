@@ -177,7 +177,7 @@ kubectl get nodes
 kubectl get pods -A
 ```
 
-### Quickly Deploy a POD to see its everything is working :
+### Quickly Deploy a POD to see if everything is working and are we able to deploy actual workload? :
 ```bash
 #kubectl run mytestpod --image=httpd --restart=Never
 ```
@@ -194,17 +194,20 @@ this command will delete all kubernetes resources/destroy whole cluster, after f
 
 ```bash
 kubeadm reset
+```
 
-```bash
-**
-check logs and services status:**
 
-journalctl -xeu kubelet
-systemctl status kubelet
-see if any pod failing i.e coredns, calico etc #kubectl get pods -A
-make sure kubelet service i sup and running before running kubeadm - check its health via endpoint http://127.0.0.1:10248/healthz
-make sure containerd,docker both services are up and running
-make sure worker node can connect to master node on port TCP/6443 ( allow in NSG,OS level Firewall, - use telnet, tracetcp to check connectivity)
+**check logs and services status:**
+
+
+- systemctl status kubelet
+- systemctl status contaienrd
+- systemctl status docker
+- journalctl -xeu kubelet      --> #check if there is any errors while starting kubelet
+- see if any pod failing i.e coredns, calico etc #kubectl get pods -A
+- make sure kubelet service i sup and running before running kubeadm - check its health via endpoint http://127.0.0.1:10248/healthz
+- make sure containerd,docker both services are up and running
+- make sure worker node can connect to master node on port TCP/6443 ( allow in NSG,OS level Firewall, - use telnet, tracetcp to check connectivity)
 
 ```
 
