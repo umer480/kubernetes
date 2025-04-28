@@ -178,6 +178,11 @@ kubectl port-forward pod/<pod-name> <local-port>:<pod-port>
 In Kubernetes, you cannot directly restart a Pod because a Pod is meant to be ephemeral — if you need to restart it, you usually delete it and Kubernetes (or your controller like Deployment, ReplicaSet, etc.) will recreate it.
 
 
+
+## Summary: What you get ? note down these important key points
+
+![image](https://github.com/user-attachments/assets/410ca112-690d-48f8-9ade-8ac3f2acd3af)
+
 ### LABS Scenarios:
 - Create/Deploy a pod (via command / via yml)
 - How to deploy pod with one or more containers
