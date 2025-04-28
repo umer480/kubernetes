@@ -56,9 +56,7 @@ kubectl explain pods
 ```bash
 kubectl run mypod --image-nginx
 ```
-# watch command output:
-```bash
-kubectl get pods --watch 
+
 ```
 
 ## Create POD - Declarative way ( + Print out ready made YAML)
@@ -122,21 +120,67 @@ spec:
 
 
 ## POD Health States:
-
+```bash
 ![image](https://github.com/user-attachments/assets/ae3cd716-ed2e-4c60-abf1-094103523777)
-
+```
 
 
 
 
 ## PODs - Commands
-
+```bash
 kubectl get pods
-kubectl get pods -A
+kubectl get pods -A   --> list pods in all name spaces
+kubectl get pods -n <namespace>   -> list pod of specific namespace
+kubectl get pods -o wide  --> wide view - to see pod's ip address / to see on which node pod is running
+kubectl describe mypod
+kubectl delete pod mypod
 
-# Access a Container Within a Pod:
-kubectl exec -it <pod_name> -- /bin/bash
+**## POD Creation  (not recommended for production):**
+kubectl run <pod-name> --image=<image-name>
+kubectl apply -f <pod-definition.yaml>
+kubectl apply -f <pod.yaml> --dry-run=client    ----> **Dry run Pod creation (only show what would happen)**
 
+```
+
+
+
+
+## See POD logs - for Troubleshooting
+```bash
+kubectl logs <pod-name>  --> view pod logs
+kubectl logs <pod-name> -c <container-name>   -->View logs of a specific container inside a Pod
+kubectl logs -f <pod-name>   -->Stream (follow) Pod logs:
+kubectl get events  -->See all cluster events
+
+
+
+
+****# Access a Container Within a Pod:****
 This command allows you to open a shell inside one of the containers, enabling you to test communication and debug issues.
+```bash
+kubectl exec -it <pod_name> -- /bin/bash
+```
 
+
+# watch command output:
+```bash
+kubectl get pods --watch
+```
+
+# Port-forward from your local machine to a Pod:
+```bash
+kubectl port-forward pod/<pod-name> <local-port>:<pod-port>
+```
+
+
+## Restart a POD:
+In Kubernetes, you cannot directly restart a Pod because a Pod is meant to be ephemeral — if you need to restart it, you usually delete it and Kubernetes (or your controller like Deployment, ReplicaSet, etc.) will recreate it.
+
+
+### LABS Scenarios:
+- Create/Deploy a pod (via command / via yml)
+- How to deploy pod with one or more containers
+- Deploy web+db on same pod ( multi container = 1 for web, 1 for db)
+- Deploy 2 tier application (web+db) - 2 pods = 1 for web,1 for db
 
