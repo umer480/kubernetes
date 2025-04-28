@@ -28,20 +28,22 @@ Declarative (apply): Can be run multiple times and will ensure the resource matc
 kubectl create deployment my-app --image=nginx --replicas=3
 ```
 It will create a deployment if one does not already exist. If you run it again (without any changes), Kubernetes will respond with an error like this:
+
 <span style="color:red;">**error: deployment.apps "my-app" already exists.**</span>
 
-This is because the create command is meant to create new resources. It doesn't update or manage resources that already exist.
+This is because the create command is meant to create new resources. <span style="color:red;">**It doesn't update or manage resources that already exist.**</span>
 
 **Declarative Approach (What Would Happen There):**
-In contrast, if you used the declarative approach with:
-
-```bash
-kubectl apply -f deployment.yaml
-```
 Kubernetes would simply check the current state of the deployment and:
 
 - Create it if it doesn't exist
 - Update it if there are any changes in the configuration.
+
+
+```bash
+kubectl apply -f deployment.yaml
+```
+
 
 **So** with declarative, you can run the **command multiple times **and Kubernetes will ensure that the **desired state** is always maintained (it will either create or update as needed).
 
