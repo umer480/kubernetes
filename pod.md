@@ -73,7 +73,7 @@ pods are ephemeral by nature, if a pod (or the node it executes on) fails, Kuber
 
 
 
+![pod-animation](https://github.com/user-attachments/assets/35c5d3ae-7671-4702-bb0f-71baa2a8870c)
 
-![image](https://github.com/user-attachments/assets/27fe3db9-7878-49bc-9ea7-98eb5d191db7)
 
 
