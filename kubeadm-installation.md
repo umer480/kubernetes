@@ -209,7 +209,6 @@ kubeadm reset
 - make sure containerd,docker both services are up and running
 - make sure worker node can connect to master node on port TCP/6443 ( allow in NSG,OS level Firewall, - use telnet, tracetcp to check connectivity)
 
-```
 
 
 ### Access Cluster from Root User
