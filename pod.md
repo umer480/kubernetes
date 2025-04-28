@@ -70,11 +70,6 @@ kubectl run podname --image=nginx --dry-run=client -o yaml > mypod.yml
 
 
 
-![image](https://github.com/user-attachments/assets/ae3cd716-ed2e-4c60-abf1-094103523777)
-
-
-
-
 
 ## Communication within same pod / communication between multiple containers s within same POD:
 
@@ -89,10 +84,15 @@ One of the key features that enable container communication within a Pod is the 
 **Example : communication via localhost of web and db server**
 consider a scenario where one container in a Pod runs a **web server on port 8080**, and another container runs a database server on port 3306. The web server can connect to the database using **localhost:3306**, leveraging the shared network namespace.
 
+![pod-animation](https://github.com/user-attachments/assets/35c5d3ae-7671-4702-bb0f-71baa2a8870c)
+
+
+
 
 
 # Communication across different PODs
 Each Pod gets its own IP address, allowing communication with other Pods in the cluster.
+
 
 
 ## Pods are ephemeral:
@@ -123,7 +123,7 @@ spec:
 
 ## POD Health States:
 
-![pod-animation](https://github.com/user-attachments/assets/35c5d3ae-7671-4702-bb0f-71baa2a8870c)
+![image](https://github.com/user-attachments/assets/ae3cd716-ed2e-4c60-abf1-094103523777)
 
 
 
