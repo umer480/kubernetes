@@ -5,8 +5,9 @@
 
 
 ## 
-1- **Declarative** = "Here’s the desired state. You figure it out."  (---> direct Command instruction)
-2- **Imperative** = "Here’s the exact command. **Do it now.**"  --->  (instructions via configuration/manifest/yml file)
+1- **Declarative** = "Here’s the desired state. You figure it out."    ---> direct Command instruction
+
+2- **Imperative** = "Here’s the exact command. **Do it now.**"         --->  (instructions via configuration/manifest/yml file
 
 
 
@@ -29,7 +30,7 @@ kubectl create deployment my-app --image=nginx --replicas=3
 ```
 It will create a deployment if one does not already exist. If you run it again (without any changes), Kubernetes will respond with an error like this:
 
-<span style="color:red;">**error: deployment.apps "my-app" already exists.**</span>
+<span style="color:red;">error: deployment.apps "my-app" already exists</span>
 
 This is because the create command is meant to create new resources. <span style="color:red;">**It doesn't update or manage resources that already exist.**</span>
 
