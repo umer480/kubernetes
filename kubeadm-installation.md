@@ -213,7 +213,6 @@ kubeadm reset
 
 
 ### Access Cluster from Root User
-
 ```bash
 export KUBECONFIG=/etc/kubernetes/admin.conf
 ```
