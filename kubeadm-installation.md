@@ -187,8 +187,15 @@ kubectl get pods -A
 
 ### Troubleshooting
 Reset the cluster if needed:
+this command will delete all kubernetes resources/destroy whole cluster, after fixing the issue you can run it to create a cluster from scratch.
+
 ```bash
 kubeadm reset
+
+```bash
+**
+check logs and services status:**
+
 journalctl -xeu kubelet
 systemctl status kubelet
 see if any pod failing i.e coredns, calico etc #kubectl get pods -A
