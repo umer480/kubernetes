@@ -212,16 +212,17 @@ kubeadm reset
 ```
 
 
-
 ### Access Cluster from Root User
+
 ```bash
 export KUBECONFIG=/etc/kubernetes/admin.conf
 ```
 
 
 ### Set Alias for kubectl command
+```bash
 alias k='kubectl'
-
+```
 
 
 ### Use Master as a worker node ( remove taint)
