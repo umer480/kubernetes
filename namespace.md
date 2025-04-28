@@ -19,7 +19,9 @@ You want to limit resources (like CPU, memory) for different groups.
 
 ## Default Namespaces in Kubernetes
 **default** → Where stuff goes if you don’t specify a namespace.
+
 **kube-system** → For Kubernetes internal system components
+
 
 ## Commands
 ```bash
