@@ -193,3 +193,27 @@ In Kubernetes, you cannot directly restart a Pod because a Pod is meant to be ep
 - Deploy web+db on same pod ( multi container = 1 for web, 1 for db)
 - Deploy 2 tier application (web+db) - 2 pods = 1 for web,1 for db
 
+
+
+## Pod Redundancy & Recovery: Because Kubernetes assigns a new IP from the node's Pod CIDR range every time a Pod is (re)created.
+**-** If the container inside the Pod crashes (e.g., due to an app crash), the kubelet may restart the container based on the restartPolicy (default is yes)
+**-** A standalone Pod **(kind: pod)**  will not be automatically recreated if it's deleted manually or if the node it's running on goes down.
+**-** Pod IP address will change: When a Pod is deleted and recreated. Because Kubernetes assigns a new IP from the node's Pod CIDR range every time a Pod is (re)created.
+
+
+**So, you should not deploy standalone pods using (kind: pod) -** 
+no Redundancy ![image](https://github.com/user-attachments/assets/d69976ab-aa98-4f32-bcde-4db3494391a4)
+
+no Load balancing ![image](https://github.com/user-attachments/assets/029d77e4-997f-45b6-a14a-bf233e99d0eb)
+ 
+no fault tolerance ![image](https://github.com/user-attachments/assets/b6b849a0-b8c9-4d65-9386-c228964fb777)
+
+no reliable connectivity ![image](https://github.com/user-attachments/assets/5414f03b-7724-499b-8d61-d4b04784e650)
+
+
+
+## SOLUTION:
+To overcome above mentioned issues:
+Always use "**Deployments**" and "**Service**" which provide redundancy and reliable network connectivity.
+
+
