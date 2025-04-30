@@ -3,6 +3,9 @@
 ### Managing Kubernetes Resources: Declarative vs Imperative Approach
 
 
+![image](https://github.com/user-attachments/assets/717a31a7-0e6b-49ad-abc0-e48fd4587d07)
+
+
 # Manage Kubernetes resources: 
 Two ways:
 
