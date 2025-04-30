@@ -6,14 +6,15 @@
 # Manage Kubernetes resources: 
 Two ways:
 
-**1**- Direct Commands 
+**1**- Direct Commands.
+
 **2-** Using configs files.
 
 ## 
 
 
-1- **Imperative** = "Here’s the exact command. **Do it now.**"       ---> direct Command instruction  
-21- **Declarative** = "Here’s the desired state. You figure it out."   --->  (instructions via configuration/manifest/yml file
+1- **Imperative** = "Here’s the exact command. **Do it now.**"         **--->** direct Command instruction  
+2- **Declarative** = "Here’s the desired state. You figure it out."    **--->**  (instructions via configuration/manifest/yml file
 
 
 
