@@ -187,11 +187,6 @@ In Kubernetes, you cannot directly restart a Pod because a Pod is meant to be ep
 
 ![image](https://github.com/user-attachments/assets/410ca112-690d-48f8-9ade-8ac3f2acd3af)
 
-### LABS Scenarios:
-- Create/Deploy a pod (via command / via yml)
-- How to deploy pod with one or more containers
-- Deploy web+db on same pod ( multi container = 1 for web, 1 for db)
-- Deploy 2 tier application (web+db) - 2 pods = 1 for web,1 for db
 
 
 
@@ -215,5 +210,114 @@ no reliable connectivity ![image](https://github.com/user-attachments/assets/541
 ## SOLUTION:
 To overcome above mentioned issues:
 Always use "**Deployments**" and "**Service**" which provide redundancy and reliable network connectivity.
+
+
+### LABS Scenarios:
+- Create/Deploy a pod (via command / via yml)
+- How to deploy pod with one or more containers
+- Deploy web+db on same pod ( multi container = 1 for web, 1 for db)
+- Deploy 2 tier application (web+db) - 2 pods = 1 for web,1 for db
+
+
+
+
+### Deploy 2 tier application with 2 isolated containers but within same POD:
+
+```bash
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: web-db
+  labels:
+    app: mysql
+spec:
+  containers:
+
+    ### DB ###
+    - name: mysql
+      image: mysql:5.7
+      env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: Tech@12345678
+        - name: MYSQL_DATABASE
+          value: myappdb
+        - name: MYSQL_USER
+          value: umer
+        - name: MYSQL_PASSWORD
+          value: Tech@12345678
+      ports:
+        - containerPort: 3306
+
+    ### WEB ###
+    - name: web
+      image: phpmyadmin/phpmyadmin
+      env:
+        - name: PMA_HOST
+          value: "127.0.0.1"   **# as both containers are in same pod so can connect via localhost**
+      ports:
+        - containerPort: 80
+
+```
+
+
+### Deploy 2 tier application with 2 isolated PODs
+POD1 : WEB = phpmyadmin 
+POD2:  DB = Mysql
+Connect phpmyadmin (web) with Mysql (DB) via POD's ip address
+
+
+**EXAMPLE YAML files:**
+
+**DB: **
+
+```bash
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: mysql
+  labels:
+    app: mysql
+spec:
+  containers:
+  - name: mysql
+    image: mysql:5.7
+    env:
+    - name: MYSQL_ROOT_PASSWORD
+      value: Tech@12345678
+    - name: MYSQL_DATABASE
+      value: myappdb
+    - name: MYSQL_USER
+      value: umer
+    - name: MYSQL_PASSWORD
+      value: Tech@12345678
+    ports:
+    - containerPort: 3306
+
+```
+
+**WEB:**
+
+```bash
+apiVersion: v1
+kind: Pod
+metadata:
+  name: web
+  labels:
+    app: web
+spec:
+  containers:
+  - name: web
+    image: phpmyadmin/phpmyadmin
+    env:
+    - name: PMA_HOST
+      value: "192.168.235.160"   **# replce actual ip address of pod**
+    ports:
+    - containerPort: 80
+
+---
+
+
 
 
