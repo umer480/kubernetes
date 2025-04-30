@@ -228,12 +228,16 @@ spec:
         - containerPort: 80
 
 ```
-
+## Access POD/Website : TESTING
+**Expose Standalone POD:**
+```bash
+kubectl expose pod web-db --port=9090 --target-port=80 --type=NodePort --name=webdbsvc
+```
 
 ### Deploy 2 tier application with 2 isolated PODs
 POD1 : WEB = phpmyadmin 
 POD2:  DB = Mysql
-Connect phpmyadmin (web) with Mysql (DB) via POD's ip address
+_**Connect phpmyadmin (web) with Mysql (DB) via POD's ip address**_
 
 
 **EXAMPLE YAML files:**
@@ -287,6 +291,11 @@ spec:
 ```
 
 
+## Access website quickly for testing purpose: 
+**Expose Standalone POD:** 
+```bash
+kubectl expose pod web --port=9090 --target-port=80 --type=NodePort --name=websvc
+```
 
 ## Restart a POD:
 In Kubernetes, you cannot directly restart a Pod because a Pod is meant to be ephemeral — if you need to restart it, you usually delete it and Kubernetes (or your controller like Deployment, ReplicaSet, etc.) will recreate it.
