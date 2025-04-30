@@ -171,6 +171,15 @@ Example:
 kubeadm join <master-ip>:6443 --token <token> --discovery-token-ca-cert-hash sha256:<hash>
 ```
 
+## NOTE
+**If you are getting error related to multiple container runtimes then use this command / to pass Docker socket:**
+
+ ```bash
+sudo kubeadm join 10.0.0.5:6443 --token 5jog5d.8njzpkdthazk1sns --discovery-token-ca-cert-hash sha256:f4f36c099a4254f48df6d26624aba1fa02ed67b97f3306bf304ed2bd1e8ef6f0 --cri-socket unix:///var/run/cri-dockerd.sock
+
+```
+
+
 ### Validation
 ```bash
 kubectl get nodes
