@@ -21,12 +21,13 @@ Two ways:
 
 
 
-Imperative (create): Only runs the command once for creation, and fails if the resource already exists.
-Declarative (apply): Can be run multiple times and will ensure the resource matches the desired state (creates or updates).
+**Imperative (create):** Only runs the command once for creation, and fails if the resource already exists.
+
+**Declarative (apply):** Can be run multiple times and will ensure the resource matches the desired state (creates or updates).
 
 
 
-## Example - to understand different between both approaches
+## Example - to understand difference between both approaches
 
 # **Running the Command Twice:**
 **When you run the imperative command:**
