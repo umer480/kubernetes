@@ -52,8 +52,8 @@ kubectl explain pods
 
 
 ## POD Creation
-1- imperative way
-2- Declarative way
+1- imperative way.
+2- Declarative way.
 
 ## Create POD - Imperative way
 ```bash
