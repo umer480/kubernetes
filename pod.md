@@ -333,4 +333,11 @@ To overcome above mentioned issues:
 Always use "**Deployments**" and "**Service**" which provide redundancy and reliable network connectivity.
 
 
+### Troubleshooting
+
+## internet issue / outbound connectivity issue within PODS:
+if internet connectivity has issues on pods/contienrs then make sure coredns is working ? and restart its deployment
+```bash
+kubectl rollout restart deployment/coredns -n kube-system
+```
 
