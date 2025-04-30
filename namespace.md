@@ -96,6 +96,30 @@ http://frontend.dev.svc.cluster.local
 ```
 
 
+# Create POD in specific name space:
+**via command:**
+
+```bash
+#kubectl run mypod --image=nginx --namespace=test
+```
+
+**via manifest:**
+
+```bash
+apiVersion: v1
+kind: Pod
+metadata:
+  name: simple-pod
+  namespace: test
+spec:
+  containers:
+  - name: simple-pod-container
+    image: nginx
+    ports:
+    - containerPort: 80
+
+```
+
 ### Key Points : Take aways
 
 🔹 By default, all pods in a cluster can communicate, even if they are in different namespaces.
