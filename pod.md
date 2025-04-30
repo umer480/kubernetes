@@ -44,6 +44,7 @@ You usually put **one container** in a pod. But sometimes, you might put multipl
 
 
 ## Get the API Version and Kind for any Kubernetes object:
+
 ```bash
 kubectl explain pods
 ```
@@ -57,10 +58,9 @@ kubectl explain pods
 2- Declarative way.
 
 ## Create POD - Imperative way
+
 ```bash
 kubectl run mypod --image-nginx
-```
-
 ```
 
 ## Create POD - Declarative way ( + Print out ready made YAML)
