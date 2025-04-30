@@ -2,7 +2,10 @@
 
 ## What is POD:
 A **pod** is the smallest and simplest Kubernetes object that you create and manage in kubernetes.
-**POD** is nothing but a logical boundary for containers. - POD contains multiple containers - You can say POD is a collection of containers.
+
+**POD** is nothing but a logical boundary for containers. 
+- POD contains multiple containers
+- You can say POD is a collection of containers.
 
 
 # POD Very Basic Diagram:
