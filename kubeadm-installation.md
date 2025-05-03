@@ -241,28 +241,30 @@ kubectl taint nodes <master node name> node-role.kubernetes.io/control-plane:NoS
 
 ### Install containerd
 ```bash
-curl -LO https://github.com/containerd/containerd/releases/download/v1.7.14/containerd-1.7.14-linux-amd64.tar.gz
-sudo tar Cxzvf /usr/local containerd-1.7.14-linux-amd64.tar.gz
-curl -LO https://raw.githubusercontent.com/containerd/containerd/main/containerd.service
-sudo mkdir -p /usr/local/lib/systemd/system/
-sudo mv containerd.service /usr/local/lib/systemd/system/
-sudo mkdir -p /etc/containerd
-containerd config default | sudo tee /etc/containerd/config.toml
-sudo sed -i 's/SystemdCgroup \= false/SystemdCgroup \= true/g' /etc/containerd/config.toml
-sudo systemctl daemon-reload
-sudo systemctl enable --now containerd
+###install dependencies:###
+sudo apt install -y curl gnupg2 software-properties-common apt-transport-https ca-certificates
+
+###Enable docker registry to install containerd package:###
+
+sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmour -o /etc/apt/trusted.gpg.d/docker.gpg
+sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+
+###Update the package list and install containerd:###
+
+sudo apt update
+sudo apt install -y containerd.io
+
+ ###Configure containerd to start using systemd as cgroup:###
+
+containerd config default | sudo tee /etc/containerd/config.toml >/dev/null 2>&1
+sudo sed -i 's/SystemdCgroup = false/SystemdCgroup = true/g' /etc/containerd/config.toml
+
+###Restart and enable the containerd service:###
+sudo systemctl restart containerd
+sudo systemctl enable containerd
+sudo systemctl status containerd
 ```
 
-Check containerd status:
-```bash
-systemctl status containerd
-```
-
-### Install runc
-```bash
-curl -LO https://github.com/opencontainers/runc/releases/download/v1.1.12/runc.amd64
-sudo install -m 755 runc.amd64 /usr/local/sbin/runc
-```
 
 
 ### POST Validation Steps - quickly deploy a test app and see if everything is working fine.
