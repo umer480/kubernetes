@@ -150,6 +150,11 @@ Let’s say that you have three different pods, with different labels. We want t
 ![image](https://github.com/user-attachments/assets/cffbb735-8106-4369-aa50-b2fd1487d045)
 
 
+**Reference:** https://devtron.ai/blog/understanding-kubernetes-services/
+
+
+
+
 ## Commands
 #kubectl get svc
 #kubectl get service
@@ -292,21 +297,111 @@ In this example, port 31080 on any worker node will forward traffic to port 80 i
  
 When you use nodeport then it open on all Kubernetes worker nodes – you can validate using netstat – all worker nodes will listen to that port.
 
-![image](https://github.com/user-attachments/assets/48f7edf1-42fb-4000-966f-02b19198bcc0)
+
+![image](https://github.com/user-attachments/assets/3b46810c-4c6f-45b0-990b-36683b34e5d6)
 
 
 
 
 **LoadBalancer:**
+
+A LoadBalancer is also a type of service that exposes the pod to external traffic. As the name implies, a LoadBalancer service distributes the traffic between the pods that are targeted by the service.
+So for example, if you had 5 pods of the same application which were targetted by the load balancer service, the traffic would get distributed equally among the five pods. When you use a NodePort service, there are no such load-balancing capabilities. The traffic must be manually distributed. 
+
+
 Automatically provisions an external load balancer (usually in a cloud environment like AWS, Azure, etc.) to expose the service outside the cluster.
 
 Example: A production-ready API that needs to be accessed over the internet.
 
+
+# Why we need LoadBalancer Type Service:???
+**1- Security Concern**-   NodePort services do not provide the same level of network security as LoadBalancer services, as they expose the service directly to the node.
+
+**2- No Advance Level LoadBalancing:** NodePort services are useful in situations where you need to expose a service to the external network but do not require the advanced features of a LoadBalancer service.
+
+**3- No Node-Level Redundancy/LoadBalancing:** Kubernetes doesn’t automatically load balance incoming traffic across nodes.You must handle that externally if you want high availability or balanced traffic at the node level.
+
+**Key-Concept:**
+- kube-proxy ensures the NodePort on any node can route to any pod in the cluster, not just local pods.
+- This is cluster-level load balancing to pods, not node-level load balancing from outside the cluster.
+
+
+# Create LoadBalancer Service via yml
+```bash
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-service
+spec:
+  selector:
+    app: my-app
+  ports:
+  - name: http
+    port: 80
+    targetPort: 8080
+  type: LoadBalancer
+```
+
+**In this example,** the LoadBalancer service named my-service will expose a service running on port 80 and target port 8080. The service will balance the load between pods labeled with app: my-app.
+
+Once you create this service, Kubernetes will automatically create a load balancer in your cloud provider and configure it to forward traffic to the pods in your service. The service can then be accessed from the external network using the IP address of the load balancer.
+
+![image](https://github.com/user-attachments/assets/3956d8c8-d686-4f8d-9cb4-7a4fdee34b20)
+
+
+You have a limited budget: LoadBalancer is often more expensive than NodePort, as it requires a load balancer in the cloud provider. If you have a limited budget, NodePort is a more cost-effective solution.
+
 **ExternalName**:
+it does not create a cluster IP or route traffic within the cluster. Instead, it acts as an alias for an external DNS name by returning a CNAME record for the provided external name.
+
 Maps the service to an external DNS name (e.g., an external service outside the cluster).
 
 Example: When you want to access a service running outside of Kubernetes (like a database hosted externally).
 
 
+Apart from the three services that we’ve learned about above, Kubernetes also has a special type of service called ExternalName. ExternalName is unique as it does not use labels and selectors like the other types of services. Instead, the service maps to a DNS name using a CNAME record.
 
-**# DNS Name Resolution in Service:**
+Within the manifest file of the ExternalName service, we will have to define a DNS endpoint in the field called as externalName. Whenever a request is made to this service, the traffic gets routed to the DNS record that is defined in the manifest file.
+
+The ExternalName service type is particularly useful when you wish to access a service that is hosted outside the Kubernetes cluster. It’s also helpful when you are trying to migrate your applications to Kubernetes. The ExternalName service helps maintain dependencies on external applications while you are migrating the applications to Kubernetes.
+
+Let’s take a look at an example of how to create an ExternalName service. In the below YAML manifest, we have defined the service named as external-demo, and the service type is defined as ExternalName. We have also configured the ExternalName field so that it routes the requests to api.google.com. 
+
+
+# Create ExternalName via Yaml
+
+```bash
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-external-service
+spec:
+  type: ExternalName
+  externalName: api.external-service.com
+```
+# Real Use-cases where we can implement or utilize ExternalName Service
+
+
+**DNS-based redirection:**
+
+You can access an external service using a Kubernetes-native DNS name.
+
+This is especially helpful when you want applications inside the cluster to use a consistent service name, regardless of whether it's internal or external.
+
+**No need to hardcode external URLs:**
+
+Abstracts the external address so your apps don't need to know or manage the real hostname.
+
+If the external endpoint changes, you only need to update the ExternalName—not every app using it.
+
+**Simplifies configuration and testing:**
+
+Ideal when integrating with third-party APIs or services like databases, SaaS platforms, or APIs that live outside your cluster.
+
+
+# Limitation:
+**1-** Only works at DNS level: It doesn't proxy or load balance — it just returns a CNAME.
+
+**2-** No built-in health checking: Kubernetes doesn’t validate if the target host is reachable or healthy.
+
+
