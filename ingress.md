@@ -25,30 +25,85 @@ The **Ingress rules** you define in YAML are just configuration — but for them
 
 **myapp.com/frontend **→ Should go to your frontend service
 
-# **Using Ingress, you define routing like this:** ### ingress rules:
 
-```bash
-rules:
-- host: myapp.com
-  http:
-    paths:
-    - path: /api
-      backend:
-        service:
-          name: backend
-          port:
-            number: 80
-    - path: /frontend
-      backend:
-        service:
-          name: frontend
-          port:
-            number: 80
-
-```
 
 
 ### LAB ###
+
+
+# Deploy sample frontend+backend application:
+
+```bash
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      containers:
+      - name: frontend
+        image: nginx
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend
+spec:
+  selector:
+    app: frontend
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 80
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+      - name: backend
+        image: hashicorp/http-echo
+        args:
+          - "-text=Hello from backend"
+        ports:
+        - containerPort: 5678
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend
+spec:
+  selector:
+    app: backend
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 5678
+
+
+```
+
 
 ### Setting up ingress Controller:
 
@@ -63,9 +118,10 @@ kind: Namespace
 metadata:
   name: ingress-nginx
 
+
 ```
 
-# ✅ 2. Deploy NGINX Ingress Controller (Simplified)
+# ✅ 2. Deploy NGINX Ingress Controller and expose it:
 
 ```bash
 
@@ -74,6 +130,8 @@ kind: Deployment
 metadata:
   name: ingress-nginx-controller
   namespace: ingress-nginx
+labels:
+  app: ingress-nginx
 spec:
   replicas: 1
   selector:
@@ -86,11 +144,13 @@ spec:
     spec:
       containers:
       - name: controller
-        image: quay.io/kubernetes-ingress-controller/nginx-ingress-controller:0.47.0
+        image: quay.io/kubernetes-ingress-controller/nginx-ingress-controller:latest
         args:
           - /nginx-ingress-controller
           - --configmap=$(POD_NAMESPACE)/nginx-configuration
-          - --watch-namespace=default
+          - --publish-service=$(POD_NAMESPACE)/ingress-nginx-controller
+          - --election-id=ingress-controller-leader
+          - --ingress-class=nginx
         env:
         - name: POD_NAMESPACE
           valueFrom:
@@ -99,29 +159,60 @@ spec:
         ports:
         - containerPort: 80
         - containerPort: 443
-
-```
-
-# ✅ 3. Expose the Ingress Controller via a Service (e.g., LoadBalancer or NodePort)
-
-```bash
-
+---
 apiVersion: v1
 kind: Service
 metadata:
   name: ingress-nginx-controller
   namespace: ingress-nginx
 spec:
-  type: LoadBalancer  # Use NodePort if you're not on cloud
+  type: NodePort
   selector:
     app: ingress-nginx
   ports:
-    - protocol: TCP
-      port: 80
-      targetPort: 80
-    - protocol: TCP
-      port: 443
-      targetPort: 443
+  - protocol: TCP
+    port: 80
+    targetPort: 80
+    nodePort: 30080
+  - protocol: TCP
+    port: 443
+    targetPort: 443
+    nodePort: 30443
+
+
+```
+
+# ✅ 3. Create ingress rules
+
+```bash
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: app-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  ingressClassName: nginx
+  rules:
+  - http:
+      paths:
+      - path: /frontend
+        pathType: Prefix
+        backend:
+          service:
+            name: frontend
+            port:
+              number: 80
+      - path: /backend
+        pathType: Prefix
+        backend:
+          service:
+            name: backend
+            port:
+              number: 80
+
+
+
 
 ```
 # 🚀 Quick Test Tip
