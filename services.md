@@ -140,6 +140,16 @@ The ClusterIP exposes the Service on a cluster-internal IP, which makes it reach
 The ClusterIP provides a load-balanced IP address. One or more pods that match a label selector can forward traffic to the IP address. The ClusterIP service must define one or more ports to listen on with target ports to forward TCP/UDP traffic to containers.
 
 
+
+#  How does a Kubernetes Service Work?
+
+Services make use of the **labels** that are assigned to the pod or deployment to select the correct pod. A service object can even be configured to target a deployment, so all the pods created by a deployment will be exposed by the service object. A single service can also be used to target a group of different pods. You just need to ensure that the correct labels are being selected.
+
+Let’s say that you have three different pods, with different labels. We want to create a single service that will expose all the different pods. You can create this service, by adding a common label to the pods. Let’s say that the common **label is app=demo**. The service will select and expose all the pods that have the **label app=demo.**
+
+![image](https://github.com/user-attachments/assets/cffbb735-8106-4369-aa50-b2fd1487d045)
+
+
 ## Commands
 #kubectl get svc
 #kubectl get service
