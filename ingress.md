@@ -131,7 +131,7 @@ metadata:
   name: ingress-nginx-controller
   namespace: ingress-nginx
 labels:
-  app: ingress-nginx
+  app: ingress-nginx   
 spec:
   replicas: 1
   selector:
@@ -150,7 +150,7 @@ spec:
           - --configmap=$(POD_NAMESPACE)/nginx-configuration
           - --publish-service=$(POD_NAMESPACE)/ingress-nginx-controller
           - --election-id=ingress-controller-leader
-          - --ingress-class=nginx
+          - --ingress-class=nginx     # ← This tells the controller to process Ingresses with ingressClassName: nginx
         env:
         - name: POD_NAMESPACE
           valueFrom:
@@ -192,7 +192,7 @@ metadata:
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
-  ingressClassName: nginx
+  ingressClassName: nginx      # ← This tells Kubernetes to use the "nginx" ingress controller
   rules:
   - http:
       paths:
