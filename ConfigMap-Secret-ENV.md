@@ -8,7 +8,7 @@
 
 A ConfigMap is a Kubernetes object used to store non-confidential configuration data in key-value pairs. It decouples environment-specific configuration from container images, making your apps more portable, flexible, and manageable.
 
-🔧 Real Use Cases: for ConfigMap:
+🔧 **Real Use Cases: for ConfigMap:**
 - Store app-level config like database URLs, app modes (dev, prod), or feature toggles.
 - Share environment variables with pods.
 - Inject configuration files (e.g., .conf, .ini, .json) into containers.
@@ -31,6 +31,9 @@ We can store /provide secret in plain text instead for bse64encoded – using �
 
 - A web app that reads config from ConfigMap (like DB host)
 - A DB (MySQL) backend
+
+
+![image](https://github.com/user-attachments/assets/d7c374f1-0a1a-4f93-8fcc-fbc23e223251)
 
 
 
