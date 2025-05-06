@@ -171,6 +171,11 @@ spec:
 kubectl exec -it <mongo-express-pod-name> -- env | grep MONGO_INITDB_ROOT_USERNAME
 kubectl exec -it mongo-express-64559f68f5-86xbz -- env | grep ME_CONFIG_MONGODB_ADMINPASSWORD
 
+**Kubernetes may prevent direct output of secrets through environment variables when you use kubectl exec for security.
+**
+If you mounted the secret via a volume, it will be in a file, and you should read the file directly.
+
+
 k get configmap <configmapname>
 k get configmap <configmapname> -o yaml
 k describe configmap <configmapname>
