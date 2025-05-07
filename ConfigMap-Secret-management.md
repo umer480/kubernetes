@@ -39,6 +39,10 @@ means, It gradually creates new pods while terminating the old ones.
 ### Adding new Secret/ ENV Variable in deployment:
 
 #kubectl rollout restart  command does not modify any configuration (like environment variables, image version) -
-What if you want to add new env variable in deployment? you have to apply yml that containes new env in specs or edit live yml using kubectl edit - it will restart/rollout deploymnet 
+
+What if you want to add new env variable in deployment? 
+you have to apply yml that contains new env in specs or edit live yml using kubectl edit - 
+
+it will restart/rollout deployment
 
 
