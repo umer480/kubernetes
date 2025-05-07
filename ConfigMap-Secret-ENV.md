@@ -167,21 +167,16 @@ spec:
 ```bash
 
 kubectl exec -it <mongo-express-pod-name> -- env | grep MONGO_INITDB_ROOT_USERNAME
-kubectl exec -it mongo-express-64559f68f5-86xbz -- env | grep ME_CONFIG_MONGODB_ADMINPASSWORD
-
-**Kubernetes may prevent direct output of secrets through environment variables when you use kubectl exec for security.
-**
-If you mounted the secret via a volume, it will be in a file, and you should read the file directly.
+kubectl exec -it mongo-express-64559f68f5-tprsn  -- env | grep ME_CONFIG_MONGODB_ADMINPASSWORD
 
 
 k get configmap <configmapname>
 k get configmap <configmapname> -o yaml
 k describe configmap <configmapname>
-
 k get secret <secretname>
 k get configmap <csecretname> -o yaml
-
-
+k describe secret <secretname>
+```
 
 Key Notes:
 - ConfigMap and Secret must be exist before to use them in deployment.
@@ -190,7 +185,7 @@ Key Notes:
 
 ![image](https://github.com/user-attachments/assets/fe3c81c7-a1d0-4d2b-97e8-6b19d11bfb75)
 
-k describe secret <secretname>
+
 
 
 ```
