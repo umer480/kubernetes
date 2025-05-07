@@ -10,6 +10,7 @@
 
 
 1- **Volume based:** it will reflect automatically within 60 sec by kubelet
+
 2- **ENV variable based**: #kubectl rollout restart deployment <deployment name>
 
 **validation :** #kubectl exec -it <pod-name> -- /bin/bash   >  # env
