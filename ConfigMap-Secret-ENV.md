@@ -3,7 +3,7 @@
 
 
 ### 1- Use as Environment Variable
-### 1- Use as Volume/File
+### 2- Use as Volume/File
 
 
 # What is ConfigMap:
@@ -188,5 +188,23 @@ Key Notes:
 
 
 
+### How to encode/decode content:
+
+```bash
+
+encode string:
+echo -n "Hello, World!" | base64
+
+decode string:
+echo -n "SGVsbG8sIFdvcmxkIQ==" | base64 --decode
+
+
+encode file content:
+base64 myfile.txt > myfile_encoded.txt
+
+decode file content:
+base64 --decode myfile_encoded.txt > myfile_decoded.txt
+
 ```
+
 
