@@ -30,7 +30,9 @@ means, It gradually creates new pods while terminating the old ones.
 # 🚀 Key Points:
 
 **Safe Restart**: It uses Kubernetes' rolling update mechanism—no downtime.
+
 **No Configuration Change:** It only restarts the pods, not the deployment definition.
+
 **Quick Recovery:** Useful for refreshing pod states without redeploying.
 
 
