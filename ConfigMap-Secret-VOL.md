@@ -15,8 +15,6 @@ But ConfigMap and Secret are also volume types - Using ConfigMap and Secret as v
 
 
 
-https://dev.to/techworld_with_nana/configmap-and-secret-as-kubernetes-volumes-3jna
-
 # LAB:
 
 ```bash
@@ -39,9 +37,9 @@ metadata:
   name: mosquitto-secret-file
 type: Opaque
 data:
-  secret1.file:  c29tZXN1cGVyc2VjcmV0IGZpbGUgY29udGVudHMgbm9ib2R5IHNob3VsZCBzZWU=
-  secret1.file:  c29tZXN1cGVyc2VjcmV0IGZpbGUgY29udGVudHMgbm9ib2R5IHNob3VsZCBzZWU=
-  secret1.file:  c29tZXN1cGVyc2VjcmV0IGZpbGUgY29udGVudHMgbm9ib2R5IHNob3VsZCBzZWU=
+  secret1.file: c29tZXN1cGVyc2VjcmV0IGZpbGUgY29udGVudHMgbm9ib2R5IHNob3VsZCBzZWU=
+  .env: c29tZXN1cGVyc2VjcmV0IGZpbGUgY29udGVudHMgbm9ib2R5IHNob3VsZCBzZWU=
+  config.properties: c29tZXN1cGVyc2VjcmV0IGZpbGUgY29udGVudHMgbm9ib2R5IHNob3VsZCBzZWU=
     
 ---
 
@@ -114,7 +112,7 @@ spec:
 
 ### Secret without bsae64 is possible?
 
-Yes, you can use **StringData** instead of **Data** - kubernetes will aautomatically encode it in base64 and handle internally.
+Yes, you can use **StringData** instead of **Data** - kubernetes will automatically encode it in base64 and handle internally.
 
 
 ```bash
