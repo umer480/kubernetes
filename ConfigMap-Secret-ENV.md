@@ -1,15 +1,17 @@
 
-# ConfigMap
-# Secret
+# ConfigMap & Secret
 
-### Use as Environment Variable
+
+### 1- Use as Environment Variable
+### 1- Use as Volume/File
+
 
 # What is ConfigMap:
 
 A ConfigMap is a Kubernetes object used to store non-confidential configuration data in key-value pairs. It decouples environment-specific configuration from container images, making your apps more portable, flexible, and manageable.
 
 🔧 **Real Use Cases: for ConfigMap:**
-- Store app-level config like database URLs, app modes (dev, prod), or feature toggles.
+- Store app-level config like database URLs, app modes (dev, prod), or feature toggles, timeout etc
 - Share environment variables with pods.
 - Inject configuration files (e.g., .conf, .ini, .json) into containers.
 
@@ -18,10 +20,6 @@ A ConfigMap is a Kubernetes object used to store non-confidential configuration 
 # What is Secret:
 Secret is just like ConfigMap but the difference is that it is use to store confidential/sensitive data. i.e password, connection string, private keys, access tokens, SSL certs
 
-We can store /provide secret in plain text instead for bse64encoded – using ‘stringdata’ instead of ‘data’ in manifest of secret.
-
-
-
 
 
 # LAB
@@ -29,8 +27,8 @@ We can store /provide secret in plain text instead for bse64encoded – using �
  
  # Two Tier Application
 
-- A web app that reads config from ConfigMap (like DB host)
-- A DB (MySQL) backend
+-  web app that reads config from ConfigMap and Secret (like DB host,user,pass etc)
+-  DB backend
 
 
 ![image](https://github.com/user-attachments/assets/d7c374f1-0a1a-4f93-8fcc-fbc23e223251)
