@@ -1,4 +1,4 @@
-### ConfigMAP - Load all key-value pairs as an environment variable
+### 🚀 ConfigMAP - Load all key-value pairs as an environment variable
 
 The '**envFrom**' field loads all key-value pairs from env-config into the container as environment variables.
 
@@ -53,7 +53,10 @@ echo $DB_HOST    # Outputs: mysql-service
 echo $DB_PORT    # Outputs: 3306
 
 
-### Secret - Load all key-value pairs as an environment variable
+
+
+
+### 🚀 Secret - Load all key-value pairs as an environment variable
 
 ```bash
 
@@ -87,7 +90,7 @@ spec:
         app: secret-env-app
     spec:
       containers:
-        - name: app-container
+        - name: secret-env-container
           image: nginx
           envFrom:
             - secretRef:
