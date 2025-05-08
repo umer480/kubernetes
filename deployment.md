@@ -180,3 +180,11 @@ spec:
           image: nginx:1.21
 
 ```
+
+
+ **Key Notes :**
+
+**ReplicaSets** — Maintaining multiple copies of a Pod.
+
+**Deployments**— Managing updates, rollbacks, and scaling
+
