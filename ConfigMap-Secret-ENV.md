@@ -186,6 +186,7 @@ Key Notes:
 ![image](https://github.com/user-attachments/assets/fe3c81c7-a1d0-4d2b-97e8-6b19d11bfb75)
 
 
+![image](https://github.com/user-attachments/assets/82e6e860-6613-4a69-bde1-8ae612d7b2b4)
 
 
 ### How to encode/decode content:
