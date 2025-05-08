@@ -1,29 +1,7 @@
-Label:
+# Deployment   (kind: deployment)
 
-
-![image](https://github.com/user-attachments/assets/66d41c9c-87bd-4947-a445-0def21d5514a)
-
-
-All pods of same deployment gets different unique name.However,
-We can identify all the pods replicas of the same application using a specific label that all of them share
-Template (in yml)  define properties of pod
-So in template ‘we define label for a pods, which is mandatory property to identify it
-
-
-
-4. Scale the Deployment Down and Up:
-You can scale down the number of replicas to 0 and then scale it back up to the desired number of replicas. This will also recreate the pods.
-bash
-Copy code
-kubectl scale deployment <deployment-name> --replicas=0
-kubectl scale deployment <deployment-name> --replicas=<desired-number>
-Choose the method that best suits your situation based on how your pods are managed.
-
-
-
-POD automatic creation:
-
-If you deployed a deployment – and even set replica=1 and manually delete the container, the deployment will automatically create the container – make it healthy – this is called self healing.
+### What is Deployment: 
+A Deployment in Kubernetes is a higher-level abstraction (of pods) that manages a set of replicated Pods.
 
 
 
@@ -37,13 +15,9 @@ While you can create individual Pods directly, they are:
 **Not version controlled**: Updates are manual, and rolling back is tedious.
 
 
-### What is Deployment: 
-A Deployment in Kubernetes is a higher-level abstraction that manages a set of replicated Pods. It provides a way to:
-
-kind : deployment
 
 
-**Deployments solve this by:**
+### **Deployments solve this by:**
 
 **Self Healing :** Maintaining the desired number of replicas
 
@@ -53,6 +27,42 @@ kind : deployment
 
 **Consitency:** Ensuring consistent configuration across multiple Pods.
 
+
+**POD automatic creation:**
+If you deployed a deployment – and even set replica=1 and manually delete the container, the deployment will automatically create the container – make it healthy – this is called self healing.
+
+
+**Scaling down to Zero is possible ?**
+You can scale down the number of replicas to 0 and then scale it back up to the desired number of replicas. This will also recreate the pods.
+
+
+- All pods of same deployment gets different unique name.However,
+- We can identify all the pods replicas of the same application using a specific label that all of them share ( its mandatory to apply a label in template of pod - in the manifest of deployment)
+  
+
+
+
+
+
+
+```bash
+kubectl scale deployment <deployment-name> --replicas=0
+kubectl scale deployment <deployment-name> --replicas=<desired-number>
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+![image](https://github.com/user-attachments/assets/390f27d7-5b89-4a4d-bd06-547cfaa97edf)
 
 ![image](https://github.com/user-attachments/assets/675fd057-5428-4170-b06e-1daa1ad1954c)
 
@@ -181,10 +191,25 @@ spec:
 
 ```
 
+kubectl set image deployment/my-app nginx=nginx:1.260
+
+
+![image](https://github.com/user-attachments/assets/5f197335-2fd6-4333-b6be-ef8883d0bac5)
+
 
  **Key Notes :**
 
 **ReplicaSets** — Maintaining multiple copies of a Pod.
 
 **Deployments**— Managing updates, rollbacks, and scaling
+
+
+
+
+### updates
+https://signoz.io/guides/kubernetes-deployments/
+
+
+
+![image](https://github.com/user-attachments/assets/a8b2587f-7df4-4b08-83d9-90c63495fa7e)
 
