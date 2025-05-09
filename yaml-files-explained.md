@@ -9,7 +9,7 @@ Supported Format of configuration files : **JSON** and **YAML**
 
 Every configuration file in k8s hsa 3 parts:
 
-1- **Metadata** - of the object
+1- **Metadata** - of the object - Name and labels to identify the object.
 
 2- **Specs** - configuration of the object
 
