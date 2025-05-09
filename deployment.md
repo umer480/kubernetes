@@ -328,3 +328,21 @@ kubectl tree --help
 ```
 
 
+
+# POD's status:
+
+**ImagePullBackOff** — Image not found or wrong credentials.
+
+**CrashLoopBackOff** — Application crashes repeatedly.
+
+**Pending** — Not enough resources or node constraints.
+
+**Evicted** — Pod was removed due to resource pressure.
+
+
+Cluster Level Events:
+
+```bash
+kubectl events
+kubectl events --watch
+```
