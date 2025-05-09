@@ -8,7 +8,7 @@ Supported Format of configuration files : **JSON** and **YAML**
 
 ✅✅✅ Kubernetes API Server only understands JSON as the wire format.✅✅✅
 
-Every configuration file in k8s hsa 3 parts:
+Every configuration file in k8s has 3 parts:
 
 1- **Metadata** - of the object - Name and labels to identify the object.
 
