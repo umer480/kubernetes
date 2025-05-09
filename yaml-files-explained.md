@@ -1,5 +1,6 @@
 
-# Basic Structure of a YAML File:
+# Basic Structure K8s Conf file - YAML explained
+
 How YAML files is logical structured in K8s
 
 Supported Format of configuration files : **JSON** and **YAML**
