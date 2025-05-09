@@ -162,6 +162,16 @@ Let’s say that you have three different pods, with different labels. We want t
 #kubectl get services -o wide   --> wide view
 
 
+# How Service know to which deployment route a traffic : or which deployment is a part of service
+service must know which pods should register with it -- **so HOW ???**
+Define label on deployment and call it from service by defining selector ( service selector uses deployment's 'lables')
+
+selector (of a service) basically creates a connection between the deployment ( or can say its pods)
+
+
+![image](https://github.com/user-attachments/assets/1574d3f1-dfc8-4fda-acb5-940fe0c282cc)
+
+
 ## External Service:
 
 **NodePort:** 
