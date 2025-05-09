@@ -236,4 +236,95 @@ in this way deployment know which pods belongs to it. based on **lables** of pod
 
 
 
+# Question: how can i check pods are part of which deployment?
+
+
+**✅ 3 Use Label Selector (Quickest Method)**
+If you know the label, you can search directly:
+
+```bash
+kubectl get deployment -l app=my-app
+```
+This will list the Deployments that match the label associated with your Pod.
+
+
+
+**✅  Check the Pod's Labels and Owner References**
+The quickest way is to describe or get the Pod's details:
+Look for:  OwnerReferences:
+The section ownerReferences will show the kind and name of the owning resource.
+
+
+```bash
+
+metadata:
+  labels:
+    app: my-app
+  ownerReferences:
+  - apiVersion: apps/v1
+    kind: ReplicaSet
+    name: my-deployment-7f5d98b9b
+    uid: abcd1234-5678
+
+```
+Here:
+
+The kind is ReplicaSet, and its name is my-deployment-7f5d98b9b.
+
+The ReplicaSet is controlled by a Deployment called my-deployment.
+
+
+**✅ Follow the Chain from Pod → ReplicaSet → Deployment**
+
+```bash
+kubectl get replicaset my-deployment-7f5d98b9b -o yaml
+```
+You will find:
+
+```bash
+metadata:
+  ownerReferences:
+  - apiVersion: apps/v1
+    kind: Deployment
+    name: my-deployment
+
+```
+The **name** under **ownerReferences** shows the Deployment name.
+
+
+**✅  kubectl describe (One-Liner) :**
+
+```bash
+kubectl describe pod <pod-name> | grep -i "controlled by"
+```
+
+**Example output:**
+```bash
+Controlled By:  ReplicaSet/my-deployment-7f5d98b9b
+```
+**To find the Deployment:**
+
+```bash
+kubectl describe replicaset my-deployment-7f5d98b9b | grep -i "controlled by"
+```
+
+**✅  kubectl tree :** → Visualize the hierarchy
+
+```bash
+kubectl tree deployment <deployment-name>
+```
+
+![image](https://github.com/user-attachments/assets/b36306b8-264b-4546-9bb1-cdc4d9f5b69f)
+
+
+**kubelet tree installation :**
+
+```bash
+
+wget https://github.com/ahmetb/kubectl-tree/releases/download/v0.4.3/kubectl-tree_v0.4.3_darwin_amd64.tar.gz
+sudo mv kubectl-tree /usr/local/bin/kubectl-tree
+sudo chmod +x /usr/local/bin/kubectl-tree
+kubectl tree --help
+```
+
 
