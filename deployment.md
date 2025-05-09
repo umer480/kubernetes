@@ -213,3 +213,27 @@ https://signoz.io/guides/kubernetes-deployments/
 
 ![image](https://github.com/user-attachments/assets/a8b2587f-7df4-4b08-83d9-90c63495fa7e)
 
+
+
+
+# Abstraction
+
+![image](https://github.com/user-attachments/assets/df3180d6-3a74-4880-a55c-51039a0c1f54)
+
+
+# Connecting PODs to deployment:
+
+- Using **labels** and **selectors**
+
+
+![image](https://github.com/user-attachments/assets/614186fb-7fca-41b2-93aa-74134630107c)
+
+
+![image](https://github.com/user-attachments/assets/5ebe4290-e655-4748-b06a-a09eecf9d4f1)
+
+in this way deployment know which pods belongs to it. based on **lables** of pods and **selectors** of a deployment.
+
+
+
+
+
