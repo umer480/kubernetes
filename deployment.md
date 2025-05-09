@@ -21,7 +21,7 @@ While you can create individual Pods directly, they are:
 
 **Self Healing :** Maintaining the desired number of replicas
 
-**Rolling updates :** Allowing seamless updates (.
+**Rolling updates :** Allowing seamless updates 
 
 **Rollback :** Enabling easy rollback to previous versions.
 
@@ -46,6 +46,7 @@ You can scale down the number of replicas to 0 and then scale it back up to the 
 
 
 ```bash
+kubectl create deployment <deployment-name> --image=nginx --replicas=1
 kubectl scale deployment <deployment-name> --replicas=0
 kubectl scale deployment <deployment-name> --replicas=<desired-number>
 ```
@@ -146,6 +147,7 @@ spec:
 
 
 ### Commands
+```bash
 kubectl get deployments	                            List all deployments in the namespace.
 kubectl describe deployment <name>	                Show detailed information about a deployment.
 kubectl delete deployment <name>	                  Delete a specific deployment.
@@ -154,14 +156,21 @@ kubectl rollout status deployment <name>	          Check the status of the lates
 kubectl rollout undo deployment <name>	            Rollback to the previous deployment version.
 kubectl edit deployment <name>	                    Edit the deployment configuration live.
 kubectl rollout restart deployment <name>	          Restart all pods in the deployment.
+```
 
 
 
-🔹 Relationship Between Deployment, ReplicaSet, and Controller
-In Kubernetes, Deployments, ReplicaSets, and Controllers work together to manage application workloads in a scalable and fault-tolerant way.
+**🔹 Relationship Between Deployment and ReplicaSet:**
+In Kubernetes, Deployments and ReplicaSets  work together to manage application workloads in a scalable and fault-tolerant way.
+
 deployment automatically creates and manages ReplicaSets.
 
-Rolling Updates and Rollback are not available in ReplicaSet Object
+You can directly create ReplicaSet **But** -  **Major Features** i.e Auto Scaling, Rolling Updates and Rollback are not available in ReplicaSet Object.
+
+```bash
+#k get rc
+#k describe rc
+```
 
 **🔹 ReplicaSet YAML Example (Not Recommended Directly)**
 
@@ -191,7 +200,9 @@ spec:
 
 ```
 
-kubectl set image deployment/my-app nginx=nginx:1.260
+
+
+
 
 
 ![image](https://github.com/user-attachments/assets/5f197335-2fd6-4333-b6be-ef8883d0bac5)
@@ -203,11 +214,6 @@ kubectl set image deployment/my-app nginx=nginx:1.260
 
 **Deployments**— Managing updates, rollbacks, and scaling
 
-
-
-
-### updates
-https://signoz.io/guides/kubernetes-deployments/
 
 
 
@@ -340,9 +346,23 @@ kubectl tree --help
 **Evicted** — Pod was removed due to resource pressure.
 
 
-Cluster Level Events:
+# Deploy or Update a Deployment or change its image/version :
+
+```bash
+kubectl set image deployment/my-app nginx=nginx:1.260
+kubectl set image deployment/my-deployment my-container=my-image:v2
+```
+
+
+# **Cluster Level Events:**
 
 ```bash
 kubectl events
 kubectl events --watch
 ```
+
+
+
+### updates
+https://signoz.io/guides/kubernetes-deployments/
+
