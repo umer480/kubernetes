@@ -114,7 +114,7 @@ This is especially useful for complex structures.
 
 **✅  List Items with Hyphens**
 
-Lists are defined using a hyphen (-) followed by a space.
+**Lists are defined using a hyphen (-) followed by a space.**
 
 Items should be indented properly under their parent.
 
