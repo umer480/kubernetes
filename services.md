@@ -81,6 +81,24 @@ kubectl expose deployment nginx   --port 80
  ```
 
 
+# LABS Commands:
+
+```bash
+
+Deployment:
+kubectl create deployment mydeployment --image=nginx
+kubectl create deployment mydeployment --image=nginx --port 80
+
+Service:
+kubectl expose deployment mydeployment   (simplest command)
+kubectl expose deployment mydeployment --type ClusterIP (use type)
+kubectl expose deployment mydeployment --port 80 (use port)
+kubectl expose deployment mydeployment --type ClusterIP --port 80 --name tempsvc  (use --name)
+kubectl expose deployment mydeployment --type ClusterIP --port 8090 --target-port=80 --name myservice   (use target-port)
+
+```
+
+
 **Service DNS name resolution:**
 ```bash
 dig nginx.default.svc.cluster.local 
