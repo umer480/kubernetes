@@ -55,6 +55,12 @@ Example: You have a set of microservices inside the cluster that need to talk to
 
 By default (when you dont specify service type while creating it), a Kubernetes service is private to the cluster. This means only applications inside the cluster can access them. so we use internal service when we want one pod to connect with other ( communication between pods) - and dont want to access it externally or outside cluster or from internet.
 
+
+![image](https://github.com/user-attachments/assets/109b6fa9-40c7-4ff4-9c91-ea99c592322d)
+
+
+
+
 ![image](https://github.com/user-attachments/assets/2167d2a9-1810-4240-b8d0-3347611fe601)
 
 
@@ -143,11 +149,17 @@ The ClusterIP provides a load-balanced IP address. One or more pods that match a
 
 #  How does a Kubernetes Service Work?
 
+**Based on Labels:**
+
+![image](https://github.com/user-attachments/assets/0287dc0c-06ec-4031-bd95-4038dfef66c0)
+
+
 Services make use of the **labels** that are assigned to the pod or deployment to select the correct pod. A service object can even be configured to target a deployment, so all the pods created by a deployment will be exposed by the service object. A single service can also be used to target a group of different pods. You just need to ensure that the correct labels are being selected.
 
 Let’s say that you have three different pods, with different labels. We want to create a single service that will expose all the different pods. You can create this service, by adding a common label to the pods. Let’s say that the common **label is app=demo**. The service will select and expose all the pods that have the **label app=demo.**
 
 ![image](https://github.com/user-attachments/assets/cffbb735-8106-4369-aa50-b2fd1487d045)
+
 
 
 **Reference:** https://devtron.ai/blog/understanding-kubernetes-services/
@@ -178,6 +190,10 @@ selector (of a service) basically creates a connection between the deployment ( 
 Exposes the service on a static port on each Node’s IP, so it’s accessible from outside the cluster.
 
 Example: A simple web application that you want to expose externally or want to access from internet or even from LAN.
+
+![image](https://github.com/user-attachments/assets/bd70f81c-b6c1-4825-a2ae-7ecc1231e5ff)
+
+
 
 ![image](https://github.com/user-attachments/assets/1e9fca04-2024-4f60-9578-02f52b20887d)
 
@@ -266,6 +282,32 @@ spec:
 
 
 ```
+
+
+# NodePort also creates ClusterIP: :)  Real Concept !!!!
+
+when you create a NodePort Service, Kubernetes also creates a ClusterIP Service automatically.
+
+ ============ **A NodePort service is built on top of a ClusterIP.** ============
+
+**When you define a NodePort service, it:**
+
+1- **Automatically creates an internal ClusterIP service for internal communication.**
+
+2- **Exposes that service to a specific port on each Node in your cluster.**
+
+**You can access your application in two ways:**
+
+1- Internally via the ClusterIP within the Kubernetes cluster.
+
+2- Externally via the Node's IP and the specified NodePort.
+
+
+![image](https://github.com/user-attachments/assets/5be44d1e-d177-467e-9949-25caae5ff3fc)
+
+# **Real Scenario : Use Case**
+
+![image](https://github.com/user-attachments/assets/52146238-3c42-44f7-8cfe-0d2d465914da)
 
 
 
@@ -413,5 +455,34 @@ Ideal when integrating with third-party APIs or services like databases, SaaS pl
 **1-** Only works at DNS level: It doesn't proxy or load balance — it just returns a CNAME.
 
 **2-** No built-in health checking: Kubernetes doesn’t validate if the target host is reachable or healthy.
+
+
+
+# Summary - Take Aways - Key Points
+
+**Top 4 Kubernetes Service Types in one diagram.**
+
+**The diagram below shows 4 ways to expose a Service.**
+
+![image](https://github.com/user-attachments/assets/45b07e3a-7493-4a8c-b4f1-8a1ef0ca3d0d)
+
+
+
+
+In Kubernetes, a Service is a method for exposing a network application in the cluster. We use a Service to make that set of Pods available on the network so that users can interact with it.
+
+There are **4 types **of Kubernetes services: **ClusterIP, NodePort, LoadBalancer and ExternalName**. The “type” property in the Service's specification determines how the service is exposed to the network.
+
+**🔹 ClusterIP**
+ClusterIP is the default and most common service type. Kubernetes will assign a cluster-internal IP address to ClusterIP service. This makes the service only reachable within the cluster.
+
+**🔹 NodePort**
+This exposes the service outside of the cluster by adding a cluster-wide port on top of ClusterIP. We can request the service by NodeIP:NodePort.
+
+**🔹 LoadBalancer**
+This exposes the Service externally using a cloud provider’s load balancer.
+
+**🔹 ExternalName**
+This maps a Service to a domain name. This is commonly used to create a service within Kubernetes to represent an external database.
 
 
