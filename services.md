@@ -457,6 +457,15 @@ Ideal when integrating with third-party APIs or services like databases, SaaS pl
 **2-** No built-in health checking: Kubernetes doesn’t validate if the target host is reachable or healthy.
 
 
+**✅ Port Mapping in Kubernetes Services:**
+
+When you expose a Deployment with a Service, Kubernetes maps the ports in three key layers:
+
+1️⃣ Container Port — Port exposed inside the container (containerPort).
+2️⃣ Service Port — Port exposed by the Service (port).
+3️⃣ NodePort (if applicable) — Port exposed on each Node for external access (nodePort).
+
+
 
 # Summary - Take Aways - Key Points
 
