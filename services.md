@@ -468,6 +468,33 @@ When you expose a Deployment with a Service, Kubernetes maps the ports in three 
 3️⃣ NodePort (if applicable) — Port exposed on each Node for external access (nodePort).
 
 
+**# 🔍 How the Flow Works:**
+
+![image](https://github.com/user-attachments/assets/ff6e45b3-ce24-4445-b3b3-35dcc1c4f628)
+
+✅ Visual Representation:
+
+```bash
+[Client] --> NodePort (30xxx) --> Service Port (80) --> Pod's ContainerPort (8080)
+
+```
+
+**Client Request:**
+
+If you access the service via curl http://<Node-IP>:<NodePort>, the request goes to the Node.
+
+**NodePort → Service Port:**
+
+Kubernetes forwards the request from the NodePort to the Service Port (80 in this case).
+
+**Service Port → Pod's Container Port:**
+
+The Service maps the traffic from 80 to the targetPort (8080) of the container.
+
+**Pod Responds:**
+
+The Pod running the application receives the request on 8080 and responds back through the same path.
+
 
 # Summary - Take Aways - Key Points
 
