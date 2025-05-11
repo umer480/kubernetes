@@ -15,7 +15,8 @@
 
 # **Architecture/Diagram:**
 
-![image](https://github.com/user-attachments/assets/96e3b4b0-fe61-40d3-ab37-152e401d60cd)
+
+![image](https://github.com/user-attachments/assets/e46458f9-9298-4e81-b4ea-9e93b5e030bd)
 
 
 # Deploy Backend: (DB):
