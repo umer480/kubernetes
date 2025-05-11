@@ -108,7 +108,7 @@ spec:
         image: phpmyadmin/phpmyadmin
         env:
           - name: PMA_HOST
-            value: "alpha-mysql-service"  **# Provide actual Service name of the MySQL instance**
+            value: "alpha-mysql-service"  # Provide actual Service name of the MySQL instance
         ports:
           - containerPort: 80
 
