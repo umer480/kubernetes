@@ -173,12 +173,24 @@ show databases;
 
 **#Login to WEB pod and see if you can connect to mysql service / DNS name.**
 
+
+**install utilities for testing:**
+
+```bash
+apt update
+apt install iputils-ping
+apt install dnsutils
+apt install telnet
+```
+
+
+
 ```bash
 
 k exec -it <web-pod-name> -- /bin/bash
 ping alpha-web-service   or ping alpha-web-service.svc.default.cluster.local
 nslookup alpha-web-service.svc.default.cluster.local
-
+telnet  alpha-web-service.svc.default.cluster.local 3306
 ```
 
 
