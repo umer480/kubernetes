@@ -169,12 +169,11 @@ The ClusterIP provides a load-balanced IP address. One or more pods that match a
 
 **Based on Labels:**
 
-![image](https://github.com/user-attachments/assets/0287dc0c-06ec-4031-bd95-4038dfef66c0)
+
 
 
 Services make use of the **labels** that are assigned to the pod or deployment to select the correct pod. A service object can even be configured to target a deployment, so all the pods created by a deployment will be exposed by the service object. A single service can also be used to target a group of different pods. You just need to ensure that the correct labels are being selected.
 
-Let’s say that you have three different pods, with different labels. We want to create a single service that will expose all the different pods. You can create this service, by adding a common label to the pods. Let’s say that the common **label is app=demo**. The service will select and expose all the pods that have the **label app=demo.**
 
 ![image](https://github.com/user-attachments/assets/cffbb735-8106-4369-aa50-b2fd1487d045)
 
@@ -206,7 +205,7 @@ spec:
 **Selector Logic:**
 This Service will only route traffic to Pods that have both:
 
-`- app: my-app
+- app: my-app
 
 - environment: production
 
@@ -218,19 +217,51 @@ If a Pod has only **app: my-app** but not environment: production, it will not b
 If a Pod has **environment: production** but not app: my-app, it will not be included.
 
 
+![image](https://github.com/user-attachments/assets/0287dc0c-06ec-4031-bd95-4038dfef66c0)
+
+
+
+# single Service with different set of pods / deployment:
+
+
+Service 1 
+Let’s say that you have three different pods, with different labels. We want to create a single service that will expose all the different pods. You can create this service, by adding a common label to the pods. Let’s say that the common **label is app=demo**. The service will select and expose all the pods that have the **label app=demo.**
+
+**EXAMPLE: **
+
+**Multi-Version Deployment (Canary Releases):**
+
+**You have three versions of the same application running:**
+
+app=demo, version=v1
+
+app=demo, version=v2
+
+app=demo, version=v3
+
+You want to distribute traffic to all versions just for testing:
+
+
+![image](https://github.com/user-attachments/assets/7696fe8a-3fbd-441b-a253-8020bab4938a)
+
+
 
 ## Commands
+
+```bash
+
 #kubectl get svc
 #kubectl get service
 #kubectl describe service
 #kubectl get services -o wide   --> wide view
 
+```
 
 # How Service know to which deployment route a traffic : or which deployment is a part of service
-service must know which pods should register with it -- **so HOW ???**
-Define label on deployment and call it from service by defining selector ( service selector uses deployment's 'lables')
+Service must know which pods should register with it -- **so HOW ???**
+Define label on deployment **(under POD template)**  and call it from service by defining **selector** ( service's selector uses  those 'labels')
 
-selector (of a service) basically creates a connection between the deployment ( or can say its pods)
+selector (of a service) basically, creates a connection between the service and deployment ( or can say its pods)
 
 
 ![image](https://github.com/user-attachments/assets/1574d3f1-dfc8-4fda-acb5-940fe0c282cc)
@@ -368,7 +399,7 @@ when you create a NodePort Service, Kubernetes also creates a ClusterIP Service 
 ![image](https://github.com/user-attachments/assets/24abd953-f9d8-42a2-bae2-5127df5a1baa)
 
 
-Override nodeport:
+**define nodeport:**
 
 **By default,** Kubernetes assigns a random port from the range 30000–32767, but you can override this by specifying your desired nodePort value within that range.
 
@@ -395,6 +426,7 @@ In this example, port 31080 on any worker node will forward traffic to port 80 i
 
 ⚠️ The nodePort must be within the Kubernetes NodePort range (30000–32767) unless you change the default config on the kube-apiserver.
 
+![image](https://github.com/user-attachments/assets/2421a414-468b-4cab-b491-f06e41e02eb4)
 
 
 #### Very Very important   - on which worker node port actually  open ?????
@@ -402,7 +434,10 @@ In this example, port 31080 on any worker node will forward traffic to port 80 i
 When you use nodeport then it open on all Kubernetes worker nodes – you can validate using netstat – all worker nodes will listen to that port.
 
 
-![image](https://github.com/user-attachments/assets/3b46810c-4c6f-45b0-990b-36683b34e5d6)
+
+![Uploading image.png…]()
+
+
 
 
 
