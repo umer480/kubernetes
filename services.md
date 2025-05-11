@@ -183,6 +183,40 @@ Let’s say that you have three different pods, with different labels. We want t
 **Reference:** https://devtron.ai/blog/understanding-kubernetes-services/
 
 
+# Selector with multiple key-value pairs: (AND operation)
+
+When you define multiple key-value pairs under selector in a Service, Kubernetes only matches Pods that satisfy all the specified labels—it's a strict **AND** operation.
+
+** Example: Service with Multiple Selectors:**
+
+ ```bash
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-service
+spec:
+  selector:
+    app: my-app
+    environment: production
+  ports:
+    - port: 80
+      targetPort: 8080
+
+```
+**Selector Logic:**
+This Service will only route traffic to Pods that have both:
+
+`- app: my-app
+
+- environment: production
+
+
+**KeyPoint: Take Away:**
+
+If a Pod has only **app: my-app** but not environment: production, it will not be included.
+
+If a Pod has **environment: production** but not app: my-app, it will not be included.
+
 
 
 ## Commands
