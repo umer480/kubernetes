@@ -142,11 +142,12 @@ spec:
 # Validation: Verify the Service and Endpoints:
 
 **FE:**
+```bash
 
 kubectl get svc alpha-web-service
 kubectl describe svc alpha-web-service
 kubectl get endpoints alpha-web-service
-
+```
 
 **DB:**
 
