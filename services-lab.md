@@ -119,7 +119,6 @@ spec:
 ```bash
 
 apiVersion: v1
-apiVersion: v1
 kind: Service
 metadata:
   name: alpha-web-service
@@ -129,11 +128,11 @@ spec:
   type: NodePort
   selector:
     app: alpha-web
+  sessionAffinity: ClientIP    # some applcaition need to enable it to manage cookies - if you have multiple replicas
   ports:
-    - port: 80               # Service port - Exposes port 3306 for internal access on ClusterIP.
-      targetPort: 80         # Pod container port  - Routes to the Pod's container port 80.
-      nodePort: 30080        # NodePort (you can specify or let Kubernetes pick a random one) - this port will expose on all worker nodes. (manage by kube proxy procesS)
-
+    - port: 80
+      targetPort: 80
+      nodePort: 30080
 
 
 
