@@ -38,6 +38,14 @@ The Load Balancer forwards traffic to the NodePort of each node.
 Kubernetes' internal kube-proxy handles the traffic and forwards it to one of the matching Pods based on the service selector.
 
 
+**✅ 4️⃣ Traffic Flow Summary:**
+
+```bash
+Client Request ➡️ External Load Balancer ➡️ NodePort on Worker Nodes ➡️ kube-proxy ➡️ Matching Pods
+
+```
+
+
 ![image](https://github.com/user-attachments/assets/fe71d6e1-701e-4104-aae7-7dd29e55a5f9)
 
 
