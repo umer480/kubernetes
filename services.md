@@ -437,6 +437,9 @@ When you use nodeport then it open on all Kubernetes worker nodes –  all worke
 
 
 
+![image](https://github.com/user-attachments/assets/305ce533-9025-4f77-a967-962be80e8010)
+
+
 
 
 
