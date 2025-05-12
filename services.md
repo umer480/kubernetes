@@ -436,60 +436,17 @@ When you use nodeport then it open on all Kubernetes worker nodes –  all worke
 
 
 
-![Uploading image.png…]()
 
 
 
 
 
 
-**LoadBalancer:**
-
-A LoadBalancer is also a type of service that exposes the pod to external traffic. As the name implies, a LoadBalancer service distributes the traffic between the pods that are targeted by the service.
-So for example, if you had 5 pods of the same application which were targetted by the load balancer service, the traffic would get distributed equally among the five pods. When you use a NodePort service, there are no such load-balancing capabilities. The traffic must be manually distributed. 
 
 
-Automatically provisions an external load balancer (usually in a cloud environment like AWS, Azure, etc.) to expose the service outside the cluster.
-
-Example: A production-ready API that needs to be accessed over the internet.
 
 
-# Why we need LoadBalancer Type Service:???
-**1- Security Concern**-   NodePort services do not provide the same level of network security as LoadBalancer services, as they expose the service directly to the node.
 
-**2- No Advance Level LoadBalancing:** NodePort services are useful in situations where you need to expose a service to the external network but do not require the advanced features of a LoadBalancer service.
-
-**3- No Node-Level Redundancy/LoadBalancing:** Kubernetes doesn’t automatically load balance incoming traffic across nodes.You must handle that externally if you want high availability or balanced traffic at the node level.
-
-**Key-Concept:**
-- kube-proxy ensures the NodePort on any node can route to any pod in the cluster, not just local pods.
-- This is cluster-level load balancing to pods, not node-level load balancing from outside the cluster.
-
-
-# Create LoadBalancer Service via yml
-```bash
-apiVersion: v1
-kind: Service
-metadata:
-  name: my-service
-spec:
-  selector:
-    app: my-app
-  ports:
-  - name: http
-    port: 80
-    targetPort: 8080
-  type: LoadBalancer
-```
-
-**In this example,** the LoadBalancer service named my-service will expose a service running on port 80 and target port 8080. The service will balance the load between pods labeled with app: my-app.
-
-Once you create this service, Kubernetes will automatically create a load balancer in your cloud provider and configure it to forward traffic to the pods in your service. The service can then be accessed from the external network using the IP address of the load balancer.
-
-![image](https://github.com/user-attachments/assets/3956d8c8-d686-4f8d-9cb4-7a4fdee34b20)
-
-
-You have a limited budget: LoadBalancer is often more expensive than NodePort, as it requires a load balancer in the cloud provider. If you have a limited budget, NodePort is a more cost-effective solution.
 
 **ExternalName**:
 it does not create a cluster IP or route traffic within the cluster. Instead, it acts as an alias for an external DNS name by returning a CNAME record for the provided external name.
