@@ -18,6 +18,8 @@ Automatically provisions an external load balancer (usually in a cloud environme
 - This is cluster-level load balancing to pods, not node-level load balancing from outside the cluster.
 
 
+![image](https://github.com/user-attachments/assets/e2357b3e-26b4-41ae-b168-dabbb0d649be)
+
 # **When you create a LoadBalancer type service in Kubernetes, the behavior is as follows:**
 
 **✅ 1️⃣ External Load Balancer Creation:**
@@ -105,4 +107,30 @@ spec:
 3- Each node has a NodePort exposed.
 
 4- Traffic reaches the Pod on port 8080.
+
+
+
+A LoadBalancer service is built on top of a NodePort service, and the cloud provider's load balancer will often map traffic from its own IP to a specific node port on the worker nodes
+
+
+While a NodePort is involved, you may not always need to explicitly specify one in your LoadBalancer service configuration. The cloud provider might automatically assign one
+
+
+
+
+# Loadbalancer Service ( Uses Nodeport+ClusterIP) :
+
+![image](https://github.com/user-attachments/assets/4afcb971-9985-4b3a-8a9a-ec34c2fec747)
+
+
+![image](https://github.com/user-attachments/assets/cdee43c4-05d5-42d9-8e21-bdaf7fb32908)
+
+
+
+# Key Points:
+
+LoadBalancer service is an extension of nodeport
+nodeport service is an extension of ClusterIP.
+
+
 
