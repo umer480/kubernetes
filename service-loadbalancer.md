@@ -1,21 +1,25 @@
 # LoadBalancer - Service
 
-
 A LoadBalancer is also a type of service that exposes the pod to external traffic. As the name implies, a LoadBalancer service distributes the traffic between the nodes/pods that are targeted by the service.
 
-Automatically provisions an external load balancer (usually in a cloud environment like AWS, Azure, etc.) to expose the service outside the cluster.
+
+- **LoadBalancer Service type is related to Cloud provider** - When we use a Managed Cluster ( Managed Control plane) i.e  ( Azure AKS, AWS EKS, GCP GKE)
+
+# External LoadBalancer : (Outside Kubernetes Cluster)
+When we create a LB service then it **Automatically provisions an external load balancer**  (usually in a cloud environment like AWS, Azure, etc.) to expose the service outside the cluster to access from the internet.
+
+this load balancer is provision by the controller of cloud provider  that resides in the kubernetes cluster . it interect with the cloud provider and manage cloud related actions. ( create LB, add routing rules , backend endpoints  etc)
 
 
 # Why we need LoadBalancer Type Service:???
 **1- Security Concern**-   NodePort services do not provide the same level of network security as LoadBalancer services, as they expose the service directly to the node.
 
-**2- No Advance Level LoadBalancing:** NodePort services are useful in situations where you need to expose a service to the external network but do not require the advanced features of a LoadBalancer service.
 
-**3- No Node-Level Redundancy/LoadBalancing:** Kubernetes doesn’t automatically load balance incoming traffic across nodes.You must handle that externally if you want high availability or balanced traffic at the node level.
+**2- No Node-Level Redundancy/LoadBalancing:** Kubernetes doesn’t automatically load balance incoming traffic across nodes.You must handle that externally if you want high availability or balanced traffic at the node level.
 
 **Key-Concept:**
 - kube-proxy ensures the NodePort on any node can route to any pod in the cluster, not just local pods.
-- This is cluster-level load balancing to pods, not node-level load balancing from outside the cluster.
+- Without external loadbalacner This is just cluster-level load balancing to pods, not node-level load balancing from outside the cluster.
 
 
 ![image](https://github.com/user-attachments/assets/e2357b3e-26b4-41ae-b168-dabbb0d649be)
@@ -129,8 +133,9 @@ While a NodePort is involved, you may not always need to explicitly specify one 
 
 # Key Points:
 
-LoadBalancer service is an extension of nodeport
-nodeport service is an extension of ClusterIP.
+1- LoadBalancer service is an extension of nodeport
+
+2- nodeport service is an extension of ClusterIP.
 
 
 
