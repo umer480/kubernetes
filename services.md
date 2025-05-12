@@ -431,7 +431,8 @@ In this example, port 31080 on any worker node will forward traffic to port 80 i
 
 #### Very Very important   - on which worker node port actually  open ?????
  
-When you use nodeport then it open on all Kubernetes worker nodes – you can validate using netstat – all worker nodes will listen to that port.
+When you use nodeport then it open on all Kubernetes worker nodes –  all worker nodes will listen to that port. kubelets process handels it internally using iptables rules.
+
 
 
 
