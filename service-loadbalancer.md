@@ -231,11 +231,44 @@ This example updates the rule to allow inbound external traffic only from the MY
 ![image](https://github.com/user-attachments/assets/50c56f90-b23c-4141-b5d2-62ba9d18dbad)
 
 
+
+
+# Session Affinity / Persistence: 
+
+```bash
+sessionAffinity: None
+```
+
+
+```bash
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: svc-session-persistence
+spec:
+  type: LoadBalancer
+
+  sessionAffinity: ClientIP  # Enables session persistence based on Client IP
+  sessionAffinityConfig:
+    clientIP:
+      timeoutSeconds: 10800  # 3 hours (10800 seconds) of session stickiness
+
+  selector:
+    app: test
+  ports:
+  - port: 80           # service port ( same for load balancer)
+  - targetPort: 80     # Pod's container port
+
+```
+
+
 # Maintain the client's IP on inbound connections
 
 By default, a service of type LoadBalancer in Kubernetes and in AKS doesn't persist the client's IP address on the connection to the pod. The source IP on the packet that's delivered to the pod becomes the private IP of the node. To maintain the client’s IP address, you must set service.spec.externalTrafficPolicy to local in the service definition. The following manifest shows an example.
 
 ```bash
+
 apiVersion: v1
 kind: Service
 metadata:
@@ -248,6 +281,39 @@ spec:
   selector:
     app: azure-vote-front
 ```
+
+
+
+# Service in Seperate namespace:
+
+```bash
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: svc-test-ns
+spec:
+  type: LoadBalancer
+  selector:
+    app: test
+  ports:
+  - port: 80           # service port ( same for loadbalacner)
+  - targetPort: 80     # Pod's container port
+
+```
+**Question:**
+i have a pods deployment in default namespace with label `app: test` - and if i create a load balancer service in a seperate namespace  and use `app: test` in selector then pods will be added as endpoints for LB service?
+
+`No`, the LoadBalancer service in a separate namespace will not be able to select the pods from the default namespace even if they share the same label (app: test).
+
+
+**🔎 Why?**
+In Kubernetes, Services are namespace-scoped.
+
+A Service in one namespace can only discover and select Pods in the same namespace.
+
+`Even if the labels match, Kubernetes will not cross namespaces to bind the Service to the Pods.`
+
 
 
 
