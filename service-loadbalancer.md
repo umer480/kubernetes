@@ -330,3 +330,7 @@ As with any Kubernetes resource, you can directly delete a service, , which also
 
 
 `test`
+
+
+**video about : externalTrafficPolicy**
+https://www.youtube.com/watch?v=A-dNBsfCA0Y&t=638s
