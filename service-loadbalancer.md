@@ -258,7 +258,7 @@ spec:
     app: test
   ports:
   - port: 80           # service port ( same for load balancer)
-  - targetPort: 80     # Pod's container port
+    targetPort: 80     # Pod's container port
 
 ```
 
@@ -267,24 +267,27 @@ spec:
 
 By default, a service of type LoadBalancer in Kubernetes and in AKS doesn't persist the client's IP address on the connection to the pod. The source IP on the packet that's delivered to the pod becomes the private IP of the node. To maintain the client’s IP address, you must set service.spec.externalTrafficPolicy to local in the service definition. The following manifest shows an example.
 
+
+`externalTrafficPolicy: Local`
+
 ```bash
 
 apiVersion: v1
 kind: Service
 metadata:
-  name: azure-vote-front
+  name: svc-preserve-clientip
 spec:
   type: LoadBalancer
-  externalTrafficPolicy: Local
+  externalTrafficPolicy: Local      # <-- This preserves the client IP
   ports:
-  - port: 80
+  - port: 9090
   selector:
-    app: azure-vote-front
+    app: test
 ```
 
 
 
-# Service in Seperate namespace:
+# Service in Separate namespace:
 
 ```bash
 
@@ -298,7 +301,7 @@ spec:
     app: test
   ports:
   - port: 80           # service port ( same for loadbalacner)
-  - targetPort: 80     # Pod's container port
+    targetPort: 80     # Pod's container port
 
 ```
 **Question:**
