@@ -35,13 +35,19 @@ kubectl describe namespace <namespace-name>
 
 
 **Example **:
+
+```bash
+
 kubectl create namespace dev
 kubectl get pods -n dev
 kubectl delete namespace dev
+
 ```
 
-## Create a namespace using manifest/yml file:
+## Create a namespace using manifest/json file:
+
 ```bash
+
 {
     "apiVersion": "v1",
     "kind": "Namespace",
@@ -52,6 +58,7 @@ kubectl delete namespace dev
         }
     }
 }
+
 ```
 
 
