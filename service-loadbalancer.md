@@ -96,12 +96,13 @@ metadata:
 spec:
   type: LoadBalancer
   selector:
-    app: my-app
+    app: test
   ports:
-    - port: 80         # Service port
-      targetPort: 8080 # Pod's container port
+    - port: 80            # Service port
+      targetPort: 8080    # Pod's container port
 
 ```
+
 **Explanation:**
 
 1- The cloud provider provisions an external Load Balancer.
@@ -140,9 +141,15 @@ While a NodePort is involved, you may not always need to explicitly specify one 
 
 
 
-# Create a Seperate LB on Azure :
+# Create internal/public load balancer on Azure :
 
 Use **annotation**:
+
+service.beta.kubernetes.io/azure-load-balancer-internal: "true"
+
+service.beta.kubernetes.io/azure-load-balancer-internal: "false"
+
+
 
 ```bash
 
@@ -154,10 +161,12 @@ metadata:
     service.beta.kubernetes.io/azure-load-balancer-internal: "true"
 spec:
   type: LoadBalancer
+  selector:
+    app: test
   ports:
   - port: 80
-  selector:
-    app: internal-app
+  - targetPort: 8080 # Pod's container port
+
 ```
 
 
