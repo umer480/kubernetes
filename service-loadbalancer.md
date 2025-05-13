@@ -141,15 +141,19 @@ While a NodePort is involved, you may not always need to explicitly specify one 
 
 
 
-# Create internal/public load balancer on Azure :
+# Create or Selection of internal/public load balancer on Azure :
 
 Use **annotation**:
 
+
+```bash
+
 service.beta.kubernetes.io/azure-load-balancer-internal: "true"
 
-service.beta.kubernetes.io/azure-load-balancer-internal: "false"
+service.beta.kubernetes.io/azure-load-balancer-internal: "false"   **(default)**
 
 
+```
 
 ```bash
 
@@ -158,23 +162,101 @@ kind: Service
 metadata:
   name: internal-app
   annotations:
-    service.beta.kubernetes.io/azure-load-balancer-internal: "true"
+    service.beta.kubernetes.io/azure-load-balancer-internal: "true"   # set true/false
 spec:
   type: LoadBalancer
   selector:
     app: test
   ports:
-  - port: 80
-  - targetPort: 8080 # Pod's container port
+  - port: 80           # service port ( same for loadbalacner)
+  - targetPort: 80     # Pod's container port
+
+```
+
+# Use Specific or Custom IP Address (Custom frontend ip )
+
+Manually provision ip address resource on azure portal.
+and then set ip address in annotation; as **below**
+
+```bash
+
+  annotations:
+    service.beta.kubernetes.io/azure-load-balancer-ipv4: "52.191.99.127
 
 ```
 
 
+```bash
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: svc-custom-ip
+  namespace: test
+  annotations:
+    service.beta.kubernetes.io/azure-load-balancer-ipv4: "52.191.99.127"    # provide ip address here
+spec:
+  type: LoadBalancer
+  selector:
+    app: test
+  ports:
+  - port: 80   # this will act as external port - means loadbalancer port (same service port)
+    targetPort: 80
+
+```
+
 # Restrict inbound traffic to specific IP ranges
+The following manifest uses loadBalancerSourceRanges to specify a new IP range for inbound external traffic.
+
+```bash
+apiVersion: v1
+kind: Service
+metadata:
+  name: azure-vote-front
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+  selector:
+    app: azure-vote-front
+  loadBalancerSourceRanges:
+  - MY_EXTERNAL_IP_RANGE
+
+```
+
+**NOTE:******
+
+This example updates the rule to allow inbound external traffic only from the MY_EXTERNAL_IP_RANGE range. If you replace MY_EXTERNAL_IP_RANGE with the internal subnet IP address, traffic is restricted to only cluster internal IPs. If traffic is restricted to cluster internal IPs, clients outside your Kubernetes cluster are unable to access the load balancer.
+
+![image](https://github.com/user-attachments/assets/50c56f90-b23c-4141-b5d2-62ba9d18dbad)
 
 
 # Maintain the client's IP on inbound connections
 
+By default, a service of type LoadBalancer in Kubernetes and in AKS doesn't persist the client's IP address on the connection to the pod. The source IP on the packet that's delivered to the pod becomes the private IP of the node. To maintain the client’s IP address, you must set service.spec.externalTrafficPolicy to local in the service definition. The following manifest shows an example.
 
-**Reference :** https://learn.microsoft.com/en-us/azure/aks/load-balancer-standard
+```bash
+apiVersion: v1
+kind: Service
+metadata:
+  name: azure-vote-front
+spec:
+  type: LoadBalancer
+  externalTrafficPolicy: Local
+  ports:
+  - port: 80
+  selector:
+    app: azure-vote-front
+```
 
+
+
+
+# Delete the load balancer:
+
+The load balancer is deleted when all of its services are deleted.
+
+As with any Kubernetes resource, you can directly delete a service, , which also deletes the underlying Azure load balancer.
+
+
+`test`
