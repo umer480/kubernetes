@@ -285,6 +285,7 @@ spec:
     app: test
 ```
 
+If you set 'externalTrafficPolicy: Local' then you cross node loadbalancing will be disable - you can reach only local pods - if any node does not have pod then traffic will be dropped. 
 
 
 # Service in Separate namespace:
