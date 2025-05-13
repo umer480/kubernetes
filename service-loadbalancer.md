@@ -139,3 +139,33 @@ While a NodePort is involved, you may not always need to explicitly specify one 
 
 
 
+
+# Create a Seperate LB on Azure :
+
+Use **annotation**:
+
+```bash
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: internal-app
+  annotations:
+    service.beta.kubernetes.io/azure-load-balancer-internal: "true"
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+  selector:
+    app: internal-app
+```
+
+
+# Restrict inbound traffic to specific IP ranges
+
+
+# Maintain the client's IP on inbound connections
+
+
+**Reference :** https://learn.microsoft.com/en-us/azure/aks/load-balancer-standard
+
