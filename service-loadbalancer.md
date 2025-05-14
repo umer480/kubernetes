@@ -14,11 +14,13 @@ this load balancer is provision by the controller of cloud provider  that reside
 # Why we need LoadBalancer Type Service:???
 **1- Security Concern**-   NodePort services do not provide the same level of network security as LoadBalancer services, as they expose the service directly to the node.
 
+**2-** As pods are distribute across different nodes -  so its mandatory to have some central point of contact that can route traffic to all nodes.
 
-**2- No Node-Level Redundancy/LoadBalancing:** Kubernetes doesn’t automatically load balance incoming traffic across nodes.You must handle that externally if you want high availability or balanced traffic at the node level.
+
+**3- No Node-Level Redundancy/LoadBalancing:** Kubernetes doesn’t automatically load balance incoming traffic across nodes.You must handle that externally if you want high availability or balanced traffic at the node level.
 
 **Key-Concept:**
-- kube-proxy ensures the NodePort on any node can route to any pod in the cluster, not just local pods.
+- kube-proxy ensures the NodePort on any node can route to any pod in the cluster, not just local pods. **(by default)**
 - Without external loadbalacner This is just cluster-level load balancing to pods, not node-level load balancing from outside the cluster.
 
 
@@ -80,9 +82,8 @@ spec:
 
 Once you create this service, Kubernetes will automatically create a load balancer in your cloud provider and configure it to forward traffic to the pods in your service. The service can then be accessed from the external network using the IP address of the load balancer.
 
-![image](https://github.com/user-attachments/assets/3956d8c8-d686-4f8d-9cb4-7a4fdee34b20)
 
-You have a limited budget: LoadBalancer is often more expensive than NodePort, as it requires a load balancer in the cloud provider. If you have a limited budget, NodePort is a more cost-effective solution.
+You have a limited budget: **LoadBalancer adds additional cost**, as it requires a load balancer in the cloud provider. If you have a limited budget, NodePort is a more cost-effective solution. (but you need to expose your worker nodes directly on internet)
 
 
 **Example:**
@@ -160,7 +161,7 @@ service.beta.kubernetes.io/azure-load-balancer-internal: "false"   **(default)**
 apiVersion: v1
 kind: Service
 metadata:
-  name: internal-app
+  name: svc-lb
   annotations:
     service.beta.kubernetes.io/azure-load-balancer-internal: "true"   # set true/false
 spec:
@@ -212,7 +213,7 @@ The following manifest uses loadBalancerSourceRanges to specify a new IP range f
 apiVersion: v1
 kind: Service
 metadata:
-  name: azure-vote-front
+  name: svc-restrict-ip
 spec:
   type: LoadBalancer
   ports:
@@ -220,7 +221,7 @@ spec:
   selector:
     app: azure-vote-front
   loadBalancerSourceRanges:
-  - MY_EXTERNAL_IP_RANGE
+  - MY_EXTERNAL_IP_RANGE    # add you ip-address here
 
 ```
 
@@ -262,32 +263,6 @@ spec:
 
 ```
 
-
-# Maintain the client's IP on inbound connections
-
-By default, a service of type LoadBalancer in Kubernetes and in AKS doesn't persist the client's IP address on the connection to the pod. The source IP on the packet that's delivered to the pod becomes the private IP of the node. To maintain the client’s IP address, you must set service.spec.externalTrafficPolicy to local in the service definition. The following manifest shows an example.
-
-
-`externalTrafficPolicy: Local`
-
-```bash
-
-apiVersion: v1
-kind: Service
-metadata:
-  name: svc-preserve-clientip
-spec:
-  type: LoadBalancer
-  externalTrafficPolicy: Local      # <-- This preserves the client IP
-  ports:
-  - port: 9090
-  selector:
-    app: test
-```
-
-If you set 'externalTrafficPolicy: Local' then you cross node loadbalancing will be disable - you can reach only local pods - if any node does not have pod then traffic will be dropped. 
-
-
 # Service in Separate namespace:
 
 ```bash
@@ -320,6 +295,33 @@ A Service in one namespace can only discover and select Pods in the same namespa
 
 
 
+# Maintain the client's IP on inbound connections
+
+By default, a service of type LoadBalancer in Kubernetes and in AKS doesn't persist the client's IP address on the connection to the pod. The source IP on the packet that's delivered to the pod becomes the private IP of the node. To maintain the client’s IP address, you must set service.spec.externalTrafficPolicy to local in the service definition. The following manifest shows an example.
+
+
+`externalTrafficPolicy: Local`
+
+```bash
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: svc-preserve-clientip
+spec:
+  type: LoadBalancer
+  externalTrafficPolicy: Local      # <-- This preserves the client IP
+  ports:
+  - port: 9090
+  selector:
+    app: test
+```
+
+If you set 'externalTrafficPolicy: Local' then you cross node loadbalancing will be disable - you can reach only local pods - if any node does not have pod then traffic will be dropped. 
+
+
+
+
 
 
 # Delete the load balancer:
@@ -327,5 +329,3 @@ A Service in one namespace can only discover and select Pods in the same namespa
 The load balancer is deleted when all of its services are deleted.
 
 
-**video about : externalTrafficPolicy**
-https://www.youtube.com/watch?v=A-dNBsfCA0Y&t=638s
