@@ -326,11 +326,6 @@ A Service in one namespace can only discover and select Pods in the same namespa
 
 The load balancer is deleted when all of its services are deleted.
 
-As with any Kubernetes resource, you can directly delete a service, , which also deletes the underlying Azure load balancer.
-
-
-`test`
-
 
 **video about : externalTrafficPolicy**
 https://www.youtube.com/watch?v=A-dNBsfCA0Y&t=638s
