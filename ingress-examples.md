@@ -1,12 +1,21 @@
-### Ingress:
+![image](https://github.com/user-attachments/assets/ae75b868-10e6-4ad1-bc09-9ef0c892879f)### Ingress:
 
 - Why we need ingress
 - benefits of using ingress over nodeport
 - implementing ingress rules
 - implementing ingress controller to process ingress rules
 - understanding yml files for ingress
-- 
+
+
+Use a Single IP Address to access your all different kubernetes services that are resides inside cluster -reduce the  provisioning of  additional external public ip address for each service to manage additional cost on cloud.
+
+
 When you want to access service over hostname (instead of IP Address) and with HTTPS the use ingress. Which forwards the request to service based on hostname/path.
+
+
+![image](https://github.com/user-attachments/assets/26c3815d-0da7-4034-9b2d-a69004c27b2c)
+
+
 
 ![image](https://github.com/user-attachments/assets/1474182a-e412-41bf-b10a-df609067cef6)
 
