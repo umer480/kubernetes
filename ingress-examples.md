@@ -1,4 +1,4 @@
-![image](https://github.com/user-attachments/assets/ae75b868-10e6-4ad1-bc09-9ef0c892879f)### Ingress:
+# ingress controller:
 
 - Why we need ingress
 - benefits of using ingress over nodeport
@@ -23,6 +23,12 @@ When you want to access service over hostname (instead of IP Address) and with H
 ![image](https://github.com/user-attachments/assets/616df5f4-f3ac-4fb2-82c8-92645515e339)
 
 
+![image](https://github.com/user-attachments/assets/dd8384d7-dba9-4f80-b1dd-9a6aa5024eca)
+
+
+**Basic Auth:**
+![image](https://github.com/user-attachments/assets/9e5dfb17-6bd2-4dd6-958f-4086dc9aa42c)
+
 
 # External Service Vs ingress:
 Create External Service (nodeport) and access it using node’s ip address.
@@ -37,6 +43,10 @@ Create  internal service ( instead of external)
 User/browser -->  my-all.com --> ingress  internal service --> pod
 
 ![image](https://github.com/user-attachments/assets/e65a9058-048a-499e-b67b-3fea33d417b2)
+
+
+
+![image](https://github.com/user-attachments/assets/a7a003d1-2d1f-4da2-96a7-efcd91383d9b)
 
 **Example File for External Service:**
 
