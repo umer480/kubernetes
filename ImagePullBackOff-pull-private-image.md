@@ -111,9 +111,9 @@ What if image is locally available on node but removed from backend on server? d
 **More explanation about default behaviour:**
 The default behavior is:
 
-- `Always` if the tag is latest.
-
 - `IfNotPresent` if a specific version is specified.
+- 
+- `Always` if the tag is latest.
 
 - `Never` if you explicitly set it to Never.
 
@@ -141,5 +141,6 @@ spec:
       imagePullPolicy: Always  # Always pulls the image from the registry
 ```
 
-
+#**Question** !!!!
+latest tag still has 'IfNotPresent' an specific tag has 'Always'
 
