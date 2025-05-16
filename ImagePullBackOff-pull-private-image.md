@@ -141,6 +141,36 @@ spec:
       imagePullPolicy: Always  # Always pulls the image from the registry
 ```
 
-#**Question** !!!!
-latest tag still has 'IfNotPresent' an specific tag has 'Always'
+# Question 1 !!!!
+is there any scenario - ??? where -----> latest tag still has 'IfNotPresent' an specific tag has 'Always'
 
+Yes - if you first time created a deployment with latest tag then it will have `Always' and later you changed tag from latest to specific version and applied yaml file again (deployment updated) then it will still have `Always' ( wouldnt change to IfNotPresent) - vice versa changing image from specific version to latest.
+
+
+
+# Question 2:
+
+i created a deployment with image nginx:latest and it deployed pods successfully - then i updated latest tag from backend site on remote registry - then if i apply kubectl apply commmand for same deployment then latest image with latest tag will be download again from remote registry or kubenetes will use existing image that already download on nodes???
+
+
+If you run kubectl apply -f <deployment-file.yaml>, Kubernetes will not pull the updated nginx:latest image from the remote registry. It will reuse the local cached image on the node, even if the tag was updated on the registry.
+because  if the `spec` hasn't changed. Kubernetes assumes the image is the same unless there is a change in the manifest.
+
+
+# How to Force Image Refresh:
+
+**Solution 1:**
+
+```bash
+kubectl delete pod -l app=<app-label>
+```
+
+
+**Solution 2:**
+Rollout-Restart: 
+
+New pods will be created, and they will pull the latest image from the registry.
+
+```bash
+kubectl rollout restart deployment <deployment-name>
+```
