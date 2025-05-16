@@ -60,7 +60,7 @@ this file created automatically in user's home directory when you login via dock
 `Dry run:`
 
 ```bash
-kubectl create secret docker-registry regcred --docker-server=https://index.docker.io/v1/  --docker-username=umerazeem --docker-password=dckr_pat_PKkO3WCAxScuYlo0UcY6gD-EKsgxx --dry-run=client -o yaml
+kubectl create secret docker-registry dockerhubcred --docker-server=https://index.docker.io/v1/  --docker-username=umerazeem --docker-password=dckr_pat_PKkO3WCAxScuYlo0UcY6gD-EKsgxx --dry-run=client -o yaml
 ```
 
 `Create`:
