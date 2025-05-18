@@ -44,10 +44,12 @@ spec:
   initContainers:
   - name: init-container # Init Container.
     image: busybox
-    command: ["/bin/sh", "-c", "echo 'Hello I am Init Container';", "sleep 60"]
+    command: ["/bin/sh", "-c", "echo 'Hello I am Init Container'; sleep 60"]
   containers:
   - name: app-container  # Application Container
     image: nginx:latest
+
+
 
 ```
 
@@ -86,7 +88,7 @@ Note: Busy box does not has a bash shell by default, you have to use sh shell. w
 The below example shows the deployment of an application that heavily depends on a database. So until the database doesn’t come into a running state, the application should wait.
 
 ```bash
----
+
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -96,6 +98,10 @@ spec:
   selector:
     matchLabels:
       app: db
+  template:            # Missing template section added
+    metadata:
+      labels:
+        app: db
     spec:
       containers:
         - name: db-container
@@ -113,7 +119,8 @@ spec:
     app: db
   ports:
     - port: 6379
-      targetPort: 6379 # Please note this port.
+      targetPort: 6379
+  type: ClusterIP        # Explicitly added (default type), can be changed if needed
 
 ---
 apiVersion: apps/v1
@@ -125,32 +132,73 @@ spec:
   selector:
     matchLabels:
       app: nginx
+  template:              # Missing template section added
+    metadata:
+      labels:
+        app: nginx
     spec:
       initContainers:
         - name: init-container
           image: busybox:1.35
-          command: ['sh', '-c', 'until nc -w 2 -z db-service 6379; do echo waiting for db; sleep 2; done;']
+          command: ['sh', '-c', 'until nc -vz db-service 6379; do echo "Waiting for Redis DB..."; sleep 30; done; echo "Redis DB is now reachable!"']
+
       containers:
         - name: app-container
           image: nginx:1.21.6
           ports:
             - containerPort: 80
+
 ```
+
 
 The init container within the application deployment continuously monitors the status of the database pod using the Kubernetes database service db-service.
 
 ```bash
-until nc -w 2 -z db-service 6379; do echo waiting for db; sleep 2; done
+['sh', '-c', 'until nc -vz db-service 6379; do echo "Waiting for Redis DB..."; sleep 30; done; echo "Redis DB is now reachable!"']
 ```
 
 
-# LAB : 
-LAB : don’t add content in actual image, get using init container in the mounted volume and then consume from the actual container of the app
-https://github.com/KamranAzeem/kubernetes-katas/blob/master/04-init-and-multi-container-pods.md
+# LAB :  prepare app content (static web content) using init container and make it available for main app ( via shared volume)
 
 
-LAB for init container: Real scenario based examples
-https://medium.com/@dinesh.pundkar/init-peace-init-containers-17f448264c78
+```bash
 
+apiVersion: v1
+kind: Pod
+metadata:
+  name: init-container-demo
+  labels:
+    app: web-content
+spec:
+  initContainers:
+  - name: helper
+    image: alpine/git
+    command:
+    - git 
+    - clone
+    - https://github.com/umer480/devops-sample-web.git
+    - /web-content/
+    volumeMounts:
+    - name: web-content-dir
+      mountPath: "/web-content"
+  containers:
+  - name: nginx
+    image: nginx:alpine
+    ports:
+    - containerPort: 80
+    volumeMounts:
+    - name: web-content-dir
+      mountPath: /usr/share/nginx/html
+  volumes:
+  - name: web-content-dir
+    emptyDir: {}
+
+```
+
+Expose Service for testing:
+
+```bash
+kubectl expose pod init-container-demo --type=Nodeport
+```
 
 
