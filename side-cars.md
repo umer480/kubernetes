@@ -69,7 +69,7 @@ spec:
 # Access Specific Container"
 
 ```bash
-kubectl exec -it multi-container-lab -- /bin/sh
+kubectl exec -it multi-container-lab -c <container-name> -- /bin/sh
 ```
 
 **#Testing :**
