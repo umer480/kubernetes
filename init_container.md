@@ -201,4 +201,20 @@ Expose Service for testing:
 kubectl expose pod init-container-demo --type=Nodeport
 ```
 
+# Question !  **How downlaod files are accessible for main app container:**
+multiple containers within the same POD:
+They only share the network namespace but not the filesystem or process space.
+
+
+If you want an Init Container to "share" something with the main container, you have to use a shared volume. This is the main mechanism for communication between Init Containers and main containers.
+
+**shared volumes:**
+
+Create a shared volume.
+
+Mount that volume in both Init and main containers.
+
+The Init Container installs or downloads the software/tools into the shared volume.
+
+The main application accesses those tools or files from the shared volume.
 
