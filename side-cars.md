@@ -20,7 +20,7 @@ These containers can communicate with each other using localhost and share volum
 
 
 
-**LAB:**
+# **LAB:**
 
 Sometimes, you might have two containers running inside the same pod. A simple example of this would be one container that generates web content continuously and another container that serves that content to users.
 This setup is different from an Init Container. In the Init Container example, a "puller" container downloads static content only once, saves it to shared storage, and then exits. After that, the main web server container serves the downloaded content.
