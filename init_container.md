@@ -198,10 +198,10 @@ spec:
 Expose Service for testing:
 
 ```bash
-kubectl expose pod init-container-demo --type=Nodeport
+kubectl expose pod init-container-demo --type=NodePort
 ```
 
-# Question !  **How downlaod files are accessible for main app container:**
+# Question !  **How downlaoded files are accessible for main app container:**
 multiple containers within the same POD:
 They only share the network namespace but not the filesystem or process space.
 
