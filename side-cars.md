@@ -33,6 +33,8 @@ apiVersion: v1
 kind: Pod
 metadata:
   name: multi-container-lab
+  labels:
+    app: multi-container-lab
 spec:
   containers:
     - name: nginx
