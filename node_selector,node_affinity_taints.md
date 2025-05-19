@@ -1,6 +1,21 @@
-# TOPICS : Node Selector, Node Affinity, Taints and Tolerations
+# Troubleshooting - Pods not schedulable:
+
+1- Node Selector.
 
 
+2- Node Affinity.
+
+3- Taints.
+
+4- Tolerations.
+
+
+
+- Windows and Linux ( hybrid) Cluster)
+- License restriction.
+- Hardware architecture amd/arm cpu.
+
+  particular node has some special network level access so pod/app can access them.
 
 # 1- NodeSelector:  (Simple Scheduling)
 
@@ -200,7 +215,35 @@ Node affinity uses various operators to define matching rules:
 Taints are applied to nodes to repel certain pods. They allow nodes to refuse pods unless the pods have a matching toleration.
 Usage: Use kubectl taint command to apply taints to nodes. Include tolerations field in the pod's YAML definition to tolerate specific taints.
 
-4. Tolerations
+
+-NoSchedule
+-NoExecute
+-PrefferedNoSchedule
+
+# 🚫 Taint Effects Explained:
+
+In Kubernetes, taints and tolerations work together to control pod placement on nodes. A taint is applied to a node to repel certain pods, while a toleration is applied to a pod to allow it to be scheduled on nodes with matching taints. This mechanism ensures that pods are only scheduled on appropriate nodes
+
+
+- **NoSchedule**: Pods without matching tolerations will not be scheduled on the node. (use cases : upgrade cluster / worker nodem , patching OS, (drain before this activity, so pods move to other node, hardware maintenance, permanent removal from cluster, )
+- **PreferNoSchedule**: Kubernetes will try to avoid scheduling pods without matching tolerations on the node, but it's not guaranteed.  ( node has some performance issues, or some unknown issue that you are currently troubleshooting... low cpu memory. bottleneck etc .obselete hardware that you are going to retire soon in youe next target phase)
+- 
+- **NoExecute**: Pods without matching tolerations will be evicted from the node if they're already running. (means all pods immediately stopped/removed on node)
+
+
+
+4. Tolerations   -**Exceptions!!! for Taints**
+
 Tolerations are applied to pods and allow them to schedule onto nodes with matching taints. They override the effect of taints.
 Usage: Include tolerations field in the pod's YAML definition to specify which taints the pod tolerates.
+
+
+add toleration on pod then it can still run that node where you configured NoSchedule   ( NoScheduled nodes could be a dedicated nodes to run a special application that require heavy workload   or run a temporary app on that server that you going to deprecate soon)
+
+
+LAB:
+
+Taint : 4 nodes -- 3 NoSchedule taint , 1 default  ( pod will be schedule on 4th node default/no taint configured)
+Toleration : set 4th node as NoSchedule too ----- now add toleration in pod/deployment multiple replicas --> now pod would run on those nodes too that has NOSchedule taint
+
 
