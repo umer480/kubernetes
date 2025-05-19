@@ -2,7 +2,7 @@
 
 
 
-# NodeSelector:
+# 1- NodeSelector:  (Simple Scheduling)
 
 'Node Selector' is a simple way to assign a Pod to specific nodes in a Kubernetes cluster based on key-value labels.
 It allows you to control which nodes are eligible to run specific Pods by matching the node's labels with the selector defined in the Pod's specification.
@@ -117,6 +117,90 @@ Solution : Add label for nodepool
 When you create an AKS Node Pool, you can specify labels directly. These labels are applied automatically to every node in that pool.
 These labels will persist even when nodes are auto-scaled.
 
+❓ Limitations:
+
+Hardmatch
+
+It’s an exact match only; partial matches are not supported.
+
+It’s static—you can't define logic like "prefer SSD, but fallback to HDD".
 
 
+In Kubernetes, node affinity and node selector are mechanisms that control how pods are scheduled onto nodes based on labels. While both use node labels to influence scheduling decisions, they differ in flexibility and expressiveness.
+
+
+
+# 2- Node Affinity: (Advanced Scheduling)
+
+
+Node Affinity is a more expressive way to specify rules about the placement of pods relative to nodes' labels. It allows you to specify rules that apply only if certain conditions are met.
+
+
+**Types of Node Affinity:**
+
+1- equiredDuringSchedulingIgnoredDuringExecution: Hard requirement; the scheduler will only place the pod on nodes matching the criteria
+
+2- PreferredDuringSchedulingIgnoredDuringExecution: Soft preference; the scheduler will try to place the pod on matching nodes but will schedule it elsewhere if necessary
+
+
+Example:
+
+```bash
+
+spec:
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+        - matchExpressions:
+          - key: disktype
+            operator: In
+            values:
+            - ssd
+
+```
+This configuration ensures the pod is scheduled only on nodes where the disktype label is set to ssd
+
+**Advantages:**
+
+Supports complex expressions using operators like In, NotIn, Exists, and DoesNotExist.
+
+Allows defining both hard requirements and soft preferences.
+
+Enables more granular control over pod placement
+
+
+# 🔍 Operators in Node Affinity:
+
+Node affinity uses various operators to define matching rules:
+
+
+**In**: The label's value must be in the specified list.
+
+**NotIn**: The label's value must not be in the specified list.
+
+**Exists**: The label must exist on the node, regardless of its value.
+
+**DoesNotExist**: The label must not exist on the node.
+
+**Gt**: The label's value (interpreted as a number) must be greater than a specified value.
+
+**Lt**: The label's value (interpreted as a number) must be less than a specified value.
+
+
+![image](https://github.com/user-attachments/assets/8db82ada-bba1-4646-9913-349af45019ef)
+
+
+
+
+
+
+
+3. Taints
+Taints are applied to nodes to repel certain pods. They allow nodes to refuse pods unless the pods have a matching toleration.
+Usage: Use kubectl taint command to apply taints to nodes. Include tolerations field in the pod's YAML definition to tolerate specific taints.
+
+4. Tolerations
+Tolerations are applied to pods and allow them to schedule onto nodes with matching taints. They override the effect of taints.
+Usage: Include tolerations field in the pod's YAML definition to specify which taints the pod tolerates.
 
