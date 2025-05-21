@@ -370,11 +370,15 @@ Usage: Use `kubectl taint` command to apply taints to nodes.
 Include `tolerations` field in the pod's YAML definition to tolerate specific taints.
 
 
-# Question ! Why we need to put a taint on certan nodes ??
+# Question ! Why we need to put a taint on certain nodes ??
+
 
 Dedicated Node to run a special (upcoming) application/client/customer.
+
 Very Old Deperacated Hardware - EOS - EOL.
+
 Cluster Upgrade /  patching /hardware maintenance
+
 Permanent Removal of server from cluster
 
 
@@ -433,11 +437,11 @@ spec:
 
 
 - **NoSchedule**: Pods without matching tolerations will not be scheduled on the node.
-- 
+ 
 - **PreferNoSchedule**: Kubernetes will try to avoid scheduling pods without matching tolerations on the node, but it's not guaranteed.
 
   (Use Case node has some performance issues, or some unknown issue that you are currently troubleshooting... low cpu memory. bottleneck etc)
   
-- **NoExecute**: Pods without matching tolerations will be evicted from the node if they're already running. (means all pods ( that does not has matching label) immediately stopped/removed on node)
+- **NoExecute**: Pods without matching tolerations will be evicted from the node if they're already running. (means all pods ( that does not has matching label) immediately stopped/removed from node)
 
 
