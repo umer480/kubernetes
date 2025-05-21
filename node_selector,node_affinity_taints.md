@@ -136,6 +136,22 @@ kubectl label nodes worker-node-1 disktype-
  **NOTE:**    `The  - at the end removes the label.`
 
 
+# ✅ Example: Logical AND with nodeSelector:
+
+```bash
+spec:
+  nodeSelector:
+    disktype: ssd
+    region: us-east1
+```
+
+In this example, the Pod will be scheduled only on nodes that have both of the following labels:
+
+`disktype=ssd`
+`region=us-east1`
+
+**NOTE**: `If a node lacks either of these labels or has different values, the Pod will not be scheduled on that node.`
+
 
 
 **Troubleshooting Error **: Failed Scheduling ?
@@ -160,7 +176,7 @@ It’s static—you can't define logic like "prefer SSD, but fallback to HDD".
 
 In Kubernetes, node affinity and node selector are mechanisms that control how pods are scheduled onto nodes based on labels. While both use node labels to influence scheduling decisions, they differ in flexibility and expressiveness.
 
-
+The nodeSelector field does not support logical OR operations. You cannot specify a condition where a Pod can be scheduled on nodes that have either one label or another. To achieve more complex scheduling requirements involving OR logic, you should use node affinity
 
 # 2- Node Affinity: (Advanced Scheduling)
 
