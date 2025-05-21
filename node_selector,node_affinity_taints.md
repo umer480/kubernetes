@@ -136,22 +136,6 @@ kubectl label nodes worker-node-1 disktype-
  **NOTE:**    `The  - at the end removes the label.`
 
 
-# ✅ Example: Logical AND with nodeSelector:
-
-```bash
-spec:
-  nodeSelector:
-    disktype: ssd
-    region: us-east1
-```
-
-In this example, the Pod will be scheduled only on nodes that have both of the following labels:
-
-`disktype=ssd`
-`region=us-east1`
-
-**NOTE**: `If a node lacks either of these labels or has different values, the Pod will not be scheduled on that node.`
-
 
 
 **Troubleshooting Error **: Failed Scheduling ?
@@ -176,7 +160,7 @@ It’s static—you can't define logic like "prefer SSD, but fallback to HDD".
 
 In Kubernetes, node affinity and node selector are mechanisms that control how pods are scheduled onto nodes based on labels. While both use node labels to influence scheduling decisions, they differ in flexibility and expressiveness.
 
-The nodeSelector field does not support logical OR operations. You cannot specify a condition where a Pod can be scheduled on nodes that have either one label or another. To achieve more complex scheduling requirements involving OR logic, you should use node affinity
+
 
 # 2- Node Affinity: (Advanced Scheduling)
 
@@ -191,7 +175,7 @@ Node Affinity is a more expressive way to specify rules about the placement of p
 **2**- **PreferredDuringSchedulingIgnoredDuringExecution**: Soft preference; the scheduler will try to place the pod on matching nodes but will schedule it elsewhere if necessary
 
 
-Example:
+**Example:**
 
 ```bash
 
@@ -210,6 +194,102 @@ spec:
 This configuration ensures the pod is scheduled only on nodes where the disktype label is set to ssd
 
 
+```bash
+apiVersion: v1
+kind: Pod
+metadata:
+  name: example-pod
+spec:
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+              - key: disktype
+                operator: In
+                values:
+                  - ssd        # OR bsaed selection from the provided list
+                  - hdd
+  containers:
+    - name: nginx
+      image: nginx
+
+```
+
+
+
+
+# Node Affinity with multiple expressions:  EXAMPLE 1
+
+```bash
+ 
+apiVersion: v1
+kind: Pod
+metadata:
+  name: example-pod
+spec:
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+              - key: disktype
+                operator: In
+                values:
+                  - ssd
+                  - hdd
+
+          - matchExpressions:       # OR
+              - key: region
+                operator: In
+                values:
+                  - us-east1
+
+
+  containers:
+    - name: nginx
+      image: nginx
+
+```
+
+# Node Affinity with multi expressions:  EXAMPLE 2
+
+```bash
+affinity:
+  nodeAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: disktype
+              operator: In
+              values:
+                - ssd
+            - key: region
+              operator: In
+              values:
+                - us-east1
+        - matchExpressions:
+            - key: disktype
+              operator: In
+              values:
+                - hdd
+            - key: region
+              operator: In
+              values:
+                - us-west1
+
+```
+**In this configuration:**
+
+`First` **nodeSelectorTerm**: Requires nodes to have both `disktype=ssd` and `region=us-east1.`
+
+`Second` **nodeSelectorTerm**: Requires nodes to have both `disktype=hdd` and `region=us-west1.`
+
+The pod will be scheduled on a node if it satisfies either of these terms.
+
+This approach allows for flexible scheduling policies, enabling pods to be placed on nodes that meet any of the specified criteria combinations.
+
+
 # 🔍 Operators in Node Affinity:
 
 Node affinity uses various operators to define matching rules:
@@ -225,7 +305,46 @@ Node affinity uses various operators to define matching rules:
 
 
 
-**Advantages:**
+# Question - can i use a combination of NodeSelector and NodeAffinity
+Yes, you can use both nodeSelector and nodeAffinity simultaneously in a Kubernetes Pod specification. When both are defined, both conditions must be satisfied for the Pod to be scheduled onto a node. This means the scheduler will only place the Pod on nodes that match all specified nodeSelector labels and fulfill the nodeAffinity rules.
+
+**✅ Example: Combining nodeSelector and nodeAffinity** :
+
+```bash
+apiVersion: v1
+kind: Pod
+metadata:
+  name: example-pod
+spec:
+  nodeSelector:
+    disktype: ssd
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+              - key: region
+                operator: In
+                values:
+                  - us-east1
+  containers:
+    - name: nginx
+      image: nginx
+
+```
+
+**In this configuration:**
+
+**nodeSelector** requires the node to have the label disktype=ssd.
+
+**nodeAffinity** requires the node to have the label region=us-east1.
+
+`Only nodes that satisfy both conditions will be eligible for scheduling this Pod.`
+
+
+
+
+**Advantages  of Node Affinity:**
 
 - Supports complex expressions using operators like In, NotIn, Exists, and DoesNotExist.
 
