@@ -106,60 +106,67 @@ readinessProbe:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: my-sample-app
+  name: readiness-demo
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
-      app: sample-app
+      app: readiness-demo
   template:
     metadata:
       labels:
-        app: sample-app
+        app: readiness-demo
     spec:
       containers:
-      - name: sample-container
-        image: nginx  # Replace with your app image
-        ports:
-        - containerPort: 8080
+        - name: app
+          image: umerazeem/cloudlyncs:readinesstestimagev1
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
 
-        # Liveness Probe - checks if the container is alive, restarts if fails
-        livenessProbe:
-          httpGet:
-            path: /healthz
-            port: 8080
-          initialDelaySeconds: 10
-          periodSeconds: 15
-          failureThreshold: 3
+# Liveness Probe - checks if the container is alive, restarts if fails:
 
-        # Readiness Probe - checks if the app is ready to serve traffic
-        readinessProbe:
-          httpGet:
-            path: /ready
-            port: 8080
-          initialDelaySeconds: 5
-          periodSeconds: 10
-          failureThreshold: 3
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 8080
+            initialDelaySeconds: 10         # initialDelaySeconds: Wait before starting checks (to allow startup).
+            periodSeconds: 15
+            failureThreshold: 3             # failureThreshold:  Number of failures before action is taken.
+
+# Readiness Probe - checks if the app is ready to serve traffic:
+
+            readinessProbe:
+              httpGet:
+                path: /ready
+                port: 8080
+              initialDelaySeconds: 5
+              periodSeconds: 10
+              failureThreshold: 1
+
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: readiness-service
+spec:
+  selector:
+    app: readiness-demo
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
+  type: LoadBalancer
+
 
 ```
 
 **📝 Notes:**
 You must configure the app to respond on /healthz and /ready with HTTP 200 when healthy/ready.
 
-Example for NGINX (static return 200):
 
-```bash
-location /healthz {
-    return 200 'OK';
-    add_header Content-Type text/plain;
-}
-location /ready {
-    return 200 'Ready';
-    add_header Content-Type text/plain;
-}
 
-```
 
-- initialDelaySeconds: Wait before starting checks (to allow startup).
 
-- failureThreshold: Number of failures before action is taken.
+
