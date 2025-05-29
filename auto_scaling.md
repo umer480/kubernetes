@@ -34,7 +34,8 @@
 
 # HPA ( Horizontal POD Autoscaling)
 
-Horizontal Pod Autoscaler deploys additional pods in the Kubernetes cluster automatically when the load increases. It modifies the entire workload resource and scales it automatically as per requirement. Whether scaling up or scaling down the pods, HPA can do it automatically to meet the load.
+Horizontal Pod Autoscaler deploys additional pods in the Kubernetes cluster automatically when the load increases. It modifies the entire workload resource and scales it automatically as per requirement. 
+HPA can do it automatically to meet the load.
 
 ![image](https://github.com/user-attachments/assets/59ca0208-6a4f-4af3-9fa8-0f2510a920bc)
 
@@ -55,16 +56,19 @@ For instance, if five pods are performing currently, your target utilization is 
 
  ### Pre-Requisites for HPA:
 
-HPA needs 'Metric Server' - its mandatory.  it Collects CPU/memory usage from Kubelets
-HPA monitor workload after every 15 sec ( by default) 
+HPA needs 'Metric Server' - its mandatory.  it Collects CPU/memory usage from Kubelets. \
+HPA monitor workload after every 15 sec ( by default)  \
 
 
-kubelet endpoint from where metric server collect data : /metrics/resource
+kubelet endpoint from where metric server collects data : /metrics/resource
 
 
 # setting up metric-server:
 
 Before testing Horizontal Pod Autoscaler (HPA) and Vertical Pod Autoscaler (VPA), it’s essential to have the Metrics Server installed in your Kubernetes cluster. The Metrics Server collects resource usage metrics from the cluster’s nodes and pods, which are necessary for autoscaling decisions.
+
+
+![image](https://github.com/user-attachments/assets/87551d55-08e1-4644-a2b7-413d6ded9fbc)
 
 
 'Download the Components Manifest: Use kubectl apply to download and apply the Components manifest directly from the latest release of the Metrics Server:'
@@ -83,22 +87,17 @@ kubectl get pods -n kube-system | grep metrics-server
 **Confirm Metrics Collection**: Once the Metrics Server is up and running, you can confirm that it’s collecting metrics by querying the API. For example, you can retrieve the CPU and memory usage metrics for nodes and pods:
 
 ```bash
-kubectl top nodes kubectl top pods --all-namespaces
+kubectl top nodes
+kubectl top pods --all-namespaces
 ```
 
-If the Metrics Server is properly installed and functioning, you should see CPU and memory usage metrics for nodes and pods in your cluster.
+`If the Metrics Server is properly installed and functioning, you should see CPU and memory usage metrics for nodes and pods in your cluster.`
 
 With the Metrics Server installed and collecting metrics, you can proceed to test the Horizontal Pod Autoscaler (HPA) and Vertical Pod Autoscaler (VPA) functionalities in your Kubernetes cluster.
 
-### Commmands: Metric Server 
 
-```bsah
-kubectl top node
-kubectl top pod
 
-```
-
-# # LAB :
+## LAB :
 
 
 ```bash
@@ -141,7 +140,7 @@ spec:
 
 ```
 
-HPA :
+**HPA :**
 
 ```bash
 apiVersion: autoscaling/v2
@@ -171,9 +170,6 @@ spec:
 
 ```bash
 kubectl run -i --tty load-generator --rm --image=busybox:1.28 --restart=Never -- /bin/sh -c "while sleep 0.01; do wget -q -O- http://php-apache; done"
-```
-
-
 
 ```
 
@@ -185,6 +181,48 @@ kubectl autoscale deploy <deployment name> --cpu-percentage=50 --min=1 --max=10
 kubectl get hpa
 kubectl delete hpa <hpa name>
 ```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
