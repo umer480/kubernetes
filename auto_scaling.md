@@ -64,8 +64,31 @@ kubelet endpoint from where metric server collect data : /metrics/resource
 
 # setting up metric-server:
 
+Before testing Horizontal Pod Autoscaler (HPA) and Vertical Pod Autoscaler (VPA), it’s essential to have the Metrics Server installed in your Kubernetes cluster. The Metrics Server collects resource usage metrics from the cluster’s nodes and pods, which are necessary for autoscaling decisions.
 
 
+'Download the Components Manifest: Use kubectl apply to download and apply the Components manifest directly from the latest release of the Metrics Server:'
+
+```bash
+kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
+```
+
+
+**Verify Installation:** After applying the manifest, verify that the Metrics Server pods are running successfully. You can check the pods in the kube-system namespace:
+
+```bash
+kubectl get pods -n kube-system | grep metrics-server
+```
+
+**Confirm Metrics Collection**: Once the Metrics Server is up and running, you can confirm that it’s collecting metrics by querying the API. For example, you can retrieve the CPU and memory usage metrics for nodes and pods:
+
+```bash
+kubectl top nodes kubectl top pods --all-namespaces
+```
+
+If the Metrics Server is properly installed and functioning, you should see CPU and memory usage metrics for nodes and pods in your cluster.
+
+With the Metrics Server installed and collecting metrics, you can proceed to test the Horizontal Pod Autoscaler (HPA) and Vertical Pod Autoscaler (VPA) functionalities in your Kubernetes cluster.
 
 ### Commmands: Metric Server 
 
@@ -163,7 +186,21 @@ kubectl get hpa
 kubectl delete hpa <hpa name>
 ```
 
+
+
+
+
+# VPA ( Vertical Pod AutoScaling)
+
+![image](https://github.com/user-attachments/assets/e765b14d-8cb6-4b3a-bfa2-afe50e0d47d2)
+
+
+![image](https://github.com/user-attachments/assets/9c9bcee9-c9bc-455b-a329-2ffaeb476e61)
+
+
+
 :EMOJICODE📓
 
 **Reference**: https://thinksys.com/devops/kubernetes-autoscaling/
+https://medium.com/@muppedaanvesh/a-hands-on-guide-to-kubernetes-horizontal-vertical-pod-autoscalers-%EF%B8%8F-58903382ef71
 
