@@ -199,6 +199,10 @@ kubectl delete hpa <hpa name>
 
 
 
+**installing VPA :**
+https://docs.aws.amazon.com/eks/latest/userguide/vertical-pod-autoscaler.html
+
+
 :EMOJICODE📓
 
 **Reference**: https://thinksys.com/devops/kubernetes-autoscaling/
