@@ -208,3 +208,6 @@ https://docs.aws.amazon.com/eks/latest/userguide/vertical-pod-autoscaler.html
 **Reference**: https://thinksys.com/devops/kubernetes-autoscaling/
 https://medium.com/@muppedaanvesh/a-hands-on-guide-to-kubernetes-horizontal-vertical-pod-autoscalers-%EF%B8%8F-58903382ef71
 
+
+VPA LAB : https://medium.com/@muppedaanvesh/a-hands-on-guide-to-kubernetes-horizontal-vertical-pod-autoscalers-%EF%B8%8F-58903382ef71
+
