@@ -71,7 +71,8 @@ Before testing Horizontal Pod Autoscaler (HPA) and Vertical Pod Autoscaler (VPA)
 ![image](https://github.com/user-attachments/assets/87551d55-08e1-4644-a2b7-413d6ded9fbc)
 
 
-'Download the Components Manifest: Use kubectl apply to download and apply the Components manifest directly from the latest release of the Metrics Server:'
+**'Download the Components Manifest:**
+Use kubectl apply to download and apply the Components manifest directly from the latest release of the Metrics Server:'
 
 ```bash
 kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
