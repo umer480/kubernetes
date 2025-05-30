@@ -16,9 +16,15 @@
 
 
 
+### **Probe Test Methods**
+**1**-  **HTTP**  -HTTP probes are probably the most common type of custom liveness probe. Kubernetes pings a path, and if it gets an HTTP response in the 200 or 300 range, it marks the app as healthy. Otherwise it is marked as unhealthy.
+
+**2**-  **TCP** - Kubernetes tries to establish a TCP connection on the specified port. If it can establish a connection, the container is considered healthy; if it can’t it is considered unhealthy.
+
+**3**-  **Command** - Kubernetes runs a command inside your container. If the command returns with exit code 0, then the container is marked as healthy. Otherwise, it is marked unhealthy.
 
 
-# Liveness and Readness Probe
+# Liveness and Readiness Probe
 
 In Kubernetes, `liveness` and `readiness` probes are used to monitor the health and availability of containers ( or application running inside the container).
 While they may seem similar, they serve different purposes and have different effects on how Kubernetes manages pods.
@@ -32,6 +38,21 @@ While they may seem similar, they serve different purposes and have different ef
 # ✅ Use Case Examples:
 
 **1. Liveness Probe Use Case**
+
+
+Let’s imagine another scenario where your app has a nasty case of deadlock, causing it to hang indefinitely and stop serving requests. Because the process continues to run, by default Kubernetes thinks that everything is fine and continues to send requests to the broken pod. By using a liveness probe, Kubernetes detects that the app is no longer serving requests and restarts the offending pod.
+
+
+**Reference Diagram**
+
+```bash
+https://cloud.google.com/blog/products/containers-kubernetes/kubernetes-best-practices-setting-up-health-checks-with-readiness-and-liveness-probes
+```
+
+
+
+**another example**
+
 Suppose you have a Node.js application that sometimes enters an infinite loop or deadlock. Kubernetes needs to restart the container if it stops responding.
 
 ```bash
@@ -61,8 +82,14 @@ livenessProbe:
 
 
 
+Probes can be configured in many ways. You can specify how often they should run, what the success and failure thresholds are, and how long to wait for responses. 
+
 
 ![image](https://github.com/user-attachments/assets/7a11225a-59f3-45a0-8a4e-c9bf01793f05)
+
+
+
+
 
 
 **2. Readiness Probe Use Case:**
@@ -71,11 +98,20 @@ livenessProbe:
 Let’s imagine that your app takes a minute to warm up and start. Your service won’t work until it is up and running, even though the process has started. You will also have issues if you want to scale up this deployment to have multiple copies. A new copy shouldn’t receive traffic until it is fully ready, but by default Kubernetes starts sending it traffic as soon as the process inside the container starts. By using a readiness probe, Kubernetes waits until the app is fully started before it allows the service to send traffic to the new copy.
 
 
+### Reference Diagram :
 
-![image](https://github.com/user-attachments/assets/1976b42d-c634-4eff-9231-758b2b27665e)
+Once app is ready to service the request then its added as an endpoint for a service ( then service routes traffic)
 
 
+```bash
 
+https://cloud.google.com/blog/products/containers-kubernetes/kubernetes-best-practices-setting-up-health-checks-with-readiness-and-liveness-probes
+
+
+```
+
+
+**another example**
 
 Imagine a web app takes 30 seconds to initialize, load configs, or warm up before it can accept traffic. You don’t want it to receive requests before it’s ready.
 
@@ -251,6 +287,9 @@ startupProbe:
 - You’ve experienced containers being restarted during startup.
 
 - You want better separation of startup logic and liveness checks.
+
+
+
 
 
 **Summary:**
