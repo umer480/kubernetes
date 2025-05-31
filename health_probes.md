@@ -31,7 +31,7 @@ While they may seem similar, they serve different purposes and have different ef
 
 
 
-`Kubelet monitors the liveness and readiness prob (Health Monitoring`
+`Kubelet monitors the liveness and readiness prob - Health Monitoring`
 
 
 
@@ -46,7 +46,7 @@ Let’s imagine another scenario where your app has a nasty case of deadlock, ca
 **Reference Diagram**
 
 ```bash
-https://storage.googleapis.com/gweb-cloudblog-publish/original_images/google-kubernetes-probe-readiness6ktf.GIF
+https://storage.googleapis.com/gweb-cloudblog-publish/original_images/google-kubernetes-probe-livenessae14.GIF
 ```
 
 
