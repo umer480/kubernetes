@@ -1,17 +1,25 @@
 # Resource Quotas in Kubernetes
 
 
-`Resource quotas in Kubernetes are used to allocate and limit compute resources for individual namespaces within a cluster. They help ensure fair and efficient resource utilization among multiple applications or teams running within the same Kubernetes cluster.`
+`Resource quotas in Kubernetes are used to allocate and limit compute resources for individual namespaces within a cluster.`
+
+it ensures fair and efficient resource utilization among multiple applications or teams running within the same Kubernetes cluster.
+
+
 
 
 
 ## 🔹 What Happens by Default? When you dont apply any resource quotas/limits ?
+
+
 
 **1. No Limits = No Cap**:
 
 - The container can use as much CPU and memory as it wants (or as much as the node has available).
 
 - There's no upper bound on usage, so a single container can consume all the resources on the node if it's allowed to.
+
+
 
 🔥 This is risky, especially for memory: if the container uses too much memory, it can cause OOMKill (Out of Memory Kill) — the kernel forcefully kills the container.
 
@@ -41,8 +49,43 @@ resources: {}
 
 
 
-1-Resource Quotas.
-2- Limit Ranges.
+
+## Units - CPU and Memory measurement:
+
+
+
+### 🧠 CPU Units:
+
+| Unit | Description                  | Example Value | Equivalent      |
+| ---- | ---------------------------- | ------------- | --------------- |
+| `1`  | 1 core (full CPU)            | `1`           | 1000 millicores |
+| `m`  | millicore (1/1000 of 1 core) | `500m`        | 0.5 CPU         |
+
+
+**💬 Comments**
+
+- 1 means one full vCPU/core on the node.
+
+- 100m means 0.1 CPU or 10% of a full core.
+
+- Used for precise control when assigning CPU time.
+
+
+
+
+
+
+### 🧠 Memory Units:
+
+| Unit                         | Base    | Description                               | Example | Bytes Equivalent                |
+| ---------------------------- | ------- | ----------------------------------------- | ------- | ------------------------------- |
+| `E`                          | Binary  | Exbibyte (2⁶⁰ bytes)                      | `1Ei`   | 1,152,921,504,606,846,976 bytes |
+| `P`                          | Binary  | Pebibyte (2⁵⁰ bytes)                      | `1Pi`   | 1,125,899,906,842,624 bytes     |
+| `T`                          | Binary  | Tebibyte (2⁴⁰ bytes)                      | `1Ti`   | 1,099,511,627,776 bytes         |
+| `G`                          | Binary  | Gibibyte (2³⁰ bytes)                      | `1Gi`   | 1,073,741,824 bytes             |
+| `M`                          | Binary  | Mebibyte (2²⁰ bytes)                      | `1Mi`   | 1,048,576 bytes                 |
+| `K`                          | Binary  | Kibibyte (2¹⁰ bytes)                      | `1Ki`   | 1,024 bytes                     |
+
 
 
 ## 🔹 1. ResourceQuota
@@ -288,4 +331,7 @@ Requests for the creation, deletion, and update of system resources go through t
 
 Once the resource quota object is defined on a namespace by the Kubernetes cluster administrator, the Kubernetes quota admission controller watches for the new objects created in that namespace. Then it will keep monitoring and tracking resource usage.
 Reference : https://medium.com/@muppedaanvesh/a-hand-on-guide-to-kubernetes-resource-quotas-limit-ranges-%EF%B8%8F-8b9f8cc770c5
+
+
+
 
