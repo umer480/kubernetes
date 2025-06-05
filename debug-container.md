@@ -108,3 +108,24 @@ kill -HUP 8   # change "8" to match the PID of the nginx leader process, if nece
 ps ax
 ```
 
+
+### Alternative way - How to share a process namespace 
+You can also share process namespace with other contianers (of same pod) while deploying your application.
+
+**Example**:
+
+```bash
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx-demo
+spec:
+  shareProcessNamespace: true  # 🔍 This is required!
+  containers:
+  - name: nginx
+    image: nginx
+
+
+```
+
