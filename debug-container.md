@@ -4,6 +4,8 @@ When a pod is in `CrashLoopBackOff` and keeps restarting, you can't directly kub
 
 
 
+
+
 ![image](https://github.com/user-attachments/assets/43d82633-80f2-4260-8c72-5bba0e167947)
 
 
@@ -14,11 +16,15 @@ When a pod is in `CrashLoopBackOff` and keeps restarting, you can't directly kub
 
 ## Sub-Topics:
 
-1- Creating debug/ephemeral container
-2- Debugging Examine - networking, connectivity. ( common network namespace, act as localhost)
-3- Sharing Process namespace. Process Validation ( share process namespace, see process of main app)
-4- Accessing and examining fileSystem of main container. ( /proc/$pid/root )
-5- Alternative approach of troubleshooting without changing real/actual POD - Copy a pod, then troubleshoot.
+**1**- Creating debug/ephemeral container
+
+**2**- Debugging Examine - networking, connectivity. ( common network namespace, act as localhost)
+
+**3**- Sharing Process namespace. Process Validation ( share process namespace, see process of main app)
+
+**4**- Accessing and examining fileSystem of main container. ( /proc/$pid/root )
+
+**5**- Alternative approach of troubleshooting without changing real/actual POD - Copy a pod, then troubleshoot.
 
 
 
