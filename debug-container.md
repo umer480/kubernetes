@@ -81,10 +81,10 @@ ps -ef
 ps aux
 ```
 
-# change "8" to the PID of the Nginx process, if necessary
+# change "1" to the PID of the Nginx process, if necessary
 
 ```bash
-head /proc/8/root/etc/nginx/nginx.conf
+head /proc/1/root/etc/nginx/nginx.conf
 ```
 
 
@@ -104,9 +104,17 @@ head /proc/8/root/etc/nginx/nginx.conf
 You can signal processes in other containers. For example, send SIGHUP to nginx to restart the worker process. 
 
 ```bash
-kill -HUP 8   # change "8" to match the PID of the nginx leader process, if necessary
+kill -HUP 7   # change "7" to match the PID of the nginx leader process, if necessary
 ps ax
 ```
+
+**Kill the main process**:
+
+```bash
+kill -15 1
+```
+
+
 
 
 ### Alternative way - How to share a process namespace 
