@@ -65,7 +65,7 @@ kubectl debug -it nginx --image=busybox --target=nginx -- bin/sh
 
 **--image=busybox** — The debug container image (you can use other images like ubuntu, debian, etc.).
 
-**--target=<container-name>** — This makes the debug container share the process namespace of the crashing container, so you can inspect things like environment variables, filesystems, etc.
+**--target=<container-name>** — This makes the debug container share the process namespace of the crashing container, so you can inspect things like process, filesystems, etc.
 
 
 
@@ -81,7 +81,7 @@ ps -ef
 ps aux
 ```
 
-# change "1" to the PID of the Nginx process, if necessary
+# Change "1" to the PID of the Nginx process, if necessary
 
 ```bash
 head /proc/1/root/etc/nginx/nginx.conf
@@ -136,4 +136,80 @@ spec:
 
 
 ```
+
+Note : in this case PID of main/init process will be other than `1`  - like `7`
+
+
+## Debugging using a copy of the Pod
+
+Sometimes Pod configuration options make it difficult to troubleshoot in certain situations. For example, you can't run kubectl exec to troubleshoot your container if your container image does not include a shell or if your application crashes on startup. In these situations you can use kubectl debug to create a copy of the Pod with configuration values changed to aid debugging.
+
+**Adding a new container can be useful when your application is running** but not behaving as you expect and you'd like to add additional troubleshooting utilities to the Pod.
+
+For example, maybe your application's container images are built on busybox but you need debugging utilities not included in busybox. You can simulate this scenario using kubectl run:
+
+```bash
+kubectl run myapp --image=busybox:1.28 --restart=Never -- sleep 1d
+```
+
+
+Run this command to create a copy of myapp named myapp-debug that adds a new Ubuntu container for debugging:
+
+```bash
+kubectl debug myapp -it --image=ubuntu --share-processes --copy-to=myapp-debug
+```
+
+![image](https://github.com/user-attachments/assets/7bb59153-4be3-43e0-8ab8-403e51c7b805)
+
+
+## Copying a Pod while changing its command 
+
+Sometimes it's useful to change the command for a container, for example to add a debugging flag or because the application is crashing.
+
+To simulate a crashing application, use kubectl run to create a container that immediately exits:
+
+```bash
+kubectl run --image=busybox:1.28 myapp -- false
+```
+
+
+You can see using `kubectl describe pod myapp` that this container is crashing:
+
+```bash
+Containers:
+  myapp:
+    Image:         busybox
+    ...
+    Args:
+      false
+    State:          Waiting
+      Reason:       CrashLoopBackOff
+    Last State:     Terminated
+      Reason:       Error
+      Exit Code:    1
+```
+
+You can use kubectl debug to create a copy of this Pod with the command changed to an interactive shell:
+
+```bash
+kubectl debug myapp -it --copy-to=myapp-debug --container=myapp -- sh
+```
+
+
+```bash
+If you don't see a command prompt, try pressing enter.
+/ #
+```
+
+Now you have an interactive shell that you can use to perform tasks like checking filesystem paths or running the container command manually.
+
+
+![image](https://github.com/user-attachments/assets/99550e66-4a4a-48cb-9ccb-0c5b892a41ba)
+
+
+
+## Copying a Pod while changing container images
+
+![image](https://github.com/user-attachments/assets/3500be4c-ec30-481d-a8a1-72f15d24794d)
+
 
