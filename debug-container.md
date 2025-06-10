@@ -81,21 +81,12 @@ ps -ef
 ps aux
 ```
 
-# Change "1" to the PID of the Nginx process, if necessary
+## Change "1" to the PID of the Nginx process, if necessary
 
 ```bash
 head /proc/1/root/etc/nginx/nginx.conf
 ```
 
-
-
-
-
-
-## Key Point - Sharing Types within same POD:
-**1-** Network namespace (they can talk to each other over localhost)  \
-**2-** Process namespace (if configured using shareProcessNamespace: true)  \
-**3-** Volume namespace ( all containers within the same pod can access same shared volumes)
 
 
 
@@ -211,5 +202,14 @@ Now you have an interactive shell that you can use to perform tasks like checkin
 ## Copying a Pod while changing container images
 
 ![image](https://github.com/user-attachments/assets/3500be4c-ec30-481d-a8a1-72f15d24794d)
+
+
+
+
+
+# Key Point - Sharing Types within same POD:
+**1-** Network namespace (they can talk to each other over localhost)  \
+**2-** Process namespace (if configured using shareProcessNamespace: true)  \
+**3-** Volume namespace ( all containers within the same pod can access same shared volumes)
 
 
