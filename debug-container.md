@@ -208,8 +208,8 @@ Now you have an interactive shell that you can use to perform tasks like checkin
 
 
 # Key Point - Sharing Types within same POD:
-**1-** Network namespace (they can talk to each other over localhost)  \
-**2-** Process namespace (if configured using shareProcessNamespace: true)  \
-**3-** Volume namespace ( all containers within the same pod can access same shared volumes)
+**1-** Network communication  (they can talk to each other over localhost)  \
+**2-** Process access (if configured using shareProcessNamespace: true)  \
+**3-** Volume access ( all containers within the same pod can access same shared volumes)
 
 
