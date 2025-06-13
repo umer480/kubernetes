@@ -97,7 +97,43 @@ kubectl suspend cronjob <cronjob-name>   # You can pause a CronJob from creating
 
 
 ## Time Zone Support:
-Kubernetes CronJobs follow the server's time zone
+For CronJobs with no time zone specified, the kube-controller-manager interprets schedules relative to its local time zone.
+
+Set Cutom TimeZone:
+The following CronJob definition will run every day at `23:00 in Istanbul, Turkey` , regardless of the time configuration of the Kubernetes cluster.
+
+```bash
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: timezone-test
+spec:
+  timeZone: 'Asia/Istanbul' #You can change this line with any timezone
+  schedule: "0 23 * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: timezone-test
+            image: busybox:1.28
+            imagePullPolicy: IfNotPresent
+            command:
+            - /bin/sh
+            - -c
+            - date; echo Selam!
+          restartPolicy: OnFailure
+```
+
+You can find the list of time zones you can use from the link below.
+
+**Valid TZ’s**: 
+
+```bash
+https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+```
+
+
 
 
 ## Concurrency Policy
