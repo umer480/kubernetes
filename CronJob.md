@@ -257,6 +257,19 @@ spec:
 
 ```
 
+
+## 🔁 CronJob vs 🧭 Job in Kubernetes
+
+| Feature         | **Job**                              | **CronJob**                                    |
+| --------------- | ------------------------------------ | ---------------------------------------------- |
+| **Purpose**     | Run a one-time task                  | Run a task on a schedule (recurring)           |
+| **Trigger**     | Manual (imperative or manifest)      | Automatic, based on a cron schedule            |
+| **Scheduling**  | No built-in schedule                 | Uses cron syntax (`*/5 * * * *`)               |
+| **Creates**     | Pods                                 | Jobs (which in turn create Pods)               |
+| **Use Case**    | One-off batch jobs (e.g., backup DB) | Recurring jobs (e.g., daily report generation) |
+
+
+
 # Real Example - Taking up database backup:
 
 CronJob vs Job
