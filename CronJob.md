@@ -83,6 +83,7 @@ spec:
 
 Note: 'Cronjob at every run, new job will be created.'
 
+A CronJob creates Jobs on a schedule.
 
 ![image](https://github.com/user-attachments/assets/04d25406-766f-4ec8-9ee4-957cc7b19b8c)
 
@@ -224,23 +225,36 @@ cronjob.batch/history-limit-cronjob   */1 * * * *   False     0        11s      
 
 Limits the number of retries before considering the Job as failed.
 
+🔍 **Details**:
+- A CronJob creates Jobs on a schedule.
+
+- Each Job may fail and be retried.
+
+- backoffLimit is the number of retries allowed for a Job before it's marked as failed.
+
+- Once this limit is hit, no more retries are attempted, and the Job status is set to Failed.
+
+
+**In this example**, if the Job fails, Kubernetes will retry it up to 3 more times. If all fail, the Job is marked as Failed.
+
 ```bash
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: db-backup-cronjob
+  name: example-cronjob
 spec:
-  schedule: "0 0 * * *"
+  schedule: "*/5 * * * *"
   jobTemplate:
     spec:
+      backoffLimit: 3   # Retry up to 3 times on failure
       template:
         spec:
           containers:
-          - name: db-backup
+          - name: example
             image: busybox
-            command: ["sh", "-c", "echo Backing up database...; sleep 10; echo Database backed up!"]
-          restartPolicy: OnFailure
-  backoffLimit: 3
+            args: ["sh", "-c", "exit 1"]  # Simulate failure
+          restartPolicy: Never
+
 ```
 
 # Real Example - Taking up database backup:
