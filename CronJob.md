@@ -275,8 +275,226 @@ spec:
 
 
 
-# Real Example - Taking up database backup:
+# Real Example - : Automating Database Backup
 
-CronJob vs Job
+To illustrate the use of Jobs and CronJobs in a real-life scenario, let’s consider automating the backup of a MongoDB database running in a Kubernetes cluster.
 
-https://medium.com/@ravipatel.it/understanding-kubernetes-jobs-and-cronjobs-with-example-772f416b7e69
+## Deploy MongoDB in Kubernetes:
+
+### Step1:
+
+We need a MongoDB instance running in our cluster. We can use the following YAML file to deploy MongoDB using a StatefulSet and a Service.
+
+
+
+```bash
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mongodb-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: mongodb
+spec:
+  serviceName: "mongodb"
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mongodb
+  template:
+    metadata:
+      labels:
+        app: mongodb
+    spec:
+      containers:
+      - name: mongodb
+        image: mongo:latest
+        ports:
+        - containerPort: 27017
+        volumeMounts:
+        - name: mongodb-data
+          mountPath: /data/db
+  volumeClaimTemplates:
+  - metadata:
+      name: mongodb-data
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 1Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongodb
+spec:
+  ports:
+  - port: 27017
+    targetPort: 27017
+  selector:
+    app: MongoDB
+```
+
+### Step2:
+
+Next, we’ll create a Kubernetes Job that runs a backup script. This script will connect to the MongoDB instance and perform a backup, storing the backup in a persistent volume.
+
+
+```bash
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: mongodb-backup-job
+spec:
+  template:
+    spec:
+      containers:
+      - name: backup
+        image: mongo:latest
+        command: ["sh", "-c", "mongodump --uri=mongodb://mongodb:27017/admin --out=/backup && echo Backup completed!"]
+        volumeMounts:
+        - name: backup-storage
+          mountPath: /backup
+      restartPolicy: OnFailure
+      volumes:
+      - name: backup-storage
+        persistentVolumeClaim:
+          claimName: backup-pvc
+  backoffLimit: 4
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: backup-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+
+```
+Check the status of the Job and the logs to ensure the backup was completed successfully:
+
+```bash
+kubectl get jobs
+kubectl get pods
+kubectl logs <pod-name>
+```
+
+### Step3:
+
+Create a Kubernetes CronJob for Scheduled Backups.
+
+To automate daily backups, we will create a CronJob that schedules the backup Job to run every day at midnight.
+
+```bash
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: mongodb-backup-cronjob
+spec:
+  schedule: "0 0 * * *"  # Runs at midnight every day       ##### "*/2 * * * *"  # Run every 2 minutes
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: backup
+            image: mongo:latest
+            command: ["sh", "-c", "mongodump --uri=mongodb://mongodb:27017/admin --out=/backup && echo Backup completed!"]
+            volumeMounts:
+            - name: backup-storage
+              mountPath: /backup
+          restartPolicy: OnFailure
+          volumes:
+          - name: backup-storage
+            persistentVolumeClaim:
+              claimName: backup-pvc
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 1
+```
+
+Monitor the CronJob to ensure it is creating Jobs as scheduled:
+
+```bash
+kubectl get cronjobs
+kubectl get jobs
+kubectl get pods
+```
+
+## Backup Validaiton by inspecting persistent volume: (Optional)
+
+Create a pod and mount volume with it so you can inspect it;
+
+```bash
+apiVersion: v1
+kind: Pod
+metadata:
+  name: inspect-backup-pvc
+spec:
+  containers:
+  - name: shell
+    image: ubuntu
+    command: [ "sleep", "3600" ]
+    volumeMounts:
+    - mountPath: /backup
+      name: backup-volume
+  volumes:
+  - name: backup-volume
+    persistentVolumeClaim:
+      claimName: backup-pvc
+  restartPolicy: Never
+
+```
+### List the content of the mounted volume:
+
+```bash
+
+kubectl exec -it <pod name> -- ls -l /backup
+```
+
+
+### 🔍 **How to Check Backup Files on AKS**:
+
+
+
+**🔧 Step 1: Determine the Backing Storage Type:**
+
+### Setup Recap:
+
+**PVC name**: backup-pvc
+
+**Mounted at**: /backup
+
+**Storage**: Likely backed by Azure Disk or Azure Files, depending on your StorageClass.
+
+
+**run**;
+
+```bash
+kubectl get pvc backup-pvc -o jsonpath="{.spec.storageClassName}"
+```
+**then**;
+
+```bash
+kubectl get sc <your-storage-class-name> -o yaml | grep provisioner
+
+```
+
+**You’ll see something like**:
+
+disk.csi.azure.com → Azure Disk
+
+file.csi.azure.com → Azure Files
+
+
