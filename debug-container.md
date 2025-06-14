@@ -3,6 +3,14 @@
 When a pod is in `CrashLoopBackOff` and keeps restarting, you can't directly kubectl exec into it because the container never stays up long enough. However, Kubernetes provides a feature called ephemeral containers for exactly this situation.
 
 
+## UseCases:
+-CrashLoopbackOff
+
+-unexpected behavior of application
+
+-networking issue
+
+-tools/shell not available in main container
 
 
 
