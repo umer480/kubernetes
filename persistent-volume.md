@@ -164,4 +164,109 @@ Instead of pre-creating PVs manually, StorageClasses automate the creation of st
 | `ReadWriteMany` | Mounted as R/W by many nodes        | ✅                | ❌             |
 
 
+## 📐 Matching Conditions Between PVC and PV (for static provisioning)
+
+Kubernetes uses the following fields to match a PVC to an existing PV:
+| PVC Field                    | Must match with PV Field                            |
+| ---------------------------- | --------------------------------------------------- |
+| `storageClassName`           | `storageClassName`                                  |
+| `accessModes`                | Must be **subset** of PV's                          |
+| `resources.requests.storage` | PV’s `capacity.storage` must be **equal or larger** |
+| `volumeMode` (optional)      | Must match if specified                             |
+| `selector` (optional)        | Matches labels on PV                                |
+
+
+🧪 Example: PVC requesting a PV
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: my-claim
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+  storageClassName: ""
+
+
+PV (manually created):
+
+
+```bash
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: my-volume
+  labels:
+    type: local
+spec:
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: ""
+  persistentVolumeReclaimPolicy: Retain
+  hostPath:
+    path: "/mnt/data"
+```
+
+✅ What happens:
+accessModes: match ✅
+
+storage: 10Gi ≥ 5Gi ✅
+
+storageClassName: both are empty (no dynamic provisioning) ✅
+
+→ Kubernetes binds the PVC to the PV.
+
+
+💡 What if StorageClassName is defined?
+Then it uses dynamic provisioning:
+
+```bash
+storageClassName: standard
+```
+- If no matching PV exists, Kubernetes uses the StorageClass definition to provision a new PV dynamically.
+
+- The new PV is then bound to the PVC.
+
+🔄 **One-Time Binding**
+
+Once a PV is bound to a PVC, it cannot be reused by another PVC unless:
+
+The PVC is deleted,
+
+And the PV’s reclaimPolicy is set to Retain or manually reset to Available.
+
+
+## 🔍 Matching Diagram (Text-Based)
+
+```bash
+PVC
+ ├── storage: 5Gi
+ ├── accessModes: RWO
+ └── storageClassName: "fast"
+
+     ⬇
+
+Kubernetes:
+  - Finds existing PV with ≥5Gi, RWO, "fast"
+  - OR dynamically provisions using StorageClass "fast"
+     ⬇
+
+PV is Bound to PVC
+
+```
+
+**Summary**:
+
+
+| Component           | Condition                  |
+| ------------------- | -------------------------- |
+| Access Modes        | PVC must be subset of PV   |
+| Storage Size        | PV must be equal or larger |
+| Storage Class       | Must match exactly         |
+| Selector (optional) | Matches labels on PV       |
 
