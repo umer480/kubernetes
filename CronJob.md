@@ -13,8 +13,11 @@ Instead of running tasks at fixed intervals manually, Kubernetes CronJobs allow 
 ## Use Cases for CronJobs
 
 **Periodic Maintenance**: Automate routine maintenance tasks such as log rotation, database cleanup, or temporary file deletion to optimize system performance and resource utilization.
+
 **Database Backup**s: Schedule periodic backups of databases to ensure data is not lost.
+
 **Batch Processing**: Run data processing tasks such as generating reports or cleaning up old data.
+
 **Scheduled Deployments**: Automate deployment tasks like clearing caches or updating resources at regular intervals.
 
 
@@ -78,7 +81,7 @@ spec:
           - name: basic-container
             image: busybox
             command: ["echo", "Hello from the basic CronJob"]
-          restartPolicy: Never
+          restartPolicy: OnFailure
 ```
 
 Note: 'Cronjob at every run, new job will be created.'
@@ -141,7 +144,9 @@ https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
 You can control how CronJobs handle multiple concurrent executions.
 
 **Allow (default)**: CronJob allows multiple jobs to run at the same time.
+
 **Forbid**: Ensures that only one job runs at a time. The CronJob does not allow concurrent runs; if it is time for a new Job run and the previous Job run hasn't finished yet, the CronJob skips the new Job run.
+
 **Replace**: Replaces the currently running job with a new one if the CronJob triggers while another is still running. (If it is time for a new Job run and the previous Job run hasn't finished yet, the CronJob replaces the currently running Job run with a new Job run)
 
 
