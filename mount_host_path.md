@@ -1,4 +1,13 @@
+
+
 # Mounting a host path (a directory on the worker node) inside a Kubernetes pod is done using a hostPath volume.
+
+In Kubernetes, a hostPath volume mounts a file or directory from the node's filesystem directly into a Pod. This allows containers within the Pod to access files and directories on the host machine
+
+![image](https://github.com/user-attachments/assets/73f755a6-f12e-406b-895e-26306ce99384)
+
+
+
 
 ⚠️ Important:
 This approach is not portable across nodes.
