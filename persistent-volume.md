@@ -38,6 +38,9 @@ its not only specific to databases;
 ![image](https://github.com/user-attachments/assets/074fe635-ff26-469c-9ab8-e7fa5bd13565)
 
 
+PV is the representation of the actual storage. its actual/size capacity, backed by, etc.
+PVC is basically a `request` to use PV (actual storage)  
+
 
 ### Persistent Volume Creation Methods:
 
@@ -57,6 +60,16 @@ Cloud Storage , AWS, Azure etc
 
 
 ![image](https://github.com/user-attachments/assets/cb731dd7-6054-4118-8efc-f8ade1974d6e)
+
+
+### EBS Example:
+
+![image](https://github.com/user-attachments/assets/581a7203-5899-4cb0-a8ca-1553d5f7aa12)
+
+### NFS Example:
+
+![image](https://github.com/user-attachments/assets/a3f5c11a-a58e-4bcc-bfc8-70ccb66aa722)
+
 
 
 ## NameSpace - Relation
@@ -142,6 +155,8 @@ If you have multiple containers within the same POD, you will need to mount volu
 A StorageClass is a blueprint or template that tells Kubernetes how to dynamically provision PersistentVolumes (PVs) when a PersistentVolumeClaim (PVC) is created.
 
 Instead of pre-creating PVs manually, StorageClasses automate the creation of storage using a specific backend (like Azure Disk, AWS EBS, NFS, etc.).
+
+![image](https://github.com/user-attachments/assets/3d59a019-2aa1-4588-8bb8-e59cde0be644)
 
 
 ![image](https://github.com/user-attachments/assets/26dc4692-8e0c-4bd5-9a4f-e1319ab5cf57)
