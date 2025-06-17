@@ -39,6 +39,11 @@ its not only specific to databases;
 
 
 
+### Persistent Volume Creation Methods:
+
+1- Static / Manual Provisioning.
+2- Dynamic / Auto Provisioning.
+
 
 ## How to create/define persistent volume:
 
