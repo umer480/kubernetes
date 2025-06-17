@@ -290,3 +290,18 @@ PV is Bound to PVC
 | Storage Class       | Must match exactly         |
 | Selector (optional) | Matches labels on PV       |
 
+
+
+**VolumeBindingMode in Storage Class**:
+
+**1**- Immediate
+**2**- WaitForFirstConsumer
+
+![image](https://github.com/user-attachments/assets/f1e0dcb8-40da-4691-87b0-4a7b51c4fd19)
+
+![image](https://github.com/user-attachments/assets/5546372b-346f-4aac-bbe1-a603bf81381b)  
+
+jab tak PDO create nahi ho jata SC storage/PV create nai kry gi.
+
+
+
