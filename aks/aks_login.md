@@ -8,6 +8,6 @@ az aks get-credentials --resource-group <resource-group-name> --name <aks-cluste
 
 ### validation
 
-``bash
+```bash
 kubectl get nodes
 ```
