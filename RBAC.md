@@ -269,6 +269,32 @@ kubectl auth can-i get secret --as dev -n development
 4-  Kubeconfig context for the new user
 
 
+### Configure kubeconfig for Jane
+
+
+```bash
+
+kubectl config set-credentials jane \
+  --client-certificate=jane.crt \
+  --client-key=jane.key \
+  --embed-certs=true
+
+kubectl config set-context jane-context \
+  --cluster=<your-cluster-name> \
+  --user=jane \
+  --namespace=dev
+
+kubectl config use-context jane-context
+```
+
+Replace <your-cluster-name> with your actual cluster name (check with kubectl config get-clusters).
+
+Now you can test:
+
+```bash
+kubectl get pods   # Allowed
+kubectl delete pods  # Should be denied
+```
 
 
 
@@ -287,7 +313,13 @@ kubectl create rolebinding rbac-user-binding \
 
 ```
 
+
 Then you can use the ServiceAccount token from a pod or export it for CI/CD.
+
+
+
+
+
 
 https://www.youtube.com/watch?v=MGCF6slXG0w
 https://github.com/devopsproin/certified-kubernetes-administrator/tree/main/RBAC
