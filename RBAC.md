@@ -163,8 +163,30 @@ kubectl auth can-i get pod --as jack
 
 
 
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+## ROLE vs ClusterRole
 
+🔹 **Role**
+**Scope**: Namespace-scoped   **<---**
 
+Usage: Grants access within a specific namespace.
+
+Can manage: Resources like pods, services, configmaps within that namespace only.
+
+Created with: kind: Role
+
+🔹 **ClusterRole**
+**Scope**: Cluster-wide    **<---**
+
+Usage: Grants access to:
+
+Cluster-scoped resources (e.g., nodes, persistent volumes)
+
+Namespaced resources across all namespaces
+
+Created with: kind: ClusterRole
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
 ### Cluster Role
 
