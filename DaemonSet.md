@@ -4,13 +4,27 @@ DaemonSets in Kubernetes are API objects.
 DaemonSet is a type of controller that ensures a copy of a specific Pod runs on all (or some) nodes in a cluster.
 It automatically adds a Pod to new nodes as they join the cluster and removes the Pod when nodes are removed.
 
+
 DaemonSets are commonly used for services that need to run continuously in the background, such as systems monitoring the Nodes or agents collecting logs. It’s important for these applications to have a Pod running on every Node in your cluster to ensure they work effectively.
+
+![image](https://github.com/user-attachments/assets/28adaf85-265a-4fa0-88bb-0946bd1d3184)
+
+![image](https://github.com/user-attachments/assets/886e4c52-fbd9-435b-b45f-c6e1d322dc1b)
+
+![image](https://github.com/user-attachments/assets/0fceaa7c-ac2f-467a-a968-65825fdce533)
+
+
 
 DaemonSets are built to reliably run a Pod on every Node. They have built-in settings called ‘tolerations’ which let them schedule new Pods in situations where it might normally be blocked. For instance, even if a Node is low on resources or is not currently accepting new Pods, the DaemonSet Pods will still be scheduled on that
 
 Scaling: Unlike Deployments, DaemonSets do not use the `replicas` field because they are concerned with ensuring that each node (or a subset of nodes based on labels) runs a pod.
 
 Controlled Expansion: When you update a DaemonSet, new nodes will get the updated version of the pod, and existing nodes will eventually transition to the updated version.
+
+### LifeCycle:
+
+![image](https://github.com/user-attachments/assets/9f36dcc2-cf99-437c-b0a1-ad5e3288df01)
+
 
 
 ### 🔧 Use Cases of DaemonSet
