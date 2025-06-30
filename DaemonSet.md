@@ -9,9 +9,21 @@ DaemonSets are commonly used for services that need to run continuously in the b
 
 ![image](https://github.com/user-attachments/assets/28adaf85-265a-4fa0-88bb-0946bd1d3184)
 
+
+
+
+
+
 ![image](https://github.com/user-attachments/assets/886e4c52-fbd9-435b-b45f-c6e1d322dc1b)
 
+
+
+
+
+
 ![image](https://github.com/user-attachments/assets/0fceaa7c-ac2f-467a-a968-65825fdce533)
+
+
 
 
 
@@ -20,6 +32,11 @@ DaemonSets are built to reliably run a Pod on every Node. They have built-in set
 Scaling: Unlike Deployments, DaemonSets do not use the `replicas` field because they are concerned with ensuring that each node (or a subset of nodes based on labels) runs a pod.
 
 Controlled Expansion: When you update a DaemonSet, new nodes will get the updated version of the pod, and existing nodes will eventually transition to the updated version.
+
+
+###  Example:
+`kube-proxy` is deploy as a DaemonSet in kubernetes Cluster
+
 
 ### LifeCycle:
 
