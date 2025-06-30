@@ -187,3 +187,22 @@ ping busybox-1.busybox.default.svc.cluster.local
 | `emptyDir` used               | ✅ Each pod gets a **new empty volume** (ephemeral) |
 | No volume defined             | ✅ Container runs without persistent storage        |
 
+
+
+
+![image](https://github.com/user-attachments/assets/9e54e53c-f9a2-4fbe-bf70-59d53ece9abd)
+
+![image](https://github.com/user-attachments/assets/eff3b9aa-c45b-4617-a164-622da1250fd6)
+
+![image](https://github.com/user-attachments/assets/7ec97256-8674-47c9-9b3a-53641c1efdda)
+
+
+![image](https://github.com/user-attachments/assets/06fbd6e1-4e0f-41d4-bcd9-f0b0be1e6d05)
+
+
+![image](https://github.com/user-attachments/assets/5c719ab8-a4ae-46fd-b71f-45dc18cb7255)
+
+
+
+![image](https://github.com/user-attachments/assets/14154b90-2861-4cef-93b9-9c6b6d29b413)
+
