@@ -167,6 +167,38 @@ spec:
 
 
 
+### LAB
+
+Here's a very basic YAML manifest to deploy a sample DaemonSet on a Kubernetes cluster. This example runs a simple busybox container that just sleeps (does nothing) on every node:
+
+**kind**: DaemonSet — ensures a pod is deployed on each node.
+
+**matchLabels / labels** — ensures the DaemonSet manages the correct pods.
+
+
+```bash
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: sample-daemonset
+  namespace: default
+spec:
+  selector:
+    matchLabels:
+      name: sample-daemonset
+  template:
+    metadata:
+      labels:
+        name: sample-daemonset
+    spec:
+      containers:
+      - name: busybox
+        image: busybox
+        command: ["/bin/sh", "-c", "sleep 3600"]
+
+```
+
+
 
 ### 🔁 Behavior
 When a new node is added: The DaemonSet controller ensures a Pod is automatically scheduled on it.
