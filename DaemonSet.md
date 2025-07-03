@@ -88,37 +88,6 @@ kubectl edit daemonset <name>.
 ```
 
 
-```bash
-apiVersion: apps/v1
-kind: DaemonSet
-metadata:
-  name: fluentd-elasticsearch
-spec:
-  selector:
-    matchLabels:
-      k8s-app: fluentd-logging
-  template:
-    metadata:
-      labels:
-        k8s-app: fluentd-logging
-    spec:
-      containers:
-      - name: fluentd-elasticsearch
-        image: docker.io/... # appropriate Docker image here
-        resources: {}
-        volumeMounts:
-        - name: ...
-          mountPath: ... # paths to mount volumes
-      tolerations:
-      - key: "..."
-        operator: "Equal"
-        value: "..."
-        effect: "NoSchedule"
-      volumes:
-      - name: ...
-        hostPath:
-          path: ... # paths to the host file system
-```
 
 ### 📝 1. Log Collector DaemonSet (e.g., Fluent Bit)
 
