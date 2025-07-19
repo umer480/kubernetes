@@ -1,5 +1,5 @@
-#Login to Azure Container Registry
-
+# Login to Azure Container Registry
+ 
 
 <img width="1280" height="720" alt="image" src="https://github.com/user-attachments/assets/9dfc454a-fb10-4c34-819a-0fc413af46a6" />
 
