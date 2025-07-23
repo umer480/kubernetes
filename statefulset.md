@@ -6,16 +6,18 @@
 
 **Databases**: MySQL, PostgreSQL, MongoDB
 
-**Distributed Systems**: Kafka, Zookeeper, Cassandra
+**Distributed Systems**: Queue Services - i.e Apache Kafka, RabbitMQ  etc
 
 **Clustered Applications**: Redis Cluster, Elasticsearch
 
 
 ### Properties of StateFulSet:
 
-- Each pod has a stable identity ( name, and storage).
+- Each pod has a stable identity ( name, and storage).  (pod-0, pod-1, etc.)
 
-- Pods are created in order and deleted in reverse order.
+- Attaches persistent volumes (PVCs) that stay even if the pod is deleted.
+
+- Pods are created in order and deleted in reverse order. - Ensures ordered startup and shutdown, which many stateful apps require.
 
 - Scaling and rolling updates happen one pod at a time to preserve identity and state.
 
