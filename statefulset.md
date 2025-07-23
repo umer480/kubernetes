@@ -63,10 +63,14 @@ Note: `without a headless service, there's no way to resolve mysql-0 by name.`
 
 
 # LAB 
+
 Combine concepts of : 
-1- Stateful Set
-2- Headless Service
-3- PV/PVC
+
+1- Stateful Set.
+
+2- Headless Service.
+
+3- PV/PVC.
 
 ![image](https://github.com/user-attachments/assets/2e33fdf1-1459-4ee2-88a9-4d78d19c3b66)
 
