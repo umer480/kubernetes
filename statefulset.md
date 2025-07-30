@@ -212,3 +212,9 @@ ping busybox-1.busybox.default.svc.cluster.local
 
 ![image](https://github.com/user-attachments/assets/14154b90-2861-4cef-93b9-9c6b6d29b413)
 
+
+
+### More important points:
+- Deploy Separate StatefulSets for master and slave. (using Master & Slave in Same StatefulSet creates  complications in scaling, config, and management
+- Use Helm chart or Operator (Faster and easier with built-in replication logic)
+
