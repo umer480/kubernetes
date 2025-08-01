@@ -294,7 +294,8 @@ PV is Bound to PVC
 
 **VolumeBindingMode in Storage Class**:
 
-**1**- Immediate
+**1**- Immediate.
+
 **2**- WaitForFirstConsumer
 
 ![image](https://github.com/user-attachments/assets/f1e0dcb8-40da-4691-87b0-4a7b51c4fd19)
@@ -305,3 +306,114 @@ jab tak PDO create nahi ho jata SC storage/PV create nai kry gi.
 
 
 
+
+# LAB - with AKS
+
+## Scenario / Scenario :
+
+- You’re running an app with multiple replicas (pods).
+
+- All replicas must read & write to /www/html/docs.
+
+- The data must be shared and persisted across pods.
+
+- You’re using Azure AKS.
+
+
+
+**Possible Solutions:**
+
+🚫 **What Not to Use:**
+
+❌ **Azure Disk**— no RWX support, only ReadWriteOnce
+
+❌ **EmptyDir** — not persistent, lost when pod restarts
+
+❌ **NFS on a pod** — added complexity and single point of failure
+
+
+
+🚀 **Recommended Solution:** Use Azure File Share with ReadWriteMany
+**Azure File is your best option here because:**
+
+✅ Supports ReadWriteMany (RWX) access mode.
+
+✅ Allows multiple pods across multiple nodes to mount the same PVC and read/write concurrently.
+
+✅ Fully managed, backed by Azure Storage.
+
+
+**Premium FileShare:**
+✅ Use Azure Files premium SKU for better performance and low latency.
+
+
+Integrates natively with AKS via Azure CSI driver.
+
+
+### Create a SC:
+
+```bash
+
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: azurefile-rwx
+provisioner: file.csi.azure.com  		#This tells Kubernetes to use the Azure File CSI driver to provision volumes.
+allowVolumeExpansion: true 			#Allows you to expand the volume size by updating the PVC's resources.requests.storage field (if supported by the driver).
+mountOptions:
+  - dir_mode=0777
+  - file_mode=0777
+  - uid=0
+  - gid=0
+reclaimPolicy: Retain  				 # When a PVC using this StorageClass is deleted, the backing Azure File Share (PV) will not be deleted automatically.
+volumeBindingMode: Immediate 			 # Volumes are provisioned as soon as the PVC is created, regardless of Pod scheduling. 
+                              			 #If you set it to WaitForFirstConsumer, the volume won't be provisioned until a pod is scheduled
+
+```
+
+### Create a PVC/PV
+
+```bash
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: shared-docs-pvc
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: azurefile-rwx
+  resources:
+    requests:
+      storage: 10Gi
+
+```
+
+### Create Deployment/Application
+
+```bash
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-app
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: my-app
+  template:
+    metadata:
+      labels:
+        app: my-app
+    spec:
+      containers:
+        - name: web
+          image: nginx
+          volumeMounts:
+            - mountPath: /usr/share/nginx/html
+              name: shared-storage
+      volumes:
+        - name: shared-storage
+          persistentVolumeClaim:
+            claimName: shared-docs-pvc
+
+```
