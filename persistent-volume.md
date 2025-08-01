@@ -313,7 +313,7 @@ jab tak PDO create nahi ho jata SC storage/PV create nai kry gi.
 
 - You’re running an app with multiple replicas (pods).
 
-- All replicas must read & write to /www/html/docs.
+- All replicas must read & write to /usr/share/nginx/html.
 
 - The data must be shared and persisted across pods.
 
@@ -417,3 +417,45 @@ spec:
             claimName: shared-docs-pvc
 
 ```
+
+### Testing:
+
+
+**Method 1:** Port-Forward the Pod:
+
+```bash
+kubectl port-forward pod/myapp-7c5d94d8f6-mz7bb 8080:80
+```
+
+**This means**:
+
+Local port 8080 forwards to pod's port 80
+
+**Access your app via**:
+👉 http://localhost:8080
+
+
+**Method 2:** Port-Forward a Serviceort-Forward the Pod:
+Expose deployment via Service:
+
+```
+kubectl expose deployment my-app --name=myapp-service --type=ClusterIP --port=80 --target-port=80
+```
+
+Port Forwarding localhost to service port:
+
+```bash
+kubectl port-forward service/myapp-service 8080:80
+```
+
+
+⚠️ **Notes**
+
+**Port-forwarding** only works while your terminal session is active.
+
+It's ideal for testing or debugging, **not for production** exposure.
+
+**Make sure** you are in the correct namespace (use -n <namespace> if not default).
+
+
+
