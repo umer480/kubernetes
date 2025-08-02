@@ -213,6 +213,68 @@ ping busybox-1.busybox.default.svc.cluster.local
 ![image](https://github.com/user-attachments/assets/14154b90-2861-4cef-93b9-9c6b6d29b413)
 
 
+# LAB - Create a Headless Service and use it with StateFulSet
+
+
+```bash
+apiVersion: v1
+
+kind: Service
+metadata:
+  name: mysql
+  namespace: default
+spec:
+  clusterIP: None
+  selector:
+    app: mysql
+  ports:
+    - port: 3306
+      name: mysql
+---
+
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: mysql
+  namespace: default
+spec:
+  serviceName: "mysql"
+  replicas: 2
+  selector:
+    matchLabels:
+      app: mysql
+  template:
+    metadata:
+      labels:
+        app: mysql
+    spec:
+      containers:
+      - name: mysql
+        image: mysql:8.0
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: Tech@12345678
+        - name: MYSQL_DATABASE
+          value: exampledb
+        volumeMounts:
+        - name: data
+          mountPath: /var/lib/mysql
+
+        ports:
+        - containerPort: 3306
+
+  volumeClaimTemplates:
+  - metadata:
+      name: data
+    spec:
+      storageClassName: azurefile-csi
+      accessModes: [ "ReadWriteMany" ]  #[ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 5Gi
+
+```
+
 
 ### More important points:
 - Deploy Separate StatefulSets for master and slave. (using Master & Slave in Same StatefulSet creates  complications in scaling, config, and management
