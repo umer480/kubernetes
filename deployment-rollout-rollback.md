@@ -22,23 +22,28 @@ Terminate all old pods before creating new ones.
                     `Revert to the last stable version`
 
 
+### There are below 3 deployment strategies that we usually follow for rollout in the organizations:
 
-Rolling Update : 
+1- **Rolling Update** : 
 Some clients may connect to the old version, and some to the new version — at the same time — until the update is complete.
 
 
 
-Blue-Green Strategy:
+2- **Blue-Green Strategy**:
 creates a new environment and switch traffic all at once from old to new.
 
-Canary deployment:
-Send a small percentage of traffic  (subset of users) to the new version before full rollout.
+3- **Canary deployment**:
+Send a small percentage of traffic  (a subset of users) to the new version before rolling it out fully.
 
 
+
+
+
+### Rolling updates  - tehcnical deep drivre and implementation:
 
 In Kubernetes, when you perform a rolling update (which is the default deployment strategy), you can control how many pods are updated at a time using two key settings in your Deployment spec:
 
-⚙️ Key Fields to Control Rolling Updates
+⚙️ **Key Fields to Control Rolling Updates**
 
 | Parameter        | What it does                                                                                       |
 | ---------------- | -------------------------------------------------------------------------------------------------- |
@@ -46,43 +51,71 @@ In Kubernetes, when you perform a rolling update (which is the default deploymen
 | `maxUnavailable` | How many **existing pods** (old version) can be **taken offline** during the update.               |
 
 
-📌 What I meant by "replace when ready":
-When a new pod (v2) is created to replace an old pod (v1):
 
-Kubernetes starts a new pod with the updated container image.
+### Example: ✅ ### Default Deployment Strategy in Kubernetes:
 
-It waits until the new pod becomes "Ready" (i.e., passes health checks).
+When you do not define maxSurge and maxUnavailable, **Kubernetes uses**:
 
-Only after that, it will terminate one of the old pods.
+```bash
 
-This continues until all old pods are replaced by new ones.
+strategy:
+  type: RollingUpdate
+  rollingUpdate:
+    maxSurge: 25%
+    maxUnavailable: 25%
+```
 
-✅ Example:
-If you have 4 pods and:
+### Example:  🔢 You have 4 replicas in the Deployment:
 
-yaml
-Copy
-Edit
-maxSurge: 1
-maxUnavailable: 0
-Then during update:
+Let’s understand the values:
 
-Kubernetes creates 1 new pod (you now have 5 pods temporarily).
+**maxSurge**:         25% of 4 = 1 → 1 extra pod allowed during rollout
 
-When the new pod is "Ready", it terminates 1 old pod.
-
-You again have 4 pods.
-
-Repeat until all 4 pods are new.
-
-So:
-✅ "Ready" new pod ➡️ ✅ Replace an old one.
-🚫 Not Ready ➡️ 🚫 Don't remove old pod.
+**maxUnavailable**:   25% of 4 = 1 → 1 pod can be down at a time
 
 
 
+### 🔁 Step-by-step Rolling Update:
 
-### Deploy or Update a Deployment or change its image/version :
+**Step 0**: Initial state
+4 pods running with old version (v1)
+
+**Step 1**: Kubernetes starts the rollout
+It can take down up to 1 old pod (maxUnavailable = 1)
+
+It takes down 1 old pod → now 3 old pods remain
+
+It creates 1 new pod (maxSurge = 1) → now 4 pods total (3 old + 1 new)
+
+**Step 2**: Wait for the new pod to become Ready
+Once the new pod is healthy, Kubernetes proceeds.
+
+**Step **3: Repeat the process
+
+**Now**:
+
+again it deletes 1 more old pod → 2 old pods remain
+
+Creates 1 more new pod → 2 old + 2 new
+
+--- continue and so on ....
+
+
+
+
+
+**Other Scenarios**:
+
+`     --> replicas =4 ,   MaxSurge= 0 , Maxunavailable= 4 `
+
+ `    --> replicas =4   , MaxSurge = 2 , Maxunavailable = 0 `
+
+
+
+
+
+
+### Deploy or Update a Deployment or change its image/version using a command:
 
 ```bash
 kubectl set image deployment/my-app nginx=nginx:1.260
