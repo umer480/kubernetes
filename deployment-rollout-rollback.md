@@ -131,6 +131,74 @@ kubectl set image deployment/my-deployment my-container=my-image:v2
 
 
 
+# Rollout   -undo deployment changes : restore to previous version
+
+In Kubernetes, a rollback is the process of reverting a Deployment back to a previous stable version if the latest rollout fails or causes issues (like crashes, downtime, or bugs).
+
+
+**You might want to rollback if**:
+
+The new pods crash or fail health checks.
+
+You accidentally deployed a wrong version.
+
+Users report issues after a new rollout.
+
+Metrics show degraded performance.
+
+
+### 🔙 How rollback works
+
+Kubernetes automatically keeps a history of previous ReplicaSet revisions for a Deployment.
+
+When you trigger a rollback:
+
+1-Kubernetes finds the last known stable ReplicaSet.
+
+2-It starts a new rollout using that older version.
+
+3-The broken version is replaced safely (similar to a normal rollout).
+
+
+
+
+### Revision number:
+
+When you create a deployment, an automatic rollout is triggered, generating a number known as a Revision.
+
+Any modification made to the deployment’s container template/spec will also trigger a rollout, and a new revision is created for each change.
+
+
+
+<img width="373" height="536" alt="image" src="https://github.com/user-attachments/assets/adc87552-bd23-48d5-9b43-29365d80d931" />
+
+
+**View rollout history**:
+
+```bash
+kubectl rollout history deployment my-app
+```
+
+**Rollback to the previous revision**:
+
+```bash
+kubectl rollout undo deployment my-app
+```
+
+**Rollback to a specific revision**:
+
+```bash
+kubectl rollout undo deployment my-app --to-revision=2
+```
+
+## 🔍 Notes
+Rollbacks follow the same rules as rollouts (maxSurge, maxUnavailable, etc.).
+
+Only works if the Deployment had a previous successful rollout.
+
+You can also manually trigger a rollback by changing the image or other spec back to the older version.
+
+
 
 
 ### in-flight requests
