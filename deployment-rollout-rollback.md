@@ -124,7 +124,7 @@ Cost impact: On autoscaling clusters, a high surge may trigger extra node provis
 ### Deploy or Update a Deployment or change its image/version using a command:
 
 ```bash
-kubectl set image deployment/my-app nginx=nginx:1.260
+kubectl set image deployment/my-app nginx=nginx:1.260  --record=true
 kubectl set image deployment/my-deployment my-container=my-image:v2
 ```
 
@@ -164,6 +164,9 @@ When you trigger a rollback:
 
 ### Revision number:
 
+`Rollout creates a revision number.`
+
+
 When you create a deployment, an automatic rollout is triggered, generating a number known as a Revision.
 
 Any modification made to the deployment’s container template/spec will also trigger a rollout, and a new revision is created for each change.
@@ -171,6 +174,11 @@ Any modification made to the deployment’s container template/spec will also tr
 
 
 <img width="373" height="536" alt="image" src="https://github.com/user-attachments/assets/adc87552-bd23-48d5-9b43-29365d80d931" />
+
+
+
+
+<img width="597" height="434" alt="image" src="https://github.com/user-attachments/assets/ece28f22-188d-4975-9e60-a867b37659e1" />
 
 
 **View rollout history**:
