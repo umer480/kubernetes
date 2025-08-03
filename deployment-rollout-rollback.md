@@ -2,10 +2,6 @@
 
 `Rolling updates and Rollouts are the major benefits/features of a deployment object in Kubernetes.`
 
-**RECREATE Strategy** :
-Terminate all old pods before creating new ones.
-
-
 
 
 ##  Rolling updates / RollOut / Rollback
@@ -22,24 +18,25 @@ Terminate all old pods before creating new ones.
                     `Revert to the last stable version`
 
 
-### There are below 3 deployment strategies that we usually follow for rollout in the organizations:
+### There are below 4 deployment strategies that we usually follow for rollout in the organizations:
 
-1- **Rolling Update** : 
+
+1- **Recreate** : Terminate all old pods before creating new ones.
+
+2- **Rolling Update** : 
 Some clients may connect to the old version, and some to the new version — at the same time — until the update is complete.
 
-
-
-2- **Blue-Green Strategy**:
+3- **Blue-Green Strategy**:
 creates a new environment and switch traffic all at once from old to new.
 
-3- **Canary deployment**:
+4- **Canary deployment**:
 Send a small percentage of traffic  (a subset of users) to the new version before rolling it out fully.
 
 
 
 
 
-### Rolling updates  - tehcnical deep drivre and implementation:
+### Rolling updates  - technical deep dive and implementation:
 
 In Kubernetes, when you perform a rolling update (which is the default deployment strategy), you can control how many pods are updated at a time using two key settings in your Deployment spec:
 
@@ -90,7 +87,7 @@ It creates 1 new pod (maxSurge = 1) → now 4 pods total (3 old + 1 new)
 **Step 2**: Wait for the new pod to become Ready
 Once the new pod is healthy, Kubernetes proceeds.
 
-**Step **3: Repeat the process
+**Step 3:**   Repeat the process
 
 **Now**:
 
@@ -109,10 +106,19 @@ Creates 1 more new pod → 2 old + 2 new
 `     --> replicas =4 ,   MaxSurge= 0 , Maxunavailable= 4 `
 
  `    --> replicas =4   , MaxSurge = 2 , Maxunavailable = 0 `
+ 
 
+`With maxUnavailable: 0, old pods are not removed until new ones are ready.`
 
+`maxSurge: 100%:` up to double the number of pods can temporarily exist.
 
+**Resource pressure - if maxSurge >>>> / 100%** 
 
+'Adding surge pods might consume CPU/memory, causing old pods to slow down or fail probes, causing them to go NotReady.'
+
+More pods = more CPU/memory usage. This can overload nodes if you don’t have room.
+
+Cost impact: On autoscaling clusters, a high surge may trigger extra node provisioning.
 
 
 ### Deploy or Update a Deployment or change its image/version using a command:
@@ -121,3 +127,10 @@ Creates 1 more new pod → 2 old + 2 new
 kubectl set image deployment/my-app nginx=nginx:1.260
 kubectl set image deployment/my-deployment my-container=my-image:v2
 ```
+
+
+
+
+
+
+### in-flight requests
