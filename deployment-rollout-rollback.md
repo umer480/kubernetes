@@ -131,7 +131,7 @@ kubectl set image deployment/my-deployment my-container=my-image:v2
 
 
 
-# Rollout   -undo deployment changes: restore to previous version
+# Rollback   -undo deployment changes: restore to previous version
 
 In Kubernetes, a rollback is the process of reverting a Deployment back to a previous stable version if the latest rollout fails or causes issues (like crashes, downtime, or bugs).
 
@@ -147,17 +147,12 @@ Users report issues after a new rollout.
 Metrics show degraded performance.
 
 
-### 🔙 How rollback works
 
-Kubernetes automatically keeps a history of previous ReplicaSet revisions for a Deployment.
+**When you trigger a rollback**:
 
-When you trigger a rollback:
+1-It starts a new rollout using that older version.
 
-1-Kubernetes finds the last known stable ReplicaSet.
-
-2-It starts a new rollout using that older version.
-
-3-The broken version is replaced safely (similar to a normal rollout).
+2-The broken version is replaced safely (similar to a normal rollout).
 
 
 
@@ -171,7 +166,7 @@ When you create a deployment, an automatic rollout is triggered, generating a nu
 
 Any modification made to the deployment’s container template/spec will also trigger a rollout, and a new revision is created for each change.
 
-
+Kubernetes automatically creates a new revision every time you update the deployment spec (e.g., change image, environment variables, etc.).
 
 <img width="373" height="536" alt="image" src="https://github.com/user-attachments/assets/adc87552-bd23-48d5-9b43-29365d80d931" />  \
 
@@ -187,6 +182,9 @@ Any modification made to the deployment’s container template/spec will also tr
 
 
 ### How to Set Change Cause for a Revision:
+
+✅ This allows kubectl rollout history to show the "CHANGE-CAUSE" for better audit and understanding.
+
 
 **Method:1**
 
@@ -232,6 +230,9 @@ spec:
 
 use `--record=true` while set image command;
 
+If --record is not used, CHANGE-CAUSE will be <none>.
+
+
 ```bash
 kubectl set image deployment/nginx-deployment nginx-container=nginx:1.26  --record=true
 ```
@@ -264,6 +265,73 @@ kubectl rollout undo deployment nginx-deployment
 ```bash
 kubectl rollout undo deployment nginx-deployment --to-revision=2
 ```
+
+
+check rollback status:
+
+```bash
+kubectl rollout status deployment <deployment-name>
+```
+
+### How to inspect specific revision history
+
+if you dont know what exact image configured or what changed in pod's template for a particular revision history then you can inspect it using below command:
+
+```bash
+kubectl rollout history deployment nginx-deployment --revision=1
+```
+
+<img width="1369" height="383" alt="image" src="https://github.com/user-attachments/assets/545d468c-94ba-425a-b18e-8ec4f2f5115b" />
+
+
+## Revision history limit:
+
+By default, deployment maintain last 10 revisions. you can update its value in deployment yml `revisionHistoryLimit: 10`
+
+```bash
+
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 4
+  revisionHistoryLimit: 10
+```
+
+
+  
+### Restart deployment
+
+The command  is used to restart the Pods in a deployment without changing the deployment spec.
+
+```bash
+kubectl rollout restart deployment <deployment-name>
+```
+
+
+
+
+**What this command is does it actually**:
+
+It triggers a rolling restart of all pods managed by the deployment.
+
+It updates the deployment.spec.template.metadata.annotations with a new timestamp.
+
+This change causes Kubernetes to see the Pod template as updated → leading to new Pods being created and old ones terminated.
+
+The deployment revision is incremented.
+
+
+### When you need to restart a deployment?
+
+
+| Use Case                      | Description                                                                                                      |
+| ----------------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| ConfigMap or Secret Updated   | If a Pod uses ConfigMaps or Secrets and you want the changes to take effect without editing the deployment spec. |
+| Recover from transient errors | If Pods are stuck or misbehaving, a restart can fix them.                                                        |
+| No change to image or YAML    | You don’t need to change container image or YAML manually.                                                       |
+
+
+
+`NOTE: This does not undo a previous rollout or revert the deployment to an earlier version (that's what kubectl rollout undo is for).`
 
 
 
