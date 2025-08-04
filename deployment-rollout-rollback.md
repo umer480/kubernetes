@@ -124,14 +124,14 @@ Cost impact: On autoscaling clusters, a high surge may trigger extra node provis
 ### Deploy or Update a Deployment or change its image/version using a command:
 
 ```bash
-kubectl set image deployment/my-app nginx=nginx:1.260  --record=true
+kubectl set image deployment/my-app nginx=nginx:1.260
 kubectl set image deployment/my-deployment my-container=my-image:v2
 ```
 
 
 
 
-# Rollout   -undo deployment changes : restore to previous version
+# Rollout   -undo deployment changes: restore to previous version
 
 In Kubernetes, a rollback is the process of reverting a Deployment back to a previous stable version if the latest rollout fails or causes issues (like crashes, downtime, or bugs).
 
@@ -140,7 +140,7 @@ In Kubernetes, a rollback is the process of reverting a Deployment back to a pre
 
 The new pods crash or fail health checks.
 
-You accidentally deployed a wrong version.
+You accidentally deployed the wrong version.
 
 Users report issues after a new rollout.
 
@@ -173,7 +173,11 @@ Any modification made to the deployment’s container template/spec will also tr
 
 
 
-<img width="373" height="536" alt="image" src="https://github.com/user-attachments/assets/adc87552-bd23-48d5-9b43-29365d80d931" />
+<img width="373" height="536" alt="image" src="https://github.com/user-attachments/assets/adc87552-bd23-48d5-9b43-29365d80d931" />  \
+
+
+
+============================================================
 
 
 
@@ -181,25 +185,90 @@ Any modification made to the deployment’s container template/spec will also tr
 <img width="597" height="434" alt="image" src="https://github.com/user-attachments/assets/ece28f22-188d-4975-9e60-a867b37659e1" />
 
 
+
+### How to Set Change Cause for a Revision:
+
+**Method:1**
+
+
+Set annotation in deployment metadata;
+
+```bash
+  annotations:
+    kubernetes.io/change-cause: "Updated image to nginx 1.28 - fixed bug"  # <-- Change cause annotation
+```
+
+
+**Example**:
+
+```bash
+apiVersion: apps/v1                # API version for the Deployment resource
+kind: Deployment                   # Defines this resource as a Deployment
+metadata:
+  name: nginx-deployment           # Name of the Deployment
+  annotations:
+    kubernetes.io/change-cause: "Updated image to nginx 1.28 - fixed bug"  # <-- Change cause annotation
+  labels:
+    app: nginx                     # Labels used to identify the deployment
+spec:
+  replicas: 4                      # Number of pod replicas to maintain
+  selector:                        # Selector to match pods with the correct labels
+    matchLabels:
+      app: nginx                   # This must match the pod template's labels
+  template:                        # Defines the pod template for this deployment
+    metadata:
+      labels:
+        app: nginx                 # Labels for the pods created by this template
+    spec:
+      containers:                  # List of containers within the pod
+        - name: nginx-container    # Name of the container
+          image: nginx:1.28      # Docker image to use for this container
+          ports:
+            - containerPort: 80    # Expose port 80 from the container
+
+```
+
+**Method:2**
+
+use `--record=true` while set image command;
+
+```bash
+kubectl set image deployment/nginx-deployment nginx-container=nginx:1.26  --record=true
+```
+
+**Method:3**
+You can also manually set the change-cause using below command:
+
+```bash
+kubectl annotate deployment nginx-deployment kubectl.kubernetes.io/change-cause="Updated image to v2"
+```
+
+
+
+### Important Commands:
+
 **View rollout history**:
 
 ```bash
-kubectl rollout history deployment my-app
+kubectl rollout history deployment nginx-deployment
 ```
 
 **Rollback to the previous revision**:
 
 ```bash
-kubectl rollout undo deployment my-app
+kubectl rollout undo deployment nginx-deployment
 ```
 
 **Rollback to a specific revision**:
 
 ```bash
-kubectl rollout undo deployment my-app --to-revision=2
+kubectl rollout undo deployment nginx-deployment --to-revision=2
 ```
 
+
+
 ## 🔍 Notes
+
 Rollbacks follow the same rules as rollouts (maxSurge, maxUnavailable, etc.).
 
 Only works if the Deployment had a previous successful rollout.
