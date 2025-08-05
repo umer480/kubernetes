@@ -347,3 +347,107 @@ You can also manually trigger a rollback by changing the image or other spec bac
 
 
 ### in-flight requests
+
+
+### What is Graceful Shutdown?
+`A graceful shutdown is a process where an application or service closes cleanly, allowing in-progress tasks (like HTTP requests, database writes, etc.) to finish properly before the application stops`
+
+
+**A production-scale application should be able to handle all the below points**; 
+
+- Prevent new requests
+- Proper Connection draining.  In-flight requests- Waits for them to finish
+- Cleans up connections (e.g., DB, sockets)
+- Prevents data loss or corruption
+- Flushes logs, sends metrics before exiting
+
+
+**SIGTERM** and **SIGKILL** - Your app should be able to handle these signals.  - use signal handlers in your custom code/app logic.
+
+
+
+
+
+### What happens when a Pod is terminated?
+
+`When you delete a Pod (manually or via rolling update), Kubernetes goes through the following termination flow`
+
+
+**=== Default Behaviour ===**
+
+| Time  | Event                                                               |
+| ----- | ------------------------------------------------------------------- |
+| 0s    | SIGTERM sent to container                                           |
+| 0s    | Pod is removed from Service endpoints                               |
+| 0–30s | App can finish in-flight requests (if it handles SIGTERM correctly) | ---> terminationGracePeriodSeconds=30 by default
+| 30s   | If not exited, Kubernetes sends SIGKILL (forcibly stops container)  |
+
+
+
+
+### PreStop:
+The preStop hook executes before the container is terminated.
+`preStop is like a "last call" or "goodbye" script that runs before your container is stopped.`
+
+
+### When you delete the pod, then what happens ?????
+
+```bash
+kubectl delete pod my-pod
+```
+
+Then Kubernetes does:
+
+1- **Marks** pod as Terminating immediately
+     (This is a state in the Pod's lifecycle — it’s not caused by SIGTERM)
+
+2- **Runs** the preStop hook, if defined
+
+3- **After preStop** finishes, Kubernetes sends SIGTERM to PID 1 in each container
+
+4- Waits up to terminationGracePeriodSeconds
+
+5- If container doesn't exit in time → Kubernetes sends **SIGKILL**
+
+
+### LAB:
+
+```bash
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: prestop-demo
+spec:
+  terminationGracePeriodSeconds: 120
+  volumes:
+    - name: log-volume
+      emptyDir: {}
+  containers:
+    - name: app
+      image: nginx
+      volumeMounts:
+        - mountPath: /logs
+          name: log-volume
+      lifecycle:
+        preStop:
+          exec:
+            command:
+              - /bin/sh
+              - -c
+              - |
+                echo "preStop running at $(date)" >> /logs/prestop.log; sleep 60
+
+```
+
+
+**Always ensure**:
+
+```bash
+terminationGracePeriodSeconds ≥ expected preStop duration + expected app shutdown duration
+```
+The entire shutdown process — including **preStop**, the container's SIGTERM handling, and actual exit — must complete within terminationGracePeriodSeconds.
+
+
+
+
