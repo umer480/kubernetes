@@ -1,34 +1,36 @@
-![image](https://github.com/user-attachments/assets/1ff84946-3d6c-43e0-9ba6-d73459527fcc)# Persistent Volume in Kubernetes
+# Persistent Volume in Kubernetes:
 
-## Why we need persistent volume ?
+
+
+## Why we need a persistent volume ?
 
 **Problem**:
 
-`data will be loss on pod restart`
+`data will be lost on pod restart`
 
 ![image](https://github.com/user-attachments/assets/ded3cf09-52e1-4aa3-ad8c-2b013421b367)
 
 **Solution**:
 
-`so you need that storage that does not depend on pod lifecycle`
+`So you need that storage that does not depend on pod lifecycle`
 
 ![image](https://github.com/user-attachments/assets/84f391cf-32db-49c5-b767-9d74b514e2b6)
 
 
 
-If you have multiple pods across different nodes then storage (with up to date data) must be available/accessible from all the nodes.
+If you have multiple pods across different nodes, then storage (with up-to-date data) must be available/accessible from all the nodes.
 
 ![image](https://github.com/user-attachments/assets/27a11094-3614-4a1b-ac23-6001b69e7e65)
 
 
 
-Storage outside kubernetes cluster:
+**Storage outside kubernetes cluster**:
 
 ![image](https://github.com/user-attachments/assets/c8f471d3-4f33-48ea-b839-98ebacc5ba7e)
 
 
-another use case where you should have persitent volume:
-its not only specific to databases;
+another use case where you should have persistent volume:
+It's not only specific to databases;
 
 ![image](https://github.com/user-attachments/assets/f51467f8-f3e9-4b87-89cc-8bca7903c848)
 
@@ -38,23 +40,26 @@ its not only specific to databases;
 ![image](https://github.com/user-attachments/assets/074fe635-ff26-469c-9ab8-e7fa5bd13565)
 
 
-PV is the representation of the actual storage. its actual/size capacity, backed by, etc.
-PVC is basically a `request` to use PV (actual storage)  
+
+### What is PV object in Kubernetes:
+
+PV (Persistent Volume) is the representation of the actual /physical storage. its actual/size capacity, backed by, etc.
 
 
 ### Persistent Volume Creation Methods:
 
 1- Static / Manual Provisioning.
+
 2- Dynamic / Auto Provisioning.
 
 
-## How to create/define persistent volume:
+## How to create/define a persistent volume:
 
-its a kubernetes resource object defined via YAML. but it is an abstract component - means it need some physical storage. like
+It's a Kubernetes resource object defined via YAML. but it is an abstract component - means it needs some physical storage. like
 
-local hard driver from the cluster nodes.
-External NFS Servers outside kubernetes cluster.
-Cloud Storage , AWS, Azure etc
+local hard drive from the cluster nodes.
+External NFS Servers outside Kubernetes cluster.
+Cloud Storage, AWS, Azure etc
 
 ![image](https://github.com/user-attachments/assets/fc25db46-e563-43ae-9b93-0a1ccde611f0)
 
@@ -72,29 +77,35 @@ Cloud Storage , AWS, Azure etc
 
 
 
+
+
 ## NameSpace - Relation
 
-PV are not namespace-specific - it can be used across all namespaces.
-BUT pvc and pod should be exist in the same namespace
+PV is not namespace-specific - it can be used across all namespaces.
+BUT PVC and Pod should exist in the same namespace
 
 ![image](https://github.com/user-attachments/assets/4d96920d-e48d-45ea-9797-e3ff84766f3c)
 
 
-Types of Volumes that kubernetes support:
+**Types of Volumes that Kubernetes supports**:
 
 ![image](https://github.com/user-attachments/assets/4624f5bc-89f5-48e2-b0c9-010ce324fded)
 
 
 
-Storage Administrator = provision PV
-Application Administrator = provisiong PVC
-application has to claim the persitent volume
+**Storage Administrator** = provision PV
+Application Administrator = provision PVC
+application has to claim the persistent volume
 
 **Flow**:
 
 ![image](https://github.com/user-attachments/assets/f4b3dd08-d201-42a9-bb6e-975bbaf84ee3)
 
-### Persistent Volume Claim (PVC:
+
+
+
+### Persistent Volume Claim (PVC):
+PVC is a `request` to use PV (actual storage)  
 When you define PVC you define required specs of volume ; like desired storage space,access mode.
 
 Whatever PV matches criteria or satisfies the claim will be used for the application.
@@ -134,6 +145,13 @@ Whatever PV matches criteria or satisfies the claim will be used for the applica
 ![image](https://github.com/user-attachments/assets/c3d923fc-14bb-4e9a-a26e-3ff31de4de82)
 
 
+<img width="298" height="300" alt="image" src="https://github.com/user-attachments/assets/bd11064b-6984-4162-a0eb-309551983f8e" />
+
+
+<img width="281" height="179" alt="image" src="https://github.com/user-attachments/assets/591947f0-2f5a-4c2d-b2f3-7177e6d2a4a5" />
+
+
+
 
 ### mounting with multiple containers of same POD
 
@@ -148,6 +166,9 @@ If you have multiple containers within the same POD, you will need to mount volu
 
 
 # Storage Class:
+
+![image](https://github.com/user-attachments/assets/1ff84946-3d6c-43e0-9ba6-d73459527fcc)# Persistent Volume in Kubernetes
+
 
 ⚙️ **Dynamic provisioning** : `SC provisions persistent volumes dynamically.` \
      --------------------------------------------------------------------->  `When PersistentVolumeClaim claim it`
