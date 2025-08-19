@@ -4,11 +4,11 @@
 
 Implementation Scenarios:
 
-1-  Existing AKS Cluster with new Application Gateway.  \
+1-  Existing AKS Cluster with new Application Gateway.  `https://www.youtube.com/watch?v=PngRsyHyYQE`  \
 2-  Existing AKS Cluster with existing Application Gateway. \
-3-  App Gateway (Public) --> LB (Private) --> Nginx Managed Controller > Cluster IP/Service > POD
-4-  LB (Public) --> LB Service >  Nginx Managed Controller > Cluster IP/Service > POD
-
+3-  App Gateway (Public) --> LB (Private) --> Nginx Managed Controller > Cluster IP/Service > POD   `https://www.youtube.com/watch?v=zn8uDLyYpN0`
+4-  LB (Public) --> LB Service >  Nginx Managed Controller > Cluster IP/Service > POD  'https://www.youtube.com/watch?v=iNgWdVVZZ0I' see part1+part2
+5- ingress on AWS Ec2 `https://www.youtube.com/watch?v=kf3UjITS91M`
 
 
 ## LAB Existing AKS Cluster with new Application Gateway:
