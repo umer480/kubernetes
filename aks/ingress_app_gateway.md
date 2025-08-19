@@ -28,6 +28,20 @@ kubectl get ingress
 
 
 
+# Managed Ingress App Routing  -Nginx Controller
+
+Enable App Routing on AKS Cluster:
+```bash
+az aks approuting enable --resource-group rg-aks-demo --name aks-demo-cluster --nginx
+```
+
+
+```bash
+https://learn.microsoft.com/en-us/azure/aks/app-routing
+```
+
+
+
 it will show 'app gateway' ip address if everything is fine.
 
 
