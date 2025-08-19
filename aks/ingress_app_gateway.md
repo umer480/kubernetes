@@ -2,8 +2,12 @@
 
 ### Scenarios :
 
+Implementation Scenarios:
+
 1-  Existing AKS Cluster with new Application Gateway.  \
 2-  Existing AKS Cluster with existing Application Gateway. \
+3-  App Gateway (Public) --> LB (Private) --> Nginx Managed Controller > Cluster IP/Service > POD
+4-  LB (Public) --> LB Service >  Nginx Managed Controller > Cluster IP/Service > POD
 
 
 
