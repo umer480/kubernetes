@@ -5,7 +5,7 @@
 
 When you enable app routing on AKS then it creates  2 types of controllers: `Nginx controller` and `External DNS Controller`
 
-<img width="717" height="319" alt="image" src="https://github.com/user-attachments/assets/8c996ffc-72c2-4600-b7b2-efc2d703cc92" />
+<img width="923" height="404" alt="image" src="https://github.com/user-attachments/assets/03405bb0-15d8-47ca-b7f9-65e87860baa8" />
 
 
 ### Enable App Rputing on AKS Cluster
