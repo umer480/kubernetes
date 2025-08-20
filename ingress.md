@@ -12,6 +12,8 @@ External Access --> Efficiently manage external access to services within a clus
 ```
 We prefer **ingress** over **NodePort** because it’s scalable, secure, and manageable, especially when dealing with multiple services or domains.
 
+LB Service is limited : Layer 4, no advance routing decisions, no SSL Termination etc
+
 # ingress benefits
 
 - Centralized access control - Act as a centralized entrypoint for all external service
