@@ -7,22 +7,47 @@
 
 brownfield network environment in networking is a previously developed network or infrastructure that is modified, upgraded, or integrated with new technologies and systems, rather than being built from scratch.
 
-Hub-Spoke Model:
+Classic Hub-Spoke architecture:
 
 
 Network Models: IP Address Management
 
-Networking Models - define how pods are communicate with each other and external world.
+Networking Models - define how pods are communicate with each other and the external world.
 Network Designing:
 
-1-Kubene
+1-Kubenet
 2-CNI
 3- CNI Overlay
 
 
-### Azure CNI key design points:
-Azure CNI (Container networking interface) is a networking solution for AKS that integrates with Azure Virtual Network (VNET). it allows pods to receive IP address from the Azure VNET, enabling seamless communication between pods and other resources within the VNET.
+### Kubenet
 
+Three networks/CIDR:
+
+1- NODE Network (Subnet of VNET where AKS Cluster deployed)  172.16.239.0/24
+2- Cluster Network (within the cluster) - used with 'Services' to communicate with pods  10.101.0.0/16
+3- POD Network 10.244.0.0/16 (within the cluster)
+
+
+### Azure CNI key design points:
+Azure CNI (Container Networking Interface) is a networking solution for AKS that integrates with Azure Virtual Network (VNET). it allows pods to receive IP address from the Azure VNET, enabling seamless communication between pods and other resources within the VNET.
+
+Networks : 
+1- NODE Network/POD Network (Subnet of VNET where AKS Cluster deployed)  -pods and nodes are in the same network
+2- Cluster Network (within the cluster) - used with 'Services' to communicate with pods
+
+Use Case:
+Azure CNI is ideal for scenarios where you need:
+
+Direct Communication: pods need to communicate directly with other Azure resources. (VMs, databases) within the same VNET without NAT
+
+Network Security: Enhanced security through Azure VNET features like Network Security Group (NSG) and Azure Firewall.
+
+Scalinility:
+Limited by the number of IP addresses available i the VNER subnet
+
+
+NODE/POD Network shouldnt be overalap with other networks from - IP overlapping issues, with peering on-premise.
 
 
 
