@@ -1,5 +1,8 @@
 # AKS Networking
 
+Reference:
+https://medium.com/@h.stoychev87/azure-aks-network-components-part-1-2025-edition-ce5439f4c767
+
 
 # Deploy AKS on Existing Environment.
 
@@ -22,6 +25,8 @@ Network Designing:
 
 ### Kubenet
 
+pods receive IP addresses from a logically separate address space, and traffic is NATed to the node's IP address when leaving the node
+
 Three networks/CIDR:
 
 1- NODE Network (Subnet of VNET where AKS Cluster deployed)  172.16.239.0/24
@@ -29,22 +34,51 @@ Three networks/CIDR:
 3- POD Network 10.244.0.0/16 (within the cluster)
 
 
+NAT is performed.
+An additional hop is required in the design of kubenet, which adds minor latency to pod communication.
+Route tables and user-defined routes are required for using kubenet, which adds complexity to operations
+
+<img width="780" height="349" alt="image" src="https://github.com/user-attachments/assets/0384632f-9b70-4776-b5b7-ac35e7b1097c" />
+
+
+**Use kubenet when**:
+
+You have limited IP address space.
+Most of the pod communication is within the cluster.
+You don't need advanced AKS features, such as virtual nodes or Azure Network Policy.
+
 ### Azure CNI key design points:
 Azure CNI (Container Networking Interface) is a networking solution for AKS that integrates with Azure Virtual Network (VNET). it allows pods to receive IP address from the Azure VNET, enabling seamless communication between pods and other resources within the VNET.
 
-Networks : 
+**Networks** : 
 1- NODE Network/POD Network (Subnet of VNET where AKS Cluster deployed)  -pods and nodes are in the same network
 2- Cluster Network (within the cluster) - used with 'Services' to communicate with pods
 
-Use Case:
-Azure CNI is ideal for scenarios where you need:
+<img width="1434" height="493" alt="image" src="https://github.com/user-attachments/assets/71854e26-35eb-4533-9128-03e5030094d9" />
 
-Direct Communication: pods need to communicate directly with other Azure resources. (VMs, databases) within the same VNET without NAT
+**Use Case**:
+**Azure CNI is ideal for scenarios where you need**:
 
-Network Security: Enhanced security through Azure VNET features like Network Security Group (NSG) and Azure Firewall.
+**Direct Communication**: pods need to communicate directly with other Azure resources. (VMs, databases) within the same VNET without NAT.
+Pods can directly access other Azure resources within the same VNet without needing Network Address Translation (NAT) at the node level.
 
-Scalinility:
+**Network Security**: Enhanced security through Azure VNET features like Network Security Group (NSG) and Azure Firewall.
+
+**Network policies**:
+Azure CNI supports the implementation of Kubernetes Network Policies to control traffic flow between pods.
+
+**Use Azure CNI when**:
+
+You have available IP address space.
+Most of the pod communication is to resources outside of the cluster.
+You don't want to manage user defined routes for pod connectivity.
+You need AKS advanced features, such as virtual nodes or Azure Network Policy.
+
+**Scability**:
 Limited by the number of IP addresses available i the VNER subnet
+**IP address planning**:
+This model requires careful planning of IP address ranges within your VNet to accommodate the number of nodes and pods you anticipate in your AKS cluster, as each pod consumes an IP address.
+
 
 
 NODE/POD Network shouldnt be overalap with other networks from - IP overlapping issues, with peering on-premise.
@@ -53,6 +87,9 @@ NODE/POD Network shouldnt be overalap with other networks from - IP overlapping 
 
 
 <img width="1099" height="746" alt="image" src="https://github.com/user-attachments/assets/9fa431c2-b698-4aa1-b657-ce20283d3c3c" />
+
+
+<img width="1446" height="674" alt="image" src="https://github.com/user-attachments/assets/f6d9ecc2-6458-414d-9221-39d36b44b731" />
 
 
 Virtual Network (VNet) Integration
