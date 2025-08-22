@@ -71,6 +71,12 @@ This model requires careful planning of IP address ranges within your VNet to ac
 Reference: https://www.youtube.com/watch?v=EoLa-1ra15w
 
 
+[!CAUTION] 
+[!WARNING] Load balancer talks to the nodes - not pods -- LB has health probes that point/monitor nodeport of nodes.
+[!WARNING] Internal LB does not have outbound rules - it's applicable only for ELB
+[!WARNING] Don't remove the Outbound rule from the external LB; otherwise, pods will not be able to reach the internet / outbound internet connectivity will stop.
+
+
 **CNI Validation Points**:
 
 ✔ Validate pods have the same IP from the node network range?  `#ifconfig` \
