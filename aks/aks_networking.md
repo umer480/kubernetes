@@ -92,6 +92,55 @@ NODE/POD Network shouldnt be overalap with other networks from - IP overlapping 
 <img width="1446" height="674" alt="image" src="https://github.com/user-attachments/assets/f6d9ecc2-6458-414d-9221-39d36b44b731" />
 
 
+
+
+
+## Azure CNI Overlay 
+
+### Communication directions/flow:
+
+`Pod IPs are not NATed at all inside the cluster.`
+
+When Pod A talks to Pod B (even across nodes), the original Pod IP is preserved end-to-end.
+
+`The only “trick” is that the Pod IP ranges are not part of the VNET → so Azure CNI overlay uses VXLAN encapsulation between nodes to carry that Pod-to-Pod traffic.`
+
+
+
+🔹 **1- East-West (inside the cluster):**
+
+**Pod ↔ Pod on same node** → They just use the overlay bridge, no NAT.
+
+**Pod ↔ Pod across nodes** → Overlay (VXLAN) tunnels the traffic between nodes. The original **Pod IPs remain intact**.
+
+👉 So **within the cluster, Pods always talk to each other directly with Pod IPs (no NAT involved).**
+
+
+
+
+
+🔹 **2-  North-South (outside the cluster / VNET / internet):**
+
+When a Pod sends traffic outside the cluster overlay (e.g., internet, Azure SQL, Storage Account, on-prem):
+
+The Pod IP **is not routable outside the overlay.**
+
+The node’s host network does **SNAT **the Pod IP → node IP (or NAT Gateway/SLB outbound IP).
+
+👉 So the **outside world never sees the Pod IP** — it only sees the node/NAT IP.
+
+
+
+
+#  **Key Difference with kubenet**
+
+| **Model/Plugin**            | **Pod-to-Pod (east-west)**                        |                 **Pod-to-Outside (north-south)**                                                           
+| --------------------------- | ------------------------------------------------- | ---------------------------------------------------------------------  |
+| **kubenet**                 | Needs **NAT or UDR-based routing** for cross-node | Always **SNATs to Node IP** before leaving                             |
+| **Azure CNI Overlay**     | Uses **VXLAN tunnels**, **no NAT** inside cluster | **SNAT to Node IP** (or NAT Gateway/SLB IP)                            |
+| **Azure CNI (non-overlay)** | Direct **Pod IP routing (VNET IPs)**, no NAT      | No NAT needed (Pod IPs are valid in VNET) unless outbound rules apply  | 
+
+
 Virtual Network (VNet) Integration
 
 
