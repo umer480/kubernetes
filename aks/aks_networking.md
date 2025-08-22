@@ -85,12 +85,19 @@ NODE/POD Network shouldnt be overalap with other networks from - IP overlapping 
 
 
 
+### Communication Diagram :
 
-<img width="1099" height="746" alt="image" src="https://github.com/user-attachments/assets/9fa431c2-b698-4aa1-b657-ce20283d3c3c" />
+- Communication from/to the internet - External Load Balancer (ELB)
+- Communication from/to VNET
+- Communication from/to On-Premise  -Internal Load Balancer (ILB)  -VNET Peering - S2S VPN Tunnel
+- Communication with Azure Services that have Private EndPoints.
 
 
-<img width="1446" height="674" alt="image" src="https://github.com/user-attachments/assets/f6d9ecc2-6458-414d-9221-39d36b44b731" />
+<img width="1427" height="753" alt="image" src="https://github.com/user-attachments/assets/4b0b6399-1f5c-4a67-a2ed-838d89d80e96" />
 
+### LAB : deploy a application and expose it via external and internal service.
+
+Reference: https://www.youtube.com/watch?v=EoLa-1ra15w
 
 
 
@@ -129,6 +136,12 @@ The node’s host network does **SNAT **the Pod IP → node IP (or NAT Gateway/S
 
 👉 So the **outside world never sees the Pod IP** — it only sees the node/NAT IP.
 
+
+
+<img width="1099" height="746" alt="image" src="https://github.com/user-attachments/assets/9fa431c2-b698-4aa1-b657-ce20283d3c3c" />
+
+
+<img width="1446" height="674" alt="image" src="https://github.com/user-attachments/assets/f6d9ecc2-6458-414d-9221-39d36b44b731" />
 
 
 
