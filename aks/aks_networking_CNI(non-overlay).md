@@ -1,13 +1,23 @@
 # AKS Networking  - Azure CNI (Container networking interface):
 
-## Azure CNI (Container networking interface):
+'In this model, each pod receives an IP address directly from the Azure Virtual Network (VNet) subnet where the AKS cluster is deployed.'
 
 ### Azure CNI key design points:
-Azure CNI (Container Networking Interface) is a networking solution for AKS that integrates with Azure Virtual Network (VNET). it allows pods to receive IP address from the Azure VNET, enabling seamless communication between pods and other resources within the VNET.
+Azure CNI (Container Networking Interface) is a networking solution/model for AKS that integrates with Azure Virtual Network (VNET). it allows pods to receive IP address from the Azure VNET, enabling seamless communication between pods and other resources within the VNET.
 
-**Networks** : 
 
-There are 2 networks/CIDR ranges CNI (non overlay):
+### Simplest Diagram of how pods connect with the node network ( via Bridge):
+
+Instead of NAT, Azure CNI creates a bridge for the Pod to be directly visible inside the Vnet. There is no NAT so no additional hop, which means performance similar to VM to VM communication.
+
+Bridge = virtual switch  ->It connects multiple network interfaces  so they can talk at Layer 2 (Ethernet).
+
+<img width="829" height="481" alt="image" src="https://github.com/user-attachments/assets/700baa31-1d7b-4dff-99dd-77e0b8a13ed1" />
+
+
+**Networks/CIDR** : 
+
+`There are 2 networks/CIDR ranges CNI (non overlay):`
 
 **1**- **NODE Network/POD Network** (Subnet of VNET where AKS Cluster deployed)  -pods and nodes are in the same network.
 
@@ -71,10 +81,13 @@ This model requires careful planning of IP address ranges within your VNet to ac
 Reference: https://www.youtube.com/watch?v=EoLa-1ra15w
 
 
-[!CAUTION] 
-[!WARNING] Load balancer talks to the nodes - not pods -- LB has health probes that point/monitor nodeport of nodes.
-[!WARNING] Internal LB does not have outbound rules - it's applicable only for ELB
-[!WARNING] Don't remove the Outbound rule from the external LB; otherwise, pods will not be able to reach the internet / outbound internet connectivity will stop.
+### Notes:
+
+> [!IMPORTANT]
+
+> [!NOTE]      - Load balancer talks to the nodes - not pods -- LB has health probes that point/monitor nodeport of nodes.  
+> [!NOTE]      - Internal LB does not have outbound rules - it's applicable only for EL. 
+> [!CAUTION]   - Don't remove the Outbound rule from the external LB; otherwise, pods will not be able to reach the internet / outbound internet connectivity will stop. 
 
 
 **CNI Validation Points**:
