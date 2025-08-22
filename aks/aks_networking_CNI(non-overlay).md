@@ -10,7 +10,7 @@ Azure CNI (Container Networking Interface) is a networking solution/model for AK
 
 Instead of NAT, Azure CNI creates a bridge for the Pod to be directly visible inside the Vnet. There is no NAT so no additional hop, which means performance similar to VM to VM communication.
 
-Bridge = virtual switch  ->It connects multiple network interfaces  so they can talk at Layer 2 (Ethernet).
+Bridge = virtual switch  ->It connects multiple network interfaces (pods)  so they can talk at Layer 2 (Ethernet).
 
 <img width="829" height="481" alt="image" src="https://github.com/user-attachments/assets/700baa31-1d7b-4dff-99dd-77e0b8a13ed1" />
 
