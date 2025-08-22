@@ -86,10 +86,10 @@ Azure CNI supports the implementation of Kubernetes Network Policies to control 
 
 **Use Azure CNI when**:
 
-You have sufficient available IP address space.( at VNET level)
-Most of the pod communication is to resources outside of the cluster.
-You don't want to manage user-defined routes for pod connectivity.
-You need AKS advanced features, such as virtual nodes or Azure Network Policy.
+- You have sufficient available IP address space.( at VNET level)
+- Most of the pod communication is to resources outside of the cluster.
+- You don't want to manage user-defined routes for pod connectivity.
+- You need AKS advanced features, such as virtual nodes or Azure Network Policy.
 
 **Scability**:
 Limited by the number of IP addresses available i the VNET subnet.
