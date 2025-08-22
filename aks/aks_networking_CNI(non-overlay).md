@@ -97,3 +97,13 @@ Reference: https://www.youtube.com/watch?v=EoLa-1ra15w
 ✔ Validate POD outbound/internet IP address (it should be the same as  ELB has) ? `#curl https://ifconfig.me`
 
 
+
+
+#  **Key Difference with kubenet**
+
+| **Model/Plugin**            | **Pod-to-Pod (east-west)**                        |                 **Pod-to-Outside (north-south)**                                                           
+| --------------------------- | ------------------------------------------------- | ---------------------------------------------------------------------  |
+| **kubenet**                 | Needs **NAT or UDR-based routing** for cross-node | Always **SNATs to Node IP** before leaving                             |
+| **Azure CNI Overlay**       | Uses **VXLAN tunnels**, **no NAT** inside cluster | **SNAT to Node IP** (or NAT Gateway/SLB IP)                            |
+| **Azure CNI (non-overlay)** | Direct **Pod IP routing (VNET IPs)**, no NAT      | No NAT needed (Pod IPs are valid in VNET) unless outbound rules apply  | 
+
