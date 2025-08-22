@@ -4,6 +4,15 @@ Reference:
 https://medium.com/@h.stoychev87/azure-aks-network-components-part-1-2025-edition-ce5439f4c767
 
 
+### Communication Diagram :
+
+- Communication from/to the internet - External Load Balancer (ELB)
+- Communication from/to VNET
+- Communication from/to On-Premise  -Internal Load Balancer (ILB)  -VNET Peering - S2S VPN Tunnel
+- Communication with Azure Services that have Private EndPoints.
+
+
+
 # Deploy AKS on Existing Environment.
 
 ### Brownfield environment:
@@ -47,14 +56,21 @@ You have limited IP address space.
 Most of the pod communication is within the cluster.
 You don't need advanced AKS features, such as virtual nodes or Azure Network Policy.
 
+
+## Azure CNI (Container networking interface):
+
 ### Azure CNI key design points:
 Azure CNI (Container Networking Interface) is a networking solution for AKS that integrates with Azure Virtual Network (VNET). it allows pods to receive IP address from the Azure VNET, enabling seamless communication between pods and other resources within the VNET.
 
 **Networks** : 
-1- NODE Network/POD Network (Subnet of VNET where AKS Cluster deployed)  -pods and nodes are in the same network
-2- Cluster Network (within the cluster) - used with 'Services' to communicate with pods
+
+
+**1**- **NODE Network/POD Network** (Subnet of VNET where AKS Cluster deployed)  -pods and nodes are in the same network.
+
+**2**- **Cluster Network** (within the cluster) - used with 'Services' to communicate with pods
 
 <img width="1434" height="493" alt="image" src="https://github.com/user-attachments/assets/71854e26-35eb-4533-9128-03e5030094d9" />
+
 
 **Use Case**:
 **Azure CNI is ideal for scenarios where you need**:
@@ -67,39 +83,41 @@ Pods can directly access other Azure resources within the same VNet without need
 **Network policies**:
 Azure CNI supports the implementation of Kubernetes Network Policies to control traffic flow between pods.
 
+
 **Use Azure CNI when**:
 
-You have available IP address space.
+You have sufficient available IP address space.( at VNET level)
 Most of the pod communication is to resources outside of the cluster.
-You don't want to manage user defined routes for pod connectivity.
+You don't want to manage user-defined routes for pod connectivity.
 You need AKS advanced features, such as virtual nodes or Azure Network Policy.
 
 **Scability**:
-Limited by the number of IP addresses available i the VNER subnet
+Limited by the number of IP addresses available i the VNET subnet.
+
 **IP address planning**:
 This model requires careful planning of IP address ranges within your VNet to accommodate the number of nodes and pods you anticipate in your AKS cluster, as each pod consumes an IP address.
 
 
+**Designing thing** !!! :
+`NODE/POD Network shouldn't overlap with other networks - other VNETs (Spokes) , On-Premise.`
 
-NODE/POD Network shouldnt be overalap with other networks from - IP overlapping issues, with peering on-premise.
 
-
-
-### Communication Diagram :
-
-- Communication from/to the internet - External Load Balancer (ELB)
-- Communication from/to VNET
-- Communication from/to On-Premise  -Internal Load Balancer (ILB)  -VNET Peering - S2S VPN Tunnel
-- Communication with Azure Services that have Private EndPoints.
 
 
 <img width="1427" height="753" alt="image" src="https://github.com/user-attachments/assets/4b0b6399-1f5c-4a67-a2ed-838d89d80e96" />
 
-### LAB : deploy a application and expose it via external and internal service.
+
+### LAB : deploy an application and expose it via external and internal service.
 
 Reference: https://www.youtube.com/watch?v=EoLa-1ra15w
 
 
+CNI Validation Points:
+Validate pods has same ip from node network? #ifconfig
+Validate ELB can access services running on pods? # http://<ELB-IP>
+Validate POD outbound IP address (it should be same as your ELB has) ? #curl https://ifconfig.me
+Validate POD can access a VM running inside same VNET or peered VNET?
+Validate Network Security Group ?
 
 
 ## Azure CNI Overlay 
