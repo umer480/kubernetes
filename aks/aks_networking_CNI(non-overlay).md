@@ -5,6 +5,10 @@
 ### Azure CNI key design points:
 Azure CNI (Container Networking Interface) is a networking solution/model for AKS that integrates with Azure Virtual Network (VNET). it allows pods to receive IP address from the Azure VNET, enabling seamless communication between pods and other resources within the VNET.
 
+**Flat Network:**
+
+In Azure `CNI Pod Subnet` (a type of flat network), both nodes and pods receive IP addresses directly from your virtual network (VNet). This necessitates a larger VNet subnet compared to overlay networks. To accommodate this, you must meticulously plan for the maximum number of nodes and pods your cluster will require. Additionally, because nodes and pods utilize separate subnets within your VNet, you must plan and allocate IP ranges for both independently.
+
 
 ### Simplest Diagram of how pods connect with the node network ( via Bridge):
 
