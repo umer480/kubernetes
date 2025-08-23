@@ -14,12 +14,12 @@
 
 
 
-## Back to Basics:
+## 🔹🔹🔹 Back to Basics:🔹🔹🔹 
 
-### Understand Traffic Directions:
+================================================================================
+
+### 🔹 Understand Traffic Directions:
  
- 🔹 Egress vs Ingress in AKS (and networking in general)
-
 
 ```bash
 
@@ -30,7 +30,7 @@ Ingress traffic → traffic arriving into a Pod/node/cluster (inbound).
 
 
 
-### Basic Network Communication Rule:
+### 🔹 Basic Network Communication Rule:
 
 
 =======================================================================================
@@ -49,14 +49,14 @@ Ingress traffic → traffic arriving into a Pod/node/cluster (inbound).
 
 
 
-### Routing should be proper in both directions ( reverse/response path too):
+### 🔹 Routing should be proper in both directions ( reverse/response path too):
 
 
 <img width="1140" height="577" alt="image" src="https://github.com/user-attachments/assets/4f3c7b30-ead8-462b-9e7f-1e77550e137e" />
 
 
 
-### You should be aware of the Communication Type:
+### 🔹 You should be aware of the Communication Type:
 
 1- Traffic Route????   `If IPs are preserved → it’s routing.`  \
 
@@ -64,7 +64,7 @@ Ingress traffic → traffic arriving into a Pod/node/cluster (inbound).
 
 
 
-### Ping/ICHO test is not enough:
+### 🔹 Ping/ICHO test is not enough:
 
 `Ping only tests ICMP, not real app traffic`
 
@@ -107,7 +107,7 @@ It does not prove the service/application is available or responding correctly
 
 
 
-### You should be aware of the protocols TCP/UDP:
+### 🔹 You should be aware of the protocols TCP/UDP:
 
 TCP / UDP / PORT number ???   \
 
@@ -131,14 +131,16 @@ Some applications listen on port 80 (http) but don't redirect automatically to 4
 
 
 
-### Trace TCP Port: Routing validation:
+### 🔹 Trace TCP Port: Routing validation:
 
 **Basic** : telnet client. \
 **Advance**: TraceTCP /TCPPing  Check if the Specific TCP Port is accessible throughout the path:  like utilities :  'TraceTCP /TCPPing' ,Test-NetConnection (Powershell)  , Netcat
 
 
 
-### Firewall throughout the Path:
+### 🔹 Firewall throughout the Path:
+
+
 
 If Routing is fine in both directions, then you must think about firewall filtering while troubleshooting  \
 
@@ -149,7 +151,8 @@ If Routing is fine in both directions, then you must think about firewall filter
 
 
 
-# DNS:
+# 🔹 DNS:
+
 
 
 “If you don’t understand DNS well, you’ll always get stuck when fixing network problems.” \ 
@@ -164,12 +167,12 @@ If Routing is fine in both directions, then you must think about firewall filter
 
 “Inadequate understanding of DNS leads to persistent difficulties in diagnosing and resolving network issues.”
 ```
-\
 
 
 
 
-### SSL/TLS Certs are involved in communication:
+
+### 🔹 SSL/TLS Certs are involved in communication:
 
 - SSL Expiry \
 - Certificate Chain/Trust issues. \ 
