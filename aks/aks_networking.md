@@ -16,20 +16,29 @@
 
 ## Kubernetes basic networking and communication:
 
-1- Container-to-Container Networking
-2- Pod-to-Pod Networking
-3- Pod-to-Service Networking
-4- Internet-to-Service Networking
+**1**🔹- Container-to-Container Networking\
+**2**🔹- Pod-to-Pod Networking\
+**3**🔹- Pod-to-Service Networking\
+**4**🔹- Internet-to-Service Networking\
 
 
-1- **Container Communication within a Pod (container-to-container)**
+
+
+
+
+**1**- 🔹**Container Communication within a Pod (container-to-container)**
 
 - **Shared Network Namespace**: Containers within the same pod share the same network namespace, meaning they can communicate with each other via localhost and share the same IP address and port space.
 - **Inter-Process Communication (IPC)**: Containers in a pod can use standard IPC mechanisms like SystemV semaphores or POSIX shared memory to communicate.
 - **Shared Volumes:** Containers in the same pod can also communicate by reading and writing to shared volumes.
 
 
-2- **Pod Communication (pod-to-pod)**
+
+
+
+
+
+**2**- 🔹**Pod Communication (pod-to-pod)**
 
 **IP-Per-Pod Model:** Each pod in Kubernetes is assigned a unique IP address, allowing direct communication between pods without the need for Network Address Translation (NAT). This simplifies networking and ensures that pods can easily find and talk to each other across the cluster.
 
@@ -40,7 +49,11 @@
 
 
 
-3- **Pod-to-Service Networking**
+
+
+
+
+**3**-🔹 **Pod-to-Service Networking**
 
 **Stable IP Addresses**: Services provide stable IP addresses or hostnames for accessing a set of pods, ensuring consistent access even if individual pods change.
 
@@ -49,7 +62,11 @@
 
 <img width="1100" height="1117" alt="image" src="https://github.com/user-attachments/assets/dc0c5dfe-2501-4f2b-b4f6-4085753b1ddf" />
 
-4- **Internet-to-Service Networking:**
+
+
+
+
+**4**-🔹 **Internet-to-Service Networking:**
 
 
 `A Service allows you to access a group dynamically of deployment (replicaset) pods.`
@@ -66,16 +83,6 @@
 
 <img width="881" height="662" alt="image" src="https://github.com/user-attachments/assets/6be80a7a-29a1-4433-a3f2-65201945fff4" />
 
-
-### Container networking:
-
-Kubernetes leverages Container `Networking Interface (CNI) plugins` to handle networking within its clusters. These CNIs are tasked with assigning IP addresses to pods, managing network routing between pods, and handling Kubernetes Service routing, among other functions.
-
-**Azure Kubernetes Service (AKS) offers a variety of CNI plugins to suit different networking needs in your clusters:**
-
-1- **Azure CNI overlay (overlay network model)**: Private and scalable.\
-2- **Azure CNI Node Subnet (flat network model):** Use it when AKS needs to communicate with other Azure resources.\
-3- **kubenet:** Basic networking option for Azure Kubernetes Service (AKS). Not recommended.\
 
 
 
@@ -98,41 +105,34 @@ Internet-to-Service Networking
 ```
 
 
-### Understand Traffic Directions:
- 
- 🔹 Egress vs Ingress in AKS (and networking in general)
-
-
-```bash
-
-Egress traffic → traffic leaving a Pod/node/cluster (outbound).
-
-Ingress traffic → traffic arriving into a Pod/node/cluster (inbound).
-```
 
 
 
-# Networking Models / Network Modes / Network Plugins - in  AKS
 
-## What is networking models in AKS:
+
+
+
+
+### Network Plugins:
+
+Kubernetes leverages Container Networking Interface (CNI) plugins` to handle networking within its clusters. These CNIs are tasked with assigning IP addresses to pods, managing network routing between pods, and handling Kubernetes Service routing, among other functions.
+
+
+### Networking Models / Network Modes / Network Plugins - in  AKS
 
 The networking model in AKS (Azure Kubernetes Service) defines how Pods get their IP addresses and how they talk to each other, to the node, to the internet, and to your VNET.
+
 
 `Think of it as the rules of the road for traffic inside and outside the cluster.`
 
 
-1- kubenet. (basic, legacy) --> deprecated) ****  \
-2- CNI Overlay  - CNI Pod Subnet \
-3- CNI (non Overlay) - CNI Node Subnet \
+**1- kubenet.** (basic, legacy) --> deprecated) ****  \
+**2- CNI Overlay**  - CNI Pod Subnet \
+**3- CNI (non Overlay)** - CNI Node Subnet \
 
 
 
 
-
-Reference: 
-```bash
-https://medium.com/@h.stoychev87/azure-aks-network-components-part-1-2025-edition-ce5439f4c767
-```
 
 
 
