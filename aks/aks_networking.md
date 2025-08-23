@@ -126,9 +126,17 @@ The networking model in AKS (Azure Kubernetes Service) defines how Pods get thei
 `Think of it as the rules of the road for traffic inside and outside the cluster.`
 
 
-**1- kubenet.** (basic, legacy) --> deprecated) ****  \
+`--> Network Model: its about network design, IP Address Management and  define how pods are communicate with each other and the external world.`
+
+
+
+
+
+### These are 3 Plugins/Network models on AKS:
+
+**1- kubenet.** (basic, legacy) --> *** deprecated****  \
 **2- CNI Overlay**  - CNI Pod Subnet \
-**3- CNI (non Overlay)** - CNI Node Subnet \
+**3- CNI (Flat/ non Overlay)** - CNI Node Subnet 
 
 
 
