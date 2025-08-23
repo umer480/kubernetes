@@ -17,7 +17,7 @@
 - Communication Protocols and Custom Ports.
 - Trace TCP ports utilities
 - DNS (Domain Name System) is a crucial part
-- Involvement of SSL/TLS  Certificate for data transmission. Client <> Server  Commnuication.
+- Involvement of SSL/TLS  Certificate for data transmission. Client <> Server  Communication.
 
 
 
@@ -65,7 +65,7 @@ Ingress traffic → traffic arriving into a Pod/node/cluster (inbound).
 
 ### 🔹 You should be aware of the Communication Type:
 
-1- Traffic Route????   `If IPs are preserved → it’s routing.`  \
+1- Traffic Route????   `If IPs are preserved → it’s routing.` 
 
 2- Traffic Nat ???    `If IPs are changed → it’s NAT.`
 
@@ -103,11 +103,11 @@ Ping only proves basic reachability (can I get a packet to that IP?).
 It does not prove the service/application is available or responding correctly
 
 **NOTE**: 
-=====Some cloud services (e.g., Azure LB, NAT Gateway) don’t respond to ping, even though the application behind them works fine.=====
+`Some cloud services (e.g., Azure LB, NAT Gateway) don’t respond to ping, even though the application behind them works fine.`
 
 
 
-**Trace Route**: It just  Shows you the path packets take from your machine to the destination. - its even not enough to track where exactly traffic dropped. Mean does not trace TCP traffic.
+**Trace Route**: It just  shows you the path packets take from your machine to the destination. - its even not enough to track where exactly traffic dropped. Mean does not trace TCP traffic.
 
 
 
@@ -116,7 +116,7 @@ It does not prove the service/application is available or responding correctly
 
 ### 🔹 You should be aware of the protocols TCP/UDP:
 
-TCP / UDP / PORT number ???   \
+TCP / UDP / PORT number ???   
 
 HTTP 80  (custom 8080)  \
 HHTPS 443   (custom 440)  \
@@ -162,8 +162,14 @@ If Routing is fine in both directions, then you must think about firewall filter
 
 
 
-“If you don’t understand DNS well, you’ll always get stuck when fixing network problems.” \ 
-“Poor DNS knowledge means network troubleshooting will keep tripping you up.” \\\
+`If you don’t understand DNS well, you’ll always get stuck when fixing network problems.`
+
+
+```bash
+
+“Poor DNS knowledge means network troubleshooting will keep tripping you up.”
+```
+
 
 <img width="189" height="170" alt="image" src="https://github.com/user-attachments/assets/9f1cbb83-ba5d-43f7-9c40-153ece993ab3" />
 
