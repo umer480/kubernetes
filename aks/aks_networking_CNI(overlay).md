@@ -2,16 +2,12 @@
 
 
 ### Brownfield environment: # Deploy AKS on Existing Environment.
-Classic Hub-Spoke architecture: \
+Classic Hub-Spoke architecture: 
 
 A brownfield network environment in networking is a previously developed network or infrastructure that is modified, upgraded, or integrated with new technologies and systems, rather than being built from scratch.
 
 
 
-Network Models: IP Address Management
-
-Networking Models - define how pods are communicate with each other and the external world.
-Network Designing:
 
 ## Kubenet
 
