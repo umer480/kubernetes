@@ -1,6 +1,13 @@
 # Networking Troubleshooting - AKS
 
 
+
+```bash
+"Many people are not fully clear about which tool to use and how to use it correctly when troubleshooting network issues. Fresh engineers, or even experienced ones, often struggle to think in multiple directions due to limited exposure. Below are some key points you should keep in mind while troubleshooting network-related problems — always approach the issue from multiple angles."
+```
+
+
+
 - Basic Network Communication Rule
 - Communication direction is very important - ingress/egress - inbound/outbound - incoming/outgoing
 - Routing vs NAT difference - Dual NAT
