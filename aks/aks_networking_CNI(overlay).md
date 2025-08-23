@@ -24,6 +24,8 @@ Three networks/CIDR:
 3- POD Network 10.244.0.0/16 (within the cluster)
 
 
+
+
 NAT is performed.
 An additional hop is required in the design of kubenet, which adds minor latency to pod communication.
 Route tables and user-defined routes are required for using kubenet, which adds complexity to operations
@@ -44,6 +46,10 @@ You don't need advanced AKS features, such as virtual nodes or Azure Network Pol
 
 ## Azure CNI Overlay 
 
+### IP Address Planning:
+Azure CNI Overlay networking simplifies IP management by assigning pod IPs from a separate, private CIDR range, not the virtual network (VNet) subnet. This means your VNet subnet can be smaller, as it only needs to accommodate node IPs. However, you must carefully plan the private CIDR range to ensure sufficient IP addresses for your pods, considering future scaling. Each node gets a /24 subnet for pods, so the overall overlay network subnet must accommodate the total number of nodes and their associated pod IPs.
+
+
 ### Communication directions/flow:
 
 `Pod IPs are not NATed at all inside the cluster.`
@@ -51,6 +57,7 @@ You don't need advanced AKS features, such as virtual nodes or Azure Network Pol
 When Pod A talks to Pod B (even across nodes), the original Pod IP is preserved end-to-end.
 
 `The only “trick” is that the Pod IP ranges are not part of the VNET → so Azure CNI overlay uses VXLAN encapsulation between nodes to carry that Pod-to-Pod traffic.`
+
 
 
 
