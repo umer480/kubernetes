@@ -103,6 +103,15 @@ The node’s host network does **SNAT **the Pod IP → node IP (or NAT Gateway/S
 
 ### Implementation:
 
+# Verify inbound and outbound flows
+#
+# Outbound
+k exec -it <nginx-pod-name> -n demo-ns
+curl ifconfig.me
+# inbound
+curl <external-ip>:8080
+
+
 
 Validate POD CIDR's for each subnet.
 Validate POD IP.
