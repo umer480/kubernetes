@@ -116,7 +116,7 @@ The node’s host network does **SNAT **the Pod IP → node IP (or NAT Gateway/S
 
 **1**- internet to pod.\
 **2**- pod to the internet.\
-**3**- pod to on-premises.\
+**3**- pod to on-premises.
 
 
 <img width="1309" height="608" alt="image" src="https://github.com/user-attachments/assets/75bded35-1e02-480c-9d57-35da6dcc1ad6" />
@@ -132,7 +132,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: aks-helloworld  
-  namespace: hello-web-app-routing
 spec:
   replicas: 1
   selector:
@@ -166,11 +165,11 @@ apiVersion: v1
 kind: Service
 metadata:
   name: nginx-service-external
-  namespace: demo-ns
+
 spec:
   type: LoadBalancer
   selector:
-    app: nginx
+    app: aks-helloworld
   ports:
     - protocol: TCP
       port: 8080
@@ -187,13 +186,13 @@ apiVersion: v1
 kind: Service
 metadata:
   name: nginx-service-internal
-  namespace: demo-ns
+
   annotations:
     service.beta.kubernetes.io/azure-load-balancer-internal: "true"    # -> this make load balancer as internal/private
 spec:
   type: LoadBalancer
   selector:
-    app: nginx
+    app: aks-helloworld
   ports:
     - protocol: TCP
       port: 8080
@@ -217,12 +216,7 @@ If there is any issue while provisioning/configuring Azure load balancer, get 'e
 
 ```bash
 kubectl get events -n <namespace>
-``
-
-If any issues related pod:
-
-```bash
-kubectl logs <pod name> -f
+kubectl logs <pod name> -f  -> if any issue in pod/container
 ```
 
 <img width="1165" height="193" alt="image" src="https://github.com/user-attachments/assets/fd990870-d390-41cb-a5e6-56abe46c8423" />
@@ -239,26 +233,66 @@ kubectl get svc -n kube-system kube-dns
 
 
 
-### Implementation:
 
-# Verify inbound and outbound flows
-#
-# Outbound
-k exec -it <nginx-pod-name> -n demo-ns
-curl ifconfig.me
-# inbound
-curl <external-ip>:8080
+## Validation
 
 
+### Validation after creating ^ resources:
 
-Validate POD CIDR's for each subnet.
-Validate POD IP.
-Validate Service IP.
+- Validate POD CIDR's for each subnet.
+- Validate POD IP.
+- Validate Service IP.
+
+
+
+### 1- POD to POD Communication validation:
+POD 1 deploy on Node1\
+POD 2 deploy Node2
+
+From `POD 1` send some test to POD 2 using this command:
+
+```bash
+seq 1 10 | xargs -n1 -P5 curl -s -o /dev/null -w "%{http_code}\n" http://<POD2 IP>
+```
+
+
+and then on `POD 2` to use `#netstat -ant`  - it will show the traffic originating from the actual `POD 1` IP. (NAT not performed)
+
+
+`Hence - its the beauty of Overlay network - Actual traffic `routed` in this case via `Overlay tunnel` which preserves actual source IP address.`
+
+
+
+### 2- VNET/ON-Premise to POD validation:
 
 ### Jump Server : POD to Jump Server , Jump Server to POD via internal LB service
 
-- On Jump Server ----> Access POD Service via internal LB  ---> then .... netstat on pod --> it will show traffic is coming to pod from the node (hide actual ip address of source/jump server)
-- On POD ---> Access jump serves service --> then ....netstat on jump server ---> it will show traffic coming from node not from pod (NAT performed) 
+1 - On Jump Server ----> Access POD Service via internal LB  ---> then .... netstat on pod --> it will show traffic is coming to pod from the node (hide actual ip address of source/jump server) --means NAT is performed - hence hide actual client/actual source ip from where traffic originated.
+
+
+### 3-  POD to VNET/ON-Premise validation:
+
+
+2 - On POD ---> Access jump serves service --> then ....netstat on jump server ---> it will show traffic coming from node, not from pod (NAT performed).
+
+
+in the above both Cases ( `VNET/ON-Premise to POD validation` and POD to `VNET/ON-Premise validation`  NAT is performed) \
+
+This is because Overlay network/ip range  is not routable outside the Kubernetes cluster so NAT is always performed when traffic in/out from/to the cluster.
+
+
+
+
+### 4-  POD to Internet Validation: (External Access Validation)
+
+exec to pod -->   --> it will return SLB IP address
+```bash
+#curl ifconfig.me
+```
+
+### 5-  internal access but outside AKS cluster : (Internal  Load Balancer Validation)
+
+Jump Server --> access service via internal load balancer ---? it will route reuest to pod ( via --> internal LB --> Nodeport --> Cluster IP --> POD IP)
 
 
 
