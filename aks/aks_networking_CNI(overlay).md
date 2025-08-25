@@ -254,6 +254,14 @@ curl <external-ip>:8080
 Validate POD CIDR's for each subnet.
 Validate POD IP.
 Validate Service IP.
-Jump Server : POD to Jump Server , Jump Server to POD via internal LB service
+
+### Jump Server : POD to Jump Server , Jump Server to POD via internal LB service
+
+- On Jump Server ----> Access POD Service via internal LB  ---> then .... netstat on pod --> it will show traffic is coming to pod from the node (hide actual ip address of source/jump server)
+- On POD ---> Access jump serves service --> then ....netstat on jump server ---> it will show traffic coming from node not from pod (NAT performed) 
+
+
+
+
 
 
