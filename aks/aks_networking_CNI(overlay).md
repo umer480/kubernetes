@@ -228,6 +228,17 @@ kubectl logs <pod name> -f
 <img width="1165" height="193" alt="image" src="https://github.com/user-attachments/assets/fd990870-d390-41cb-a5e6-56abe46c8423" />
 
 
+validate core dns:
+
+coredns pod should up, so internal name resolutions work fine. microservices connect with each other.
+
+
+```bash
+kubectl get svc -n kube-system kube-dns
+```
+
+
+
 ### Implementation:
 
 # Verify inbound and outbound flows
@@ -243,5 +254,6 @@ curl <external-ip>:8080
 Validate POD CIDR's for each subnet.
 Validate POD IP.
 Validate Service IP.
+Jump Server : POD to Jump Server , Jump Server to POD via internal LB service
 
 
