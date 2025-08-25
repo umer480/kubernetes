@@ -29,7 +29,9 @@
 **1**- 🔹**Container Communication within a Pod (container-to-container)**
 
 - **Shared Network Namespace**: Containers within the same pod share the same network namespace, meaning they can communicate with each other via localhost and share the same IP address and port space.
-- **Inter-Process Communication (IPC)**: Containers in a pod can use standard IPC mechanisms like SystemV semaphores or POSIX shared memory to communicate.
+- 
+- **Inter-Process Communication (IPC)**: `shareProcessNamespace` - When shareProcessNamespace: true is set in the Pod's specification, all containers within that Pod will share the same PID namespace. this allows, One container to see the processes running in other containers within the same Pod and Debugging or monitoring processes across containers within the Pod.
+- 
 - **Shared Volumes:** Containers in the same pod can also communicate by reading and writing to shared volumes.
 
 
@@ -40,10 +42,12 @@
 
 **2**- 🔹**Pod Communication (pod-to-pod)**
 
-**IP-Per-Pod Model:** Each pod in Kubernetes is assigned a unique IP address, allowing direct communication between pods without the need for Network Address Translation (NAT). This simplifies networking and ensures that pods can easily find and talk to each other across the cluster.
+**IP-Per-Pod Model:** Each pod in Kubernetes is assigned a unique IP address, allowing direct communication between pods. This simplifies networking and ensures that pods can easily find and talk to each other across the cluster.
 
 **Kube-proxy**: This component runs on each node and manages network rules to allow communication between pods. It handles routing and load balancing for services within the cluster.
 
+`Kube-proxy` implements the Kubernetes **Service** concept by providing a stable virtual IP (ClusterIP) and port for a set of Pods. This allows other applications to communicate with the Pods using a consistent address, even as the underlying Pods are created, terminated, or rescheduled.
+Kube-proxy watches the Kubernetes API server for changes to Service and EndpointSlice objects. Based on these changes, it configures network rules on the local node using technologies like **iptables**.
 
 <img width="1100" height="738" alt="image" src="https://github.com/user-attachments/assets/f72dead7-bc00-4cde-b538-7c35b8a734ef" />
 
