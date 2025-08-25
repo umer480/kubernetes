@@ -104,8 +104,11 @@ The node’s host network does **SNAT **the Pod IP → node IP (or NAT Gateway/S
 ### Outbound connectivity Options for PODs:
 
 1- Standard Public LoadBalancer **(Default)**. 
-2- NAT Gateway.\
-3- Azure Firewall.\
+
+2- NAT Gateway.
+
+3- Azure Firewall.
+
 
 
 
