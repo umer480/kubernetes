@@ -101,6 +101,130 @@ The node’s host network does **SNAT **the Pod IP → node IP (or NAT Gateway/S
 
 
 
+### Outbound connectivity Options for PODs:
+
+1- Standard Public LoadBalancer **(Default)**. 
+2- NAT Gateway.\
+3- Azure Firewall.\
+
+
+
+### Architecture Diagram - Communication Flows
+
+**1**- internet to pod.\
+**2**- pod to the internet.\
+**3**- pod to on-premises.\
+
+
+<img width="1309" height="608" alt="image" src="https://github.com/user-attachments/assets/75bded35-1e02-480c-9d57-35da6dcc1ad6" />
+
+
+
+# LAB:
+
+deployment.yaml
+
+```bash
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: aks-helloworld  
+  namespace: hello-web-app-routing
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: aks-helloworld
+  template:
+    metadata:
+      labels:
+        app: aks-helloworld
+    spec:
+      containers:
+      - name: aks-helloworld
+        image: nginxdemos/hello
+        ports:
+        - containerPort: 80
+```
+
+**Validate POD IP:**
+
+```bash
+# kubectl get deployment,pod -o wide
+```
+
+So, till now, ^ nodes deployed, pod also deployed using deployment.\
+ Now create an external service - expose pods from the internet/outside world
+
+service-external-lb.yaml
+
+```bash
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-service-external
+  namespace: demo-ns
+spec:
+  type: LoadBalancer
+  selector:
+    app: nginx
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 80
+```
+
+
+If you want access a service running on pods from on-premise or from with the same VNET where AKS cluster deployed or any other peered VNET then you have to deploy one more loadbalancer service using internal/private load balancer.
+
+service-internal-lb.yaml
+
+```bash
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-service-internal
+  namespace: demo-ns
+  annotations:
+    service.beta.kubernetes.io/azure-load-balancer-internal: "true"    # -> this make load balancer as internal/private
+spec:
+  type: LoadBalancer
+  selector:
+    app: nginx
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 80
+```
+
+
+### now validate service endpoints:
+it should point to pods (that have IPs from the overlay network)
+
+
+```bash
+kubectl describe service <external service>
+kubectl describe service <internal service>
+
+```
+
+# Troubleshooting
+If there is any issue while provisioning/configuring Azure load balancer, get 'events'
+
+
+```bash
+kubectl get events -n <namespace>
+``
+
+If any issues related pod:
+
+```bash
+kubectl logs <pod name> -f
+```
+
+<img width="1165" height="193" alt="image" src="https://github.com/user-attachments/assets/fd990870-d390-41cb-a5e6-56abe46c8423" />
+
+
 ### Implementation:
 
 # Verify inbound and outbound flows
