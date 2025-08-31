@@ -1,7 +1,10 @@
 # External Secret  - Key Vault integration in AKS
 
 
-Reference: https://dev.to/learn4ops/the-perfect-combination-for-azure-key-vault-integration-with-aks-external-secret-operator--4fgi
+Reference:
+
+- https://dev.to/learn4ops/the-perfect-combination-for-azure-key-vault-integration-with-aks-external-secret-operator--4fgi
+- https://learn.microsoft.com/en-us/azure/aks/csi-secrets-store-driver
 
 
 ### Normal secret:
