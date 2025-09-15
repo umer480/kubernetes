@@ -69,6 +69,15 @@ helm pull --untar oci://registry-1.docker.io/bitnamicharts/mysql --version 14.0.
 
 ### Helm Chart Structure / Directory Structure:
 
+<img width="1070" height="503" alt="image" src="https://github.com/user-attachments/assets/052e7075-114d-4189-b605-45afa056d003" />
+
+
+<img width="994" height="372" alt="image" src="https://github.com/user-attachments/assets/53923bf1-0cde-4d5e-bdda-bf563249f716" />
+
+
+**Optional files:**
+
+<img width="965" height="428" alt="image" src="https://github.com/user-attachments/assets/91fb836d-bb58-431f-8834-1d959c1cc3d8" />
 
 
 ### There are 4 functionalities of a Helm:
@@ -86,8 +95,47 @@ helm pull --untar oci://registry-1.docker.io/bitnamicharts/mysql --version 14.0.
 # injecting Values in a template:
 
 
-### Overwrite Values:
+### How to override default values ( default values we define in values.yaml)
+
+There are a couple of different ways to override  default values:
 
 1- Using -- file=other=values.yaml
 
 2- Using --Set flag
+
+
+
+<img width="974" height="512" alt="image" src="https://github.com/user-attachments/assets/42a04f8d-b1bf-4831-97b0-b11afd5b0d67" />
+
+
+**Final Result:**
+
+<img width="1000" height="316" alt="image" src="https://github.com/user-attachments/assets/b2b37cb7-a542-49bf-a24f-79205445e590" />
+
+
+
+Using Commmand line:
+
+<img width="898" height="124" alt="image" src="https://github.com/user-attachments/assets/fdf8973f-72c7-4cda-9454-1b8fee5795c7" />
+
+
+
+🔹 **Helm Built-in Objects**
+
+Helm provides several built-in objects you can use in templates:
+
+.Release.Name → The name you passed in helm install.
+
+.Release.Namespace → Namespace where the chart is being installed.
+
+.Release.Revision → Revision number (increments with each upgrade).
+
+.Chart.Name → Name field from Chart.yaml.
+
+.Values → User-defined values from values.yaml or --set.
+
+✅ So, .Release.Name is retrieved automatically from the Helm CLI command at install/upgrade time — it’s not in values.yaml, but injected by Helm itself as a built-in object.
+
+
+**Reference**:
+https://www.youtube.com/watch?v=-ykwb1d0DXU
