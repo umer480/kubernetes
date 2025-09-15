@@ -23,6 +23,12 @@ It simplifies deployments in Kubernetes - handle/deploy multiple YAML files as a
 ```
 
 
+### Helm allows you to perform:
+
+ install + update + remove package/kubernetes resource
+ 
+
+
 ### Helm Vs HelmChart ?
 
 - Helm - is a tool/command.
@@ -57,6 +63,17 @@ helm pull --untar oci://registry-1.docker.io/bitnamicharts/mysql --version 14.0.
 
 <img width="1512" height="905" alt="image" src="https://github.com/user-attachments/assets/b04b37e7-dcef-44b7-a290-c2928cf00107" />
 
+
+
+### Install third-party apps using helm instead of yaml
+alot of helm charts already available - you can use that to deploy many applications or kubernetes controllers - like
+
+- Prometheus
+- grafana
+- nginx
+- argoCD
+
+for this purpose . you need to add respective helm repo and then use it..
 
 
 ### OCI Compliant Registry:
