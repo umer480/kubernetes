@@ -3,6 +3,12 @@
 
 <img width="341" height="198" alt="image" src="https://github.com/user-attachments/assets/2f174f2f-eef1-4834-a578-a726120b181e" />
 
+```bash
+
+Package manager for Kubernetes, supports templating, versioning, releases.
+```
+
+
 
 `Helm is an open source tool - it is a package manager for kubernetes. like we have apt , yum in Linux OS`
 
