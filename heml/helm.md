@@ -33,7 +33,8 @@ It simplifies deployments in Kubernetes - handle/deploy multiple YAML files as a
 
 - Helm - is a tool/command.
 - Helm Chart: deployable package - Combine multiple yaml files ( in a specific structure) as a package basically called helm chart.
-
+- 
+`chart is basically a bundle of your application`
 
 
 
