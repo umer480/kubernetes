@@ -77,6 +77,14 @@ alot of helm charts already available - you can use that to deploy many applicat
 for this purpose . you need to add respective helm repo and then use it..
 
 
+### is there any repo that has already charts for a lot of applications:?
+**Yes** - you can use Bitnami repo
+
+```bash
+helm repo add bitnami https://charts.bitnami.com/bitnami
+helm install my-nginx bitnami/nginx
+```
+
 ### OCI Compliant Registry:
 
 - Amazon ECR
