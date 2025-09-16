@@ -88,8 +88,8 @@ helm install <release-name> <repo-name>/<chart-name>
 Example:   helm install nginxv1 bitnami/nginx
 ```
 
-
-
+you can also isntall two different verisons/relases of your charts in same cluster like  `helm install nginxv bitnami/nginx` and `helm install nginxv2 bitnami/nginx`
+ 
 ### Installing helm chart in a specific namespace
 
 ```bash
