@@ -60,9 +60,11 @@ helm search hub
 
 Search from locally added repo:  ~config/ repositories.yaml
 Example:
-helm search repo/chartname
-helm search bitnami/mysql
+helm search repo <reponame> | grep <chartname>
+helm search repo bitnami | grep prometheus
 
+
+Install now : helm install prometheus bitnami/prometheus
 ```
 
 
@@ -95,6 +97,26 @@ you can also isntall two different verisons/relases of your charts in same clust
 ```bash
 helm install  nginxv1 bitnami/nginx --namespace test
 ```
+
+
+### list down all 'releases' that are deployed in your cluster via helm
+
+below command will list all the releases running (deployed) in your cluster via helm
+
+```bash
+helm list
+```
+<img width="1088" height="131" alt="image" src="https://github.com/user-attachments/assets/4117c6a0-97ff-48b8-a3a9-543b67074213" />
+
+### uninstall a release
+
+use name of the release to uninstall the chart.
+
+```bash
+helm uninstall nginxv1
+```
+
+
 
 ### WorkFlow
 
