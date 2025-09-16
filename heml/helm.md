@@ -164,6 +164,10 @@ helm install my-nginx bitnami/nginx
 <img width="965" height="428" alt="image" src="https://github.com/user-attachments/assets/91fb836d-bb58-431f-8834-1d959c1cc3d8" />
 
 
+
+
+
+
 ### There are 4 functionalities of a Helm:
 
 **1- Package Manager** (Combine multiple YAML files as a single deployable package)  
@@ -201,6 +205,7 @@ There are a couple of different ways to override  default values:
 Using Commmand line:
 
 <img width="898" height="124" alt="image" src="https://github.com/user-attachments/assets/fdf8973f-72c7-4cda-9454-1b8fee5795c7" />
+
 
 
 
