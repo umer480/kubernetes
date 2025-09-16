@@ -51,13 +51,49 @@ https://artifacthub.io/
 
 
 ```bash
+
+Search from Helm Hub:
+
+Example:
 helm search <package>
+helm search hub 
+
+Search from locally added repo:  ~config/ repositories.yaml
+Example:
+helm search repo/chartname
+helm search bitnami/mysql
+
 ```
+
 
 ### Download Helm Package locally
 
 ```
 helm pull --untar oci://registry-1.docker.io/bitnamicharts/mysql --version 14.0.3
+```
+
+
+### installing helm chart
+you need to install release name while installing helm package - it will assign name to resources accordingly.
+if you dont specify release name then helm will autimatiically generate a ransom release name
+
+
+
+### What is Release in helm?
+
+'release is nothing but a deployed instance of chart'
+
+```bash
+helm install <release-name> <repo-name>/<chart-name>
+Example:   helm install nginxv1 bitnami/nginx
+```
+
+
+
+### Installing helm chart in a specific namespace
+
+```bash
+helm install  nginxv1 bitnami/nginx --namespace test
 ```
 
 ### WorkFlow
