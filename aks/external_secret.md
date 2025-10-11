@@ -51,3 +51,8 @@ The External Secrets Operator makes using external secret management systems eas
 
 
 <img width="1123" height="373" alt="image" src="https://github.com/user-attachments/assets/e7ce3552-502d-455e-b68d-a1e2268111b7" />
+
+
+
+# is there any way to keep secret's values outside yaml file - and pass through using ADO / CICD pipelines at runtime - it will eliminate the use of external secrets.   -VNET learning -
+
