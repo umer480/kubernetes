@@ -54,5 +54,26 @@ The External Secrets Operator makes using external secret management systems eas
 
 
 
+
+
+### Key Notes From : Reference: https://www.youtube.com/watch?v=MJ97ZInCXgY
+CSI - for Storage - to mount external storage - like Azure Disk,EBS etc
+
+Similarly - `Secret Store CSI Driver` needs to enable on AKS Cluster **+** `Provider` also needs to enable respective provider that you want to use with Secret Store CSI 
+
+How KV access is restricted to specific pods:
+
+ `integrate service account od with with the Managed identity (MSI)`
+ 
+Once you enable SC CSI driver with the respective then you will need to configure a service account ( every pod in kubernetes has its own service account) of pod to the managed identity, and that MSI that you can use to gain access to Azure Key Vault.
+
+
+Every pod in Kubernetes runs under a service account, whether you explicitly assign one or not. \
+If you don’t specify one, Kubernetes automatically assigns the `default` service account in the same namespace.
+
+
+
+<img width="741" height="609" alt="image" src="https://github.com/user-attachments/assets/83a94de2-bfaa-428e-a4b3-fc9aa02a449c" />
+
 # is there any way to keep secret's values outside yaml file - and pass through using ADO / CICD pipelines at runtime - it will eliminate the use of external secrets.   -VNET learning -
 
