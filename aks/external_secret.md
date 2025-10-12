@@ -67,6 +67,7 @@ How KV access is restricted to specific pods:
  
 Once you enable SC CSI driver with the respective then you will need to configure a service account ( every pod in kubernetes has its own service account) of pod to the managed identity, and that MSI that you can use to gain access to Azure Key Vault.
 
+you need OIDC issuer URL of AKS Cluster a Service account with the MSI
 
 Every pod in Kubernetes runs under a service account, whether you explicitly assign one or not. \
 If you don’t specify one, Kubernetes automatically assigns the `default` service account in the same namespace.
@@ -74,6 +75,12 @@ If you don’t specify one, Kubernetes automatically assigns the `default` servi
 
 
 <img width="741" height="609" alt="image" src="https://github.com/user-attachments/assets/83a94de2-bfaa-428e-a4b3-fc9aa02a449c" />
+
+
+SC CSI Driver + Provider also runs as a POD in kubernetes services:
+make sure pods are up and running
+
+<img width="1077" height="133" alt="image" src="https://github.com/user-attachments/assets/8f2d0453-cf6e-439e-97f4-9602b3d724a6" />
 
 # is there any way to keep secret's values outside yaml file - and pass through using ADO / CICD pipelines at runtime - it will eliminate the use of external secrets.   -VNET learning -
 
